@@ -10,4 +10,4 @@ Commit messages should adhere to the following best practices:
 2. Commit messages should start with a lowercase letter
 3. Commit messages should not contain full stops
    
-Violation of the above rules shall result in severe penalities.
+Violation of the above rules shall result in severe penalities. This will involve refilling the birdfeeder.
