@@ -1,6 +1,6 @@
 # Project Troy
 
-This is the github repository for *Project Troy*. More details to follow.
+This is the github repository for *Project Troy*, a chess-based game. More details to follow.
 
 ## Commit Message Conventions
 
