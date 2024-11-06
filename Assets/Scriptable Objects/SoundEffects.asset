@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58134e23eb10243ab9f952c23e0a69c6, type: 3}
+  m_Name: SoundEffects
+  m_EditorClassIdentifier: 
+  explosion:
+    audioClip: {fileID: 8300000, guid: 23ec67e8cbe574227b9ef8ab54635199, type: 3}
+    pitch: 1
+    volume: 0.75
+    volumeVariance: 0.1
+    pitchVariance: 0.1
+  thud:
+    audioClip: {fileID: 8300000, guid: ffe2c10c3e21d4918b63d43e884d4750, type: 3}
+    pitch: 1
+    volume: 0.75
+    volumeVariance: 0.1
+    pitchVariance: 0.1
+  woodenSmash:
+    audioClip: {fileID: 8300000, guid: 2c459d888c8d54b18b83d8a61f530214, type: 3}
+    pitch: 1
+    volume: 0.75
+    volumeVariance: 0.1
+    pitchVariance: 0.1
