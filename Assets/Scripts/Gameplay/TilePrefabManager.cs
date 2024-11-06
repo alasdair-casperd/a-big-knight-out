@@ -1,61 +1,38 @@
+using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
+using JetBrains.Annotations;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "TilePrefabManager", menuName = "Scriptable Objects/TilePrefabManager")]
 public class TilePrefabManager : ScriptableObject
 {
-    [SerializeField] // Allows the private field to be shown in the inspector
+    [SerializeField]
     List<TilePrefabPair> tilePrefabPairs;
 
     /// <summary>
-    /// Fetches the prefab for a given <c>TileType</c>
+    /// Fetches the prefab associated with a given <c>TileType</c>
     /// </summary>
-    /// <param name="tileType">The <c>TileType</c> to be looked up</param>
-    /// <returns></returns>
-    public GameObject GetPrefab(TileType tileType)
+    /// <param name="tile">The <c>TileType</c> to retrive the prefab for</param>
+    /// <returns>A <c>GameObject</c> prefab for the square</returns>
+    /// <exception cref="Incorrect prefab assignment">Throws if the number of prefabs assigned to a tile type is not 1</exception>
+    public GameObject GetPrefab(TileType tile)
     {
-        int tileID = tileType.id;
-        GameObject prefab = null;
-
-        // Loops over all the assigned pairs of tileTypeEnum and prefab 
-        foreach (TilePrefabPair tilePrefabPair in tilePrefabPairs)
+        // Finds all the pairs where the tile type matches the one given
+        List<TilePrefabPair> foundPairs = tilePrefabPairs.FindAll(pair => pair.tileType == tile);
+        
+        // If zero or more than 1 prefab is found for the given tile type, throw an exception.
+        if(foundPairs.Count!=1)
         {
-            // Checks if the ID of the tile given matches the ID of the tile enum
-            // Scott don't look I'm casting
-            if((int)tilePrefabPair.tile == tileID)
-            {
-                // If it does then this is the prefab we want
-                prefab = tilePrefabPair.tilePrefab;
-            }
+            throw new Exception(foundPairs.Count.ToString()+" prefabs found for TileType."+ Enum.GetName(typeof(TileType),tile));
         }
 
-        // If it hasn't found a prefab then throw an error
-        if(prefab == null)
-        {
-            Debug.LogError("No prefab found for tile type "+tileType.name);
-        }
-
-        return prefab;
+        return foundPairs[0].prefab;
     }
 
-    // Forgive me father for I have enumed (this is a messy hack but only this class needs to worry about it)
-    // The name is Scott's fault
-
-    // The integer MUST MATCH the id of the corresponding TileType
-    private enum TileTypeEnum
-    {
-        Floor = 1,
-        Wall = 2
-    }
-
-    // Pairs which match TileTypeEnum with a prefab GameObject
-    [System.Serializable] // To allow it to be displayed in inspector
+    [System.Serializable]
     struct TilePrefabPair
     {
-        [SerializeField]
-        public TileTypeEnum tile;
-        [SerializeField]
-        public GameObject tilePrefab;
+        public TileType tileType;
+        public GameObject prefab;
     }
 }

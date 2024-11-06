@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 86e4464894be4af4798ad5a48065745b, type: 3}
-  m_Name: TilePrefabManager1
+  m_Name: TilePrefabManager
   m_EditorClassIdentifier: 
   tilePrefabPairs:
-  - tile: 1
-    tilePrefab: {fileID: 1786054256909499910, guid: 4d2ee7a92de02364babd9698f271e4b3, type: 3}
-  - tile: 2
-    tilePrefab: {fileID: 1786054256909499910, guid: 4d2ee7a92de02364babd9698f271e4b3, type: 3}
+  - tileType: 0
+    prefab: {fileID: 1786054256909499910, guid: 4d2ee7a92de02364babd9698f271e4b3, type: 3}
+  - tileType: 1
+    prefab: {fileID: 1786054256909499910, guid: 4d2ee7a92de02364babd9698f271e4b3, type: 3}
