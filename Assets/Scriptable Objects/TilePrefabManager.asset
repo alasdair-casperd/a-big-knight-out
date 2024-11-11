@@ -14,6 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tilePrefabPairs:
   - tileType: 0
-    prefab: {fileID: 1786054256909499910, guid: 4d2ee7a92de02364babd9698f271e4b3, type: 3}
-  - tileType: 1
-    prefab: {fileID: 1786054256909499910, guid: 4d2ee7a92de02364babd9698f271e4b3, type: 3}
+    prefab: {fileID: 5962543618662339616, guid: 981ff06b6d326e9448db2fe94e9d88e5, type: 3}
