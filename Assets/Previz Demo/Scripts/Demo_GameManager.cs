@@ -9,17 +9,21 @@ namespace Demo {
         private Player player;
         private Tile[] tiles;
         private PathFollower[] pathFollowers;
+        private Alternator[] alternators;
+        private bool levelHasMovingTiles = false;
 
         private int totalMovesMade = 0;
+        public bool movementLocked = false;
 
         void Start()
         {
             AudioManager.Play(AudioManager.BackgroundSounds.demoBacking);
 
             player = FindAnyObjectByType<Player>();
-            pathFollowers = FindObjectsByType<PathFollower>(FindObjectsSortMode.None);
             tiles = FindObjectsByType<Tile>(FindObjectsSortMode.None);
-            
+            pathFollowers = FindObjectsByType<PathFollower>(FindObjectsSortMode.None);
+            alternators = FindObjectsByType<Alternator>(FindObjectsSortMode.None);
+
             // Set the player's current tile
             foreach (var tile in tiles)
             {
@@ -29,6 +33,11 @@ namespace Demo {
                 {
                     player.startingTile = tile;
                     player.currentTile = tile;
+                }
+
+                if (tile.moving)
+                {
+                    levelHasMovingTiles = true;
                 }
             }
         }
@@ -42,7 +51,7 @@ namespace Demo {
             }
 
             // Handle user movement on click
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0) && !movementLocked)
             {
                 HandlePlayerMovementInput();
             }
@@ -67,19 +76,26 @@ namespace Demo {
         {
             if (totalMovesMade > 0)
             {
+                movementLocked = false;
+
                 AudioManager.Play(AudioManager.SoundEffects.click);
                 
                 totalMovesMade = 0;
                 player.Reset();
                 
+                foreach (var tile in tiles)
+                {
+                    tile.Reset();
+                }
+
                 foreach (var follower in pathFollowers)
                 {
                     follower.Reset();
                 }
 
-                foreach (var tile in tiles)
+                foreach (var alternator in alternators)
                 {
-                    tile.Reset();
+                    alternator.Reset();
                 }
             }
         }
@@ -118,6 +134,27 @@ namespace Demo {
             foreach (var follower in pathFollowers)
             {
                 follower.Step();
+            }
+
+            foreach (var alternator in alternators)
+            {
+                alternator.Step();
+            }
+
+            if (levelHasMovingTiles)
+            {
+                movementLocked = true;
+
+                LeanTween.delayedCall(0.1f, () => {
+                    foreach (var tile in tiles)
+                    {
+                        tile.Step();
+                    }
+                });
+
+                LeanTween.delayedCall(0.2f, () => {
+                    movementLocked = false;
+                });
             }
         }
     }

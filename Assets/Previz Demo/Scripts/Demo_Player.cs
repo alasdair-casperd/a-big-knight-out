@@ -30,15 +30,20 @@ namespace Demo {
         public void Move(Tile tile, bool asTurn = true)
         {
             Move(tile.transform.position);
-            if (asTurn) currentTile.HandlePlayerLeave();
+            if (asTurn && currentTile != null) currentTile.HandlePlayerLeave();
             currentTile = tile;
         }
 
-        // Move to a position
-        private void Move(Vector3 targetPosition)
+        public void ManualMove(Vector3 targetPosition, bool withAnimation)
         {
-            float duration = 0.15f;
-            targetPosition.y = transform.position.y;
+            Move(targetPosition, withAnimation);
+        }
+
+        // Move to a position
+        private void Move(Vector3 targetPosition, bool withAnimation = true)
+        {
+            float duration = 0.1f;
+            targetPosition.y = 0.5f;
             LeanTween.cancel(gameObject); 
 
             Vector3 startPosition = transform.position;
@@ -48,7 +53,8 @@ namespace Demo {
             Quaternion targetRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
 
             LeanTween.value(gameObject, 0, 1, duration).setOnUpdate((float t) => {
-                float targetHeight = startPosition.y + jumpHeight * Mathf.Sin(Mathf.PI * t);
+                float targetHeight = 0.5f;
+                if (withAnimation) targetHeight = startPosition.y + jumpHeight * Mathf.Sin(Mathf.PI * t);
                 Vector3 interpolatedPosition = Vector3.Lerp(startPosition, targetPosition, t);
                 interpolatedPosition.y = targetHeight;
                 transform.SetPositionAndRotation(interpolatedPosition, Quaternion.Slerp(startRotation, targetRotation, t));
