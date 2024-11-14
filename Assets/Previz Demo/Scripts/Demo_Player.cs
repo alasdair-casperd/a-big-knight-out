@@ -42,7 +42,7 @@ namespace Demo {
         // Move to a position
         private void Move(Vector3 targetPosition, bool withAnimation = true)
         {
-            float duration = 0.1f;
+            float duration = GameManager.AnimationTime;
             targetPosition.y = 0.5f;
             LeanTween.cancel(gameObject); 
 

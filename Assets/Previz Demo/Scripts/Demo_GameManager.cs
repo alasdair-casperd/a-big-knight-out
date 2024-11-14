@@ -6,6 +6,17 @@ using UnityEngine;
 namespace Demo {
     public class GameManager : MonoBehaviour
     {
+        public float animationTime = 0.1f;
+
+        private static GameManager _instance;
+        
+        public static float AnimationTime {
+            get {
+                if (_instance == null) _instance = FindAnyObjectByType<GameManager>();
+                return _instance.animationTime;
+            }
+        }
+
         private Player player;
         private Tile[] tiles;
         private PathFollower[] pathFollowers;
@@ -17,7 +28,7 @@ namespace Demo {
 
         void Start()
         {
-            AudioManager.Play(AudioManager.BackgroundSounds.demoBacking);
+            //AudioManager.Play(AudioManager.BackgroundSounds.demoBacking);
 
             player = FindAnyObjectByType<Player>();
             tiles = FindObjectsByType<Tile>(FindObjectsSortMode.None);
@@ -145,14 +156,14 @@ namespace Demo {
             {
                 movementLocked = true;
 
-                LeanTween.delayedCall(0.1f, () => {
+                LeanTween.delayedCall(AnimationTime, () => {
                     foreach (var tile in tiles)
                     {
                         tile.Step();
                     }
                 });
 
-                LeanTween.delayedCall(0.2f, () => {
+                LeanTween.delayedCall(2 * AnimationTime, () => {
                     movementLocked = false;
                 });
             }

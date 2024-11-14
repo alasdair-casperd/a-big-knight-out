@@ -26,7 +26,7 @@ namespace Demo {
             bool visible = appearancePattern[stepCount % appearancePattern.Count];
             var targetPosition = visible ? visiblePosition: hiddenPosition;
             LeanTween.cancel(movingObject);
-            LeanTween.moveLocal(movingObject, targetPosition, 0.1f);
+            LeanTween.moveLocal(movingObject, targetPosition, GameManager.AnimationTime);
         }
 
         // Reset the follower

@@ -30,7 +30,7 @@ namespace Demo {
             var targetPosition = targetTransform.position;
             targetPosition.y = transform.position.y;
             
-            LeanTween.move(gameObject, targetPosition, 0.1f);
+            LeanTween.move(gameObject, targetPosition, GameManager.AnimationTime);
         }
     }
 }

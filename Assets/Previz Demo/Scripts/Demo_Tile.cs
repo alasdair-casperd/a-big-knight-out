@@ -37,7 +37,7 @@ namespace Demo {
         {
             destroyed = false;
             LeanTween.cancel(gameObject);
-            LeanTween.scale(gameObject, initialScale, 0.1f);
+            LeanTween.scale(gameObject, initialScale, GameManager.AnimationTime);
 
             if (moving)
             {
@@ -53,7 +53,7 @@ namespace Demo {
             if (singleUse && !destroyed) {
                 destroyed = true;
                 LeanTween.cancel(gameObject);
-                LeanTween.scale(gameObject, destroyedScale, 0.1f);
+                LeanTween.scale(gameObject, destroyedScale, GameManager.AnimationTime);
             }
         }
 
@@ -79,7 +79,7 @@ namespace Demo {
                 player.ManualMove(targetPosition, false);
             }
 
-            LeanTween.move(gameObject, targetPosition, 0.1f);
+            LeanTween.move(gameObject, targetPosition, GameManager.AnimationTime);
         }
     }
 }
