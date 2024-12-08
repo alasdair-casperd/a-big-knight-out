@@ -9,6 +9,10 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Level", menuName = "Scriptable Objects/Level")]
 public class Level : ScriptableObject
 {
+
+    // The player's starting position
+    public Vector2Int startPos;
+
     // A list containing all of the level's tiles.
     public List<TilePositionPair> tiles;
 

@@ -29,4 +29,9 @@ public class FloorSquare : Square
 
     // Sets up the property for graphics variant
     public override int GraphicsVariant{get; set;}
+
+    public override void OnPlayerLand()
+    {
+       Debug.Log("Clip Clop");
+    }
 }

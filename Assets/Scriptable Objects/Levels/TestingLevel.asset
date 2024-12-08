@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4abb1e6188e04b469f45d459b562b35, type: 3}
   m_Name: TestingLevel
   m_EditorClassIdentifier: 
+  startPos: {x: 0, y: 0}
   tiles:
   - position: {x: 0, y: 0}
     tile:
       type: 0
-      links:
-      - {x: 2, y: 0}
+      links: []
       initialState: 0
       graphicsVariant: 0
   - position: {x: 1, y: 0}
@@ -26,7 +26,61 @@ MonoBehaviour:
       links: []
       initialState: 0
       graphicsVariant: 0
+  - position: {x: 0, y: 1}
+    tile:
+      type: 0
+      links: []
+      initialState: 0
+      graphicsVariant: 0
   - position: {x: 1, y: 1}
+    tile:
+      type: 0
+      links: []
+      initialState: 0
+      graphicsVariant: 0
+  - position: {x: 0, y: 2}
+    tile:
+      type: 0
+      links: []
+      initialState: 0
+      graphicsVariant: 0
+  - position: {x: 1, y: 2}
+    tile:
+      type: 0
+      links: []
+      initialState: 0
+      graphicsVariant: 0
+  - position: {x: 2, y: 0}
+    tile:
+      type: 0
+      links: []
+      initialState: 0
+      graphicsVariant: 0
+  - position: {x: 2, y: 1}
+    tile:
+      type: 0
+      links: []
+      initialState: 0
+      graphicsVariant: 0
+  - position: {x: 2, y: 2}
+    tile:
+      type: 0
+      links: []
+      initialState: 0
+      graphicsVariant: 0
+  - position: {x: 3, y: 0}
+    tile:
+      type: 0
+      links: []
+      initialState: 0
+      graphicsVariant: 0
+  - position: {x: 3, y: 1}
+    tile:
+      type: 0
+      links: []
+      initialState: 0
+      graphicsVariant: 0
+  - position: {x: 3, y: 2}
     tile:
       type: 0
       links: []

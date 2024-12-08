@@ -63,6 +63,46 @@ public abstract class Square : MonoBehaviour
     /// Whether the tile is currently passable.
     /// </summary>
     public abstract bool IsPassable{get; protected set;}
+
+    /*
+
+    The following functions may or may not be implemented by a given square. They occur
+    in the order that they are written below, and are called by SquareManager.
+
+    */
+
+    /// <summary>
+    /// The actions to be perfomed at the start of the player's turn
+    /// </summary>
+    public virtual void OnPlayerTurnStart()
+    {
+        return;
+    }
+
+    /// <summary>
+    /// The actions to be performed once the player has input their move
+    /// </summary>
+    public virtual void OnPlayerMove()
+    {
+        return;
+    }
+
+    /// <summary>
+    /// The actions to be performed immediately when the player lands on this tile
+    /// </summary>
+    public virtual void OnPlayerLand()
+    {
+        return;
+    }
+
+    /// <summary>
+    /// The actions to be performed at the start of the Level's turn
+    /// </summary>
+    public virtual void OnLevelTurn()
+    {
+        return;
+    }
+
     
     
 }
