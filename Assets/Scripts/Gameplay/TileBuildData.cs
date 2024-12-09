@@ -22,5 +22,6 @@ public enum TileType
 {
     Floor,
     Wall,
-    Spikes
+    Spikes,
+    Portal
 }

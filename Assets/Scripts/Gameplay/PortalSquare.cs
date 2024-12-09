@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 
 /// <summary>
-/// A basic floor square which is always passable.
+/// A portal square which will link you to a another tile.
 /// </summary>
 public class PortalSquare : Square
 {
@@ -13,6 +13,11 @@ public class PortalSquare : Square
 
     public override bool IsLinkable { get { return true; } }
     public override bool IsMultiState { get { return false; } }
+
+    public override List<Square> Links
+    {
+        get; set;
+    }
 
     // Will always report as passable, if you try to change that you get a warning.
     public override bool IsPassable
@@ -32,6 +37,19 @@ public class PortalSquare : Square
 
     public override void OnPlayerLand()
     {
-        Debug.Log("Clip Clop");
+        Debug.Log("Now you are thinking");
+        Debug.Log("I am here:");
+        Debug.Log(Position.ToString());
+        Debug.Log("I am paired with a tile at:");
+        foreach (var link in Links)
+        {
+            Debug.Log(link.Position.ToString());
+        }
+
+        // Attempt to move knight.
+        PlayerController.MoveToVector2(Links[0].Position);
+        //Tell the square manager the horse has moved.
+
+
     }
 }

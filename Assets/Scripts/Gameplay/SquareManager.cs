@@ -18,7 +18,7 @@ public class SquareManager : MonoBehaviour
     /// <summary>
     /// The level object to build and manage.
     /// </summary>
-    public  Level level;
+    public Level level;
 
     /// <summary>
     /// Tells the square manager how to convert the level's data into gameobjects
@@ -28,19 +28,19 @@ public class SquareManager : MonoBehaviour
     /// <summary>
     /// A dictionary to find the square object at any given position
     /// </summary>
-    Dictionary<Vector2Int,Square> squares;
+    Dictionary<Vector2Int, Square> squares;
 
     /// <summary>
     /// The player's position
     /// </summary>
-    Vector2Int playerPos;
+    public Vector2Int PlayerPos;
 
     bool isPlayerTurn;
 
     /// <summary>
     /// The valid moves a knight can make
     /// </summary>
-    Vector2Int[] KnightMoves = 
+    Vector2Int[] KnightMoves =
     {
         new Vector2Int(1,2),
         new Vector2Int(2,1),
@@ -59,9 +59,9 @@ public class SquareManager : MonoBehaviour
 
         squares = new Dictionary<Vector2Int, Square>();
 
-        playerPos = level.startPos;
+        PlayerPos = level.startPos;
 
-        player.transform.position = GridToWorldPos(playerPos);
+        player.transform.position = GridToWorldPos(PlayerPos);
 
         BuildLevel();
 
@@ -70,20 +70,20 @@ public class SquareManager : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetMouseButtonDown(0) && isPlayerTurn)
+        if (Input.GetMouseButtonDown(0) && isPlayerTurn)
         {
             Vector2Int mousePos = GetMouseGridPos();
-            if(GetValidMoves().Contains(mousePos))
+            if (GetValidMoves().Contains(mousePos))
             {
-            
+
                 // Moves the player
-                playerPos = mousePos;
+                PlayerPos = mousePos;
 
                 // Informs the squares that the player has moved
                 OnPlayerMove();
 
                 // Moves the player object
-                player.MoveTo(GridToWorldPos(mousePos),this);
+                player.MoveTo(GridToWorldPos(mousePos));
             }
         }
     }
@@ -95,7 +95,7 @@ public class SquareManager : MonoBehaviour
     void OnPlayerTurnStart()
     {
         isPlayerTurn = true;
-        foreach(Square square in squares.Values)
+        foreach (Square square in squares.Values)
         {
             square.OnPlayerTurnStart();
         }
@@ -107,31 +107,31 @@ public class SquareManager : MonoBehaviour
     void OnPlayerMove()
     {
         isPlayerTurn = false;
-        foreach(Square square in squares.Values)
+        foreach (Square square in squares.Values)
         {
             square.OnPlayerMove();
         }
     }
-    
+
     /// <summary>
     /// The actions to be performed once the player lands on its new tile.
     /// </summary>
     public void OnPlayerLand()
     {
-        squares[playerPos].OnPlayerLand();
+        squares[PlayerPos].OnPlayerLand();
         HighlightValidTiles();
 
         // Once the horse has landed, initiate the level's turn.
         OnLevelTurn();
     }
-    
+
     /// <summary>
     /// The actions to be performed on the level's turn.
     /// </summary>
     void OnLevelTurn()
     {
         // Does all of the square's turns.
-        foreach(Square square in squares.Values)
+        foreach (Square square in squares.Values)
         {
             square.OnLevelTurn();
         }
@@ -159,7 +159,7 @@ public class SquareManager : MonoBehaviour
         Square currentSquare;
 
         // Loops over all the tiles in the level object recieved
-        foreach(TilePositionPair tilePosPair in level.tiles)
+        foreach (TilePositionPair tilePosPair in level.tiles)
         {
             //Gets the prefab for the tile's type from the prefab manager
             prefab = tilePrefabManager.GetPrefab(tilePosPair.tile.type);
@@ -173,35 +173,40 @@ public class SquareManager : MonoBehaviour
             currentSquareObject = Instantiate(prefab, GridToWorldPos(pos), Quaternion.identity);
             // Gets the square component from the prefab and adds it to the list of all squares
             currentSquare = currentSquareObject.GetComponent<Square>();
-            squares.Add(pos,currentSquare);
+            //Adds player controller script to the square.
+            currentSquare.PlayerController = player;
+            currentSquare.Position = tilePosPair.position;
+            squares.Add(pos, currentSquare);
 
             // Sets up the square's initial state
-            if(currentSquare.IsMultiState)
+            if (currentSquare.IsMultiState)
             {
                 currentSquare.State = initialState;
             }
             // Sets up the square's graphics variant
             currentSquare.GraphicsVariant = graphicsVariant;
         }
-        
+
         // Does some custom error handling to make sure all the links are set up properly
         ValidateLinks();
 
         // loops over all the tiles in the level
-        foreach(TilePositionPair tilePositionPair in level.tiles)
+        foreach (TilePositionPair tilePositionPair in level.tiles)
         {
             // Finds the square corresponding to that tile
             currentSquare = squares[tilePositionPair.position];
 
             // If it's linkable loop over all its links
-            if(currentSquare.IsLinkable)
+            if (currentSquare.IsLinkable)
             {
-                foreach(Vector2Int link in tilePositionPair.tile.links)
+                // Creates a list for stuff to be added to. 
+                currentSquare.Links = new List<Square>();
+                foreach (Vector2Int link in tilePositionPair.tile.links)
                 {
                     // Adds the square corresponding to the linked position to the square's list of links.
                     currentSquare.Links.Add(squares[link]);
                 }
-            }     
+            }
         }
     }
 
@@ -214,25 +219,25 @@ public class SquareManager : MonoBehaviour
         Vector2Int currentPos;
 
         // Loops over all of the tiles
-        foreach(TilePositionPair tilePosPair in level.tiles)
+        foreach (TilePositionPair tilePosPair in level.tiles)
         {
             currentPos = tilePosPair.position;
             // Checks if the tile is trying to link to itself (bad)
-            if(tilePosPair.tile.links.Contains(currentPos))
+            if (tilePosPair.tile.links.Contains(currentPos))
             {
-                Debug.LogWarning("Trying to link a tile to itself at position "+currentPos.ToString());
+                Debug.LogWarning("Trying to link a tile to itself at position " + currentPos.ToString());
             }
             // Checks if there are links registered to an unlinkable tile
-            if(tilePosPair.tile.links.Count!=0 && !squares[currentPos].IsLinkable)
+            if (tilePosPair.tile.links.Count != 0 && !squares[currentPos].IsLinkable)
             {
-                Debug.LogWarning("Trying to link an unlinkable tile at position "+ currentPos.ToString());
+                Debug.LogWarning("Trying to link an unlinkable tile at position " + currentPos.ToString());
             }
             // Checks if the link goes to a location with no tile created
-            foreach(Vector2Int link in tilePosPair.tile.links)
+            foreach (Vector2Int link in tilePosPair.tile.links)
             {
-                if(!squares.Keys.Contains(link))
+                if (!squares.Keys.Contains(link))
                 {
-                    throw new Exception("Trying to create a link to a tile that does not exist from "+currentPos.ToString()+" to "+link.ToString());
+                    throw new Exception("Trying to create a link to a tile that does not exist from " + currentPos.ToString() + " to " + link.ToString());
                 }
             }
         }
@@ -246,7 +251,7 @@ public class SquareManager : MonoBehaviour
     public Vector3 GridToWorldPos(Vector2Int gridPos)
     {
         // To do: do something more clever and flexible here
-        return new Vector3(gridPos.x, 0 , gridPos.y);
+        return new Vector3(gridPos.x, 0, gridPos.y);
     }
 
     /// <summary>
@@ -257,7 +262,7 @@ public class SquareManager : MonoBehaviour
     public Vector2Int WorldToGridPos(Vector3 worldPos)
     {
         // To do: see GridToWorldPos()...
-        return new Vector2Int(Mathf.RoundToInt(worldPos.x),Mathf.RoundToInt(worldPos.z));
+        return new Vector2Int(Mathf.RoundToInt(worldPos.x), Mathf.RoundToInt(worldPos.z));
     }
 
     /// <summary>
@@ -272,9 +277,9 @@ public class SquareManager : MonoBehaviour
         // create a plane at 0,0,0 whose normal points to +Y:
         // It is currently assumed that all tiles will exist on this plane
         Plane hPlane = new Plane(Vector3.up, Vector3.zero);
-        
+
         // Plane.Raycast stores the distance from ray.origin to the hit point in this variable:
-        float distance = 0; 
+        float distance = 0;
 
         // if the ray hits the plane...
         if (hPlane.Raycast(ray, out distance))
@@ -303,9 +308,9 @@ public class SquareManager : MonoBehaviour
     {
         List<Vector2Int> moves = new List<Vector2Int>();
 
-        foreach(Vector2Int position in squares.Keys)
+        foreach (Vector2Int position in squares.Keys)
         {
-            if (KnightMoves.Contains(position-playerPos) && squares[position].IsPassable)
+            if (KnightMoves.Contains(position - PlayerPos) && squares[position].IsPassable)
             {
                 moves.Add(position);
             }
@@ -320,11 +325,11 @@ public class SquareManager : MonoBehaviour
     /// </summary>
     public void HighlightValidTiles()
     {
-        foreach(Square square in squares.Values)
+        foreach (Square square in squares.Values)
         {
             square.gameObject.GetComponentInChildren<MeshRenderer>().material.color = Color.white;
         }
-        foreach(Vector2Int newValidMove in GetValidMoves())
+        foreach (Vector2Int newValidMove in GetValidMoves())
         {
             squares[newValidMove].gameObject.GetComponentInChildren<MeshRenderer>().material.color = Color.green;
         }
