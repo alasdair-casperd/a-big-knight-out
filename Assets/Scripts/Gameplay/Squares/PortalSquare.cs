@@ -28,7 +28,7 @@ public class PortalSquare : Square
         }
         protected set
         {
-            Debug.LogWarning("Trying to change whether a floor square is passable!");
+            Debug.LogWarning("Trying to change if portal is passable!");
         }
     }
 

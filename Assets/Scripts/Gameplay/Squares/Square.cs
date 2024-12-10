@@ -113,6 +113,14 @@ public abstract class Square : MonoBehaviour
         return;
     }
 
+    /// <summary>
+    /// The actions to be performed at the start of the level.
+    /// </summary>
+    public virtual void OnLevelStart()
+    {
+        return;
+    }
+
 
 
 }

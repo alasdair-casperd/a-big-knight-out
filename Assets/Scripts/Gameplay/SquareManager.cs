@@ -65,6 +65,11 @@ public class SquareManager : MonoBehaviour
 
         BuildLevel();
 
+        foreach (Square square in squares.Values)
+        {
+            square.OnLevelStart();
+        }
+
         HighlightValidTiles();
     }
 
@@ -75,7 +80,6 @@ public class SquareManager : MonoBehaviour
             Vector2Int mousePos = GetMouseGridPos();
             if (GetValidMoves().Contains(mousePos))
             {
-
                 // Moves the player
                 PlayerPos = mousePos;
 
@@ -95,6 +99,7 @@ public class SquareManager : MonoBehaviour
     void OnPlayerTurnStart()
     {
         isPlayerTurn = true;
+        HighlightValidTiles();
         foreach (Square square in squares.Values)
         {
             square.OnPlayerTurnStart();
@@ -119,7 +124,7 @@ public class SquareManager : MonoBehaviour
     public void OnPlayerLand()
     {
         squares[PlayerPos].OnPlayerLand();
-        HighlightValidTiles();
+
 
         // Once the horse has landed, initiate the level's turn.
         OnLevelTurn();
@@ -312,7 +317,22 @@ public class SquareManager : MonoBehaviour
         {
             if (KnightMoves.Contains(position - PlayerPos) && squares[position].IsPassable)
             {
-                moves.Add(position);
+                if (squares[position].IsMultiState == true)
+                {
+                    if (squares[position].Type == TileType.MovingPlatform)
+                    {
+                        if (squares[position].State % (squares[position].Links.Count + 1) == 0)
+                        {
+                            Debug.Log("here");
+                            moves.Add(position);
+                        }
+                    }
+                }
+                else
+                {
+
+                    moves.Add(position);
+                }
             }
         }
 
@@ -327,7 +347,14 @@ public class SquareManager : MonoBehaviour
     {
         foreach (Square square in squares.Values)
         {
-            square.gameObject.GetComponentInChildren<MeshRenderer>().material.color = Color.white;
+            if (square.Type == TileType.Portal)
+            {
+                square.gameObject.GetComponentInChildren<MeshRenderer>().material.color = Color.magenta;
+            }
+            else if (square.Type != TileType.MovingPlatform)
+            {
+                square.gameObject.GetComponentInChildren<MeshRenderer>().material.color = Color.white;
+            }
         }
         foreach (Vector2Int newValidMove in GetValidMoves())
         {

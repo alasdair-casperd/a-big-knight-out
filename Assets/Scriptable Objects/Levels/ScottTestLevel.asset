@@ -34,9 +34,8 @@ MonoBehaviour:
       graphicsVariant: 0
   - position: {x: 1, y: 0}
     tile:
-      type: 3
-      links:
-      - {x: 3, y: 0}
+      type: 0
+      links: []
       initialState: 0
       graphicsVariant: 0
   - position: {x: 1, y: 1}
@@ -53,8 +52,9 @@ MonoBehaviour:
       graphicsVariant: 0
   - position: {x: 2, y: 0}
     tile:
-      type: 0
-      links: []
+      type: 3
+      links:
+      - {x: 3, y: 0}
       initialState: 0
       graphicsVariant: 0
   - position: {x: 2, y: 1}
@@ -73,6 +73,20 @@ MonoBehaviour:
     tile:
       type: 3
       links:
-      - {x: 1, y: 0}
+      - {x: 2, y: 0}
+      initialState: 0
+      graphicsVariant: 0
+  - position: {x: 4, y: 0}
+    tile:
+      type: 4
+      links:
+      - {x: 4, y: 1}
+      initialState: 1
+      graphicsVariant: 0
+  - position: {x: 4, y: 1}
+    tile:
+      type: 4
+      links:
+      - {x: 4, y: 0}
       initialState: 0
       graphicsVariant: 0

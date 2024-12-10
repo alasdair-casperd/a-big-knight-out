@@ -5,7 +5,7 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// The square manager, to allow the horse to broadcast its position to the square manager
     /// if it has been moved.
-    /// </summary>
+    /// </summary> 
     public SquareManager SquareManager;
 
     /// <summary>
