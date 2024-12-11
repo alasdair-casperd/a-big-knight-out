@@ -35,24 +35,17 @@ public class PortalSquare : Square
     // Sets up the property for graphics variant
     public override int GraphicsVariant { get; set; }
 
+    /// <summary>
+    /// Moves the player when they land on the tile.
+    /// </summary>
     public override void OnPlayerLand()
     {
-        Debug.Log("Now you are thinking");
-        Debug.Log("I am here:");
-        Debug.Log(Position.ToString());
-        Debug.Log("I am paired with a tile at:");
-        foreach (var link in Links)
-        {
-            Debug.Log(link.Position.ToString());
-        }
-
         // Attempt to move knight.
         PlayerController.MoveToVector2(Links[0].Position);
-        //Tell the square manager the horse has moved.
     }
 
     /// <summary>
-    /// Sets up colours of the portal.
+    /// Reverts portal to default state on level turn.
     /// </summary>
     public override void OnLevelTurn()
     {

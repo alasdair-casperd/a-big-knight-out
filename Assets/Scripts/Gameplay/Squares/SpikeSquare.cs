@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 
 /// <summary>
-/// A square which moves between other locations.
+/// A Spike square that is impassable when active.
 /// </summary>
-public class MovingPlatformSquare : Square
+public class SpikeSquare : Square
 {
     public override TileType Type
     {
-        get { return TileType.MovingPlatform; }
+        get { return TileType.Spike; }
     }
 
     public override bool IsLinkable { get { return true; } }
@@ -32,9 +32,7 @@ public class MovingPlatformSquare : Square
         get; set;
     }
 
-    /// <summary>
-    /// Reports whether it is passable, depending on its location.
-    /// </summary>
+    // Will always report as passable, but if state is wrong will not let you land.
     public override bool IsPassable
     {
         get
@@ -48,35 +46,39 @@ public class MovingPlatformSquare : Square
     public override int GraphicsVariant { get; set; }
 
     /// <summary>
-    /// Just to check whether the player has landed on a moving platform.
-    /// Moves the player to the intended square.
+    /// Changes the state as the player moves.
     /// </summary>
-    public override void OnPlayerLand()
+    public override void OnPlayerMove()
     {
-        PlayerController.MoveToVector2(Links[0].Position);
-    }
-
-    /// <summary>
-    /// On the level turn we want to move the player and reset the platform.
-    /// Also want to change if it is passable.
-    /// </summary>
-    public override void OnLevelTurn()
-    {
-
         State += 1;
         if (State % (Links.Count + 1) == 0)
         {
-            GetComponentInChildren<MeshRenderer>().material.color = Color.white;
-            IsPassable = true;
-            gameObject.SetActive(true);
+            GetComponentInChildren<MeshRenderer>().material.color = Color.red;
+
         }
         else
         {
-            IsPassable = false;
-            gameObject.SetActive(false);
+            GetComponentInChildren<MeshRenderer>().material.color = Color.white;
         }
-
     }
+
+    /// <summary>
+    /// Just to check whether the player has landed on a spike
+    /// tile and deserves to die.
+    /// </summary>
+    public override void OnPlayerLand()
+    {
+        if (State % (Links.Count + 1) == 0)
+        {
+            Debug.Log("Player Dies");
+
+        }
+        else
+        {
+            Debug.Log("You have survived... for now");
+        }
+    }
+
 
     /// <summary>
     /// Setting up the platforms for the start of the level.
@@ -85,14 +87,12 @@ public class MovingPlatformSquare : Square
     {
         if (State % (Links.Count + 1) == 0)
         {
-            GetComponentInChildren<MeshRenderer>().material.color = Color.white;
-            gameObject.SetActive(true);
-            IsPassable = true;
+            GetComponentInChildren<MeshRenderer>().material.color = Color.red;
+
         }
         else
         {
-            gameObject.SetActive(false);
-            IsPassable = false;
+            GetComponentInChildren<MeshRenderer>().material.color = Color.white;
         }
     }
 }
