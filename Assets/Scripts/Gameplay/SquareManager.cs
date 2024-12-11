@@ -177,8 +177,13 @@ public class SquareManager : MonoBehaviour
 
             // Creates an instance of the prefab
             currentSquareObject = Instantiate(prefab, GridToWorldPos(pos), Quaternion.identity);
+
+            // Names the square object
+            currentSquareObject.gameObject.name = $"Square ({pos[0]}, {pos[1]})";
+
             // Gets the square component from the prefab and adds it to the list of all squares
             currentSquare = currentSquareObject.GetComponent<Square>();
+            
             //Adds player controller script to the square.
             currentSquare.PlayerController = player;
             currentSquare.Position = tilePosPair.position;
