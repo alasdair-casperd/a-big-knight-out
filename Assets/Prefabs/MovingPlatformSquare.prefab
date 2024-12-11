@@ -29,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.9, y: 0.2, z: 0.9}
+  m_LocalScale: {x: 0.18575437, y: 0.104678795, z: 0.18575437}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 9076987725282839998}
@@ -65,7 +65,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: a16ca1c0d64d7444f92b0c5bbb0d320d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -119,7 +119,7 @@ GameObject:
   - component: {fileID: 9076987725282839998}
   - component: {fileID: 3650128525641591313}
   m_Layer: 0
-  m_Name: MovingPlatform
+  m_Name: MovingPlatformSquare
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -153,3 +153,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8f346dc10b6446418ba23c69dbb838a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GraphicsPrefab: {fileID: 223399415723502363, guid: f0de92a9ea16f4208975eae4e4d111ff, type: 3}
