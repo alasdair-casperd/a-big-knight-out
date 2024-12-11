@@ -32,22 +32,6 @@ public class FloorSquare : Square
 
     public override void OnPlayerLand()
     {
-        Debug.Log("Clip Clop");
-    }
-
-    /// <summary>
-    /// Resets colours of the tiles.
-    /// </summary>
-    public override void OnLevelTurn()
-    {
-        GetComponentInChildren<MeshRenderer>().material.color = Color.white;
-    }
-
-    /// <summary>
-    /// Makes em white at the start.
-    /// </summary>
-    public override void OnLevelStart()
-    {
-        GetComponentInChildren<MeshRenderer>().material.color = Color.white;
+        return;
     }
 }

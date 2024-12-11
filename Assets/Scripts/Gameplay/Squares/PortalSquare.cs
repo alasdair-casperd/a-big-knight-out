@@ -41,22 +41,6 @@ public class PortalSquare : Square
     public override void OnPlayerLand()
     {
         // Attempt to move knight.
-        PlayerController.MoveToVector2(Links[0].Position);
-    }
-
-    /// <summary>
-    /// Reverts portal to default state on level turn.
-    /// </summary>
-    public override void OnLevelTurn()
-    {
-        GetComponentInChildren<MeshRenderer>().material.color = Color.magenta;
-    }
-
-    /// <summary>
-    /// Sets up portal for the start.
-    /// </summary>
-    public override void OnLevelStart()
-    {
-        GetComponentInChildren<MeshRenderer>().material.color = Color.magenta;
+        PlayerController.MoveTo(Links[0].Position, AnimationController.MovementType.Teleport);
     }
 }

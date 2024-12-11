@@ -20,6 +20,46 @@ public class MovingPlatformSquare : Square
     }
 
     /// <summary>
+    /// Recursively finds all moving platform squares linked to this one
+    /// </summary>
+    private List<MovingPlatformSquare> AllLinks
+    {
+        get
+        {
+            var output = new List<MovingPlatformSquare>();
+
+            void Check(MovingPlatformSquare target)
+            {
+                foreach (var square in target.Links)
+                {
+                    if (square is MovingPlatformSquare platform)
+                    {
+                        if (!output.Contains(platform))
+                        {
+                            output.Add(platform);
+                            Check(platform);
+                        }
+                    }
+                }
+            }
+
+            Check(this);
+            return output;
+        }
+    }
+
+    /// <summary>
+    /// The graphics prefab for this moving platform
+    /// </summary>
+    public AnimationController GraphicsPrefab;
+
+    /// <summary>
+    /// The graphics for this moving platform, i.e. the visual component that actually moves between locations
+    /// This animator is shared between this moving platform and all of its links
+    /// </summary>
+    public AnimationController Graphics { get; set; }
+
+    /// <summary>
     /// Note this is multistate as this is multiplatforms pretending to be one.
     /// </summary>
     public override bool IsMultiState { get { return true; } }
@@ -32,28 +72,45 @@ public class MovingPlatformSquare : Square
         get; set;
     }
 
-    /// <summary>
-    /// Reports whether it is passable, depending on its location.
-    /// </summary>
+    // Has the platform just moved to this square? This is used to prevent multiple platform moves occurring in a single level turn
+    public bool HasMoved { get; set; }
+
+    // An integer used to track which of the square's links should be used next time the platform is at this square
+    private int LinkState { get; set; }
+
+    // Is the square passable? Returns true if the 'actual platform' is currently at this platform square
     public override bool IsPassable
     {
         get
         {
-            return true;
+            return State == 1;
         }
-        protected set { }
+        protected set
+        {
+            Debug.LogWarning("Attempting to manually change whether a moving platform square is passable");
+        }
     }
 
     // Sets up the property for graphics variant
     public override int GraphicsVariant { get; set; }
 
+    // Is the platform carrying a player?
+    private bool carryingPlayer;
+
     /// <summary>
-    /// Just to check whether the player has landed on a moving platform.
-    /// Moves the player to the intended square.
+    /// Reset HasMoved to false
+    /// </summary>
+    public override void OnPlayerTurnStart()
+    {
+        HasMoved = false;
+    }
+
+    /// <summary>
+    /// Store that this square is now carrying the player
     /// </summary>
     public override void OnPlayerLand()
     {
-        PlayerController.MoveToVector2(Links[0].Position);
+        carryingPlayer = true;
     }
 
     /// <summary>
@@ -62,20 +119,30 @@ public class MovingPlatformSquare : Square
     /// </summary>
     public override void OnLevelTurn()
     {
-
-        State += 1;
-        if (State % (Links.Count + 1) == 0)
+        if (State == 1 && !HasMoved)
         {
-            GetComponentInChildren<MeshRenderer>().material.color = Color.white;
-            IsPassable = true;
-            gameObject.SetActive(true);
-        }
-        else
-        {
-            IsPassable = false;
-            gameObject.SetActive(false);
+            if (Links[LinkState % Links.Count] is MovingPlatformSquare nextSquare)
+            {
+                // Activates the next linked moving platform square
+                nextSquare.State = 1;
+                nextSquare.HasMoved = true;
+
+                // Step this square's links
+                LinkState++;
+
+                // Moves the platform
+                Graphics.SlideTo(SquareManager.GridToWorldPos(nextSquare.Position), Graphics.SlideDuration);
+                State = 0;
+            }
         }
 
+        // Moves the player, if carrying
+        if (carryingPlayer)
+        {
+            PlayerController.MoveTo(Links[0].Position, AnimationController.MovementType.Slide, Graphics.SlideDuration);
+        }
+
+        carryingPlayer = false;
     }
 
     /// <summary>
@@ -83,16 +150,16 @@ public class MovingPlatformSquare : Square
     /// </summary>
     public override void OnLevelStart()
     {
-        if (State % (Links.Count + 1) == 0)
+        if (State == 1)
         {
-            GetComponentInChildren<MeshRenderer>().material.color = Color.white;
-            gameObject.SetActive(true);
-            IsPassable = true;
-        }
-        else
-        {
-            gameObject.SetActive(false);
-            IsPassable = false;
+            // Creates the platform graphics
+            Graphics = Instantiate(GraphicsPrefab, transform.position, transform.rotation).GetComponent<AnimationController>();
+
+            // Give the other linked squares a reference to these graphics
+            foreach (MovingPlatformSquare platform in AllLinks)
+            {
+                platform.Graphics = Graphics;
+            }
         }
     }
 }
