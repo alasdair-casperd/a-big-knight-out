@@ -76,21 +76,25 @@ public class SquareManager : MonoBehaviour
 
     void Update()
     {
+        // Handles player movement
         if (Input.GetMouseButtonDown(0) && isPlayerTurn)
         {
             Vector2Int mousePos = GetMouseGridPos();
             if (GetValidMoves().Contains(mousePos))
             {
                 // Moves the player
-                PlayerPos = mousePos;
+                player.MoveTo(mousePos, AnimationController.MovementType.Jump);
 
                 // Informs the squares that the player has moved
                 OnPlayerMove();
 
-                // Moves the player object
-                player.MoveTo(GridToWorldPos(mousePos));
+                // Handles player land once game-blocking animations have finished
+                ActionQueue.QueueAction(OnPlayerLand);
             }
         }
+
+        // Process the action queue
+        ActionQueue.Update();
     }
 
 
@@ -126,9 +130,8 @@ public class SquareManager : MonoBehaviour
     {
         squares[PlayerPos].OnPlayerLand();
 
-
-        // Once the horse has landed, initiate the level's turn.
-        OnLevelTurn();
+        // Once the horse has landed and game-blocking animations have finished, initiate the level's turn.
+        ActionQueue.QueueAction(OnLevelTurn);
     }
 
     /// <summary>
@@ -142,10 +145,8 @@ public class SquareManager : MonoBehaviour
             square.OnLevelTurn();
         }
 
-        // At some point this will be more clever and will wait for an animation etc,
-        // but for now it just starts the player's turn as soon as the tiles have been told it's
-        // their turn...
-        OnPlayerTurnStart();
+        // Triggers the start of the players turn once all game-blocking animations have finished
+        ActionQueue.QueueAction(OnPlayerTurnStart);
     }
 
 
@@ -164,7 +165,7 @@ public class SquareManager : MonoBehaviour
         GameObject currentSquareObject;
         Square currentSquare;
 
-        // Loops over all the tiles in the level object recieved
+        // Loops over all the tiles in the level object received
         foreach (TilePositionPair tilePosPair in level.tiles)
         {
             //Gets the prefab for the tile's type from the prefab manager
@@ -259,7 +260,7 @@ public class SquareManager : MonoBehaviour
     /// </summary>
     /// <param name="gridPos">The position in grid coordinates</param>
     /// <returns>The position in world coordinates</returns>
-    public Vector3 GridToWorldPos(Vector2Int gridPos)
+    public static Vector3 GridToWorldPos(Vector2Int gridPos)
     {
         // To do: do something more clever and flexible here
         return new Vector3(gridPos.x, 0, gridPos.y);
@@ -270,7 +271,7 @@ public class SquareManager : MonoBehaviour
     /// </summary>
     /// <param name="worldPos">The position in global world coordinates</param>
     /// <returns>The position in grid coordinates</returns>
-    public Vector2Int WorldToGridPos(Vector3 worldPos)
+    public static Vector2Int WorldToGridPos(Vector3 worldPos)
     {
         // To do: see GridToWorldPos()...
         return new Vector2Int(Mathf.RoundToInt(worldPos.x), Mathf.RoundToInt(worldPos.z));
@@ -338,7 +339,7 @@ public class SquareManager : MonoBehaviour
     {
         foreach (Vector2Int newValidMove in GetValidMoves())
         {
-            squares[newValidMove].gameObject.GetComponentInChildren<MeshRenderer>().material.color = Color.green;
+            // squares[newValidMove].gameObject.GetComponentInChildren<MeshRenderer>().material.color = Color.green;
         }
     }
 }
