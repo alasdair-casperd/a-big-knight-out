@@ -49,7 +49,21 @@ public class PortalSquare : Square
         // Attempt to move knight.
         PlayerController.MoveToVector2(Links[0].Position);
         //Tell the square manager the horse has moved.
+    }
 
+    /// <summary>
+    /// Sets up colours of the portal.
+    /// </summary>
+    public override void OnLevelTurn()
+    {
+        GetComponentInChildren<MeshRenderer>().material.color = Color.magenta;
+    }
 
+    /// <summary>
+    /// Sets up portal for the start.
+    /// </summary>
+    public override void OnLevelStart()
+    {
+        GetComponentInChildren<MeshRenderer>().material.color = Color.magenta;
     }
 }

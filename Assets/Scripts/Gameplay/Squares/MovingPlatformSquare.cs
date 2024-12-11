@@ -39,10 +39,7 @@ public class MovingPlatformSquare : Square
         {
             return true;
         }
-        protected set
-        {
-            Debug.LogWarning("Trying to change whether a floor square is passable!");
-        }
+        protected set { }
     }
 
     // Sets up the property for graphics variant
@@ -60,6 +57,7 @@ public class MovingPlatformSquare : Square
 
     /// <summary>
     /// On the level turn we want to move the player and reset the platform.
+    /// Also want to change if it is passable.
     /// </summary>
     public override void OnLevelTurn()
     {
@@ -68,10 +66,12 @@ public class MovingPlatformSquare : Square
         if (State % (Links.Count + 1) == 0)
         {
             GetComponentInChildren<MeshRenderer>().material.color = Color.white;
+            IsPassable = true;
             gameObject.SetActive(true);
         }
         else
         {
+            IsPassable = false;
             gameObject.SetActive(false);
         }
 
@@ -86,10 +86,12 @@ public class MovingPlatformSquare : Square
         {
             GetComponentInChildren<MeshRenderer>().material.color = Color.white;
             gameObject.SetActive(true);
+            IsPassable = true;
         }
         else
         {
             gameObject.SetActive(false);
+            IsPassable = false;
         }
     }
 }

@@ -11,8 +11,8 @@ public class FloorSquare : Square
         get { return TileType.Floor; }
     }
 
-    public override bool IsLinkable{ get {return false; }}
-    public override bool IsMultiState{ get {return false; } }
+    public override bool IsLinkable { get { return false; } }
+    public override bool IsMultiState { get { return false; } }
 
     // Will always report as passable, if you try to change that you get a warning.
     public override bool IsPassable
@@ -28,10 +28,26 @@ public class FloorSquare : Square
     }
 
     // Sets up the property for graphics variant
-    public override int GraphicsVariant{get; set;}
+    public override int GraphicsVariant { get; set; }
 
     public override void OnPlayerLand()
     {
-       Debug.Log("Clip Clop");
+        Debug.Log("Clip Clop");
+    }
+
+    /// <summary>
+    /// Resets colours of the tiles.
+    /// </summary>
+    public override void OnLevelTurn()
+    {
+        GetComponentInChildren<MeshRenderer>().material.color = Color.white;
+    }
+
+    /// <summary>
+    /// Makes em white at the start.
+    /// </summary>
+    public override void OnLevelStart()
+    {
+        GetComponentInChildren<MeshRenderer>().material.color = Color.white;
     }
 }

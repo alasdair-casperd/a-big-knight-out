@@ -4,6 +4,7 @@ using System;
 using Unity.VisualScripting;
 using UnityEngine;
 using System.Xml.Serialization;
+using UnityEngine.UIElements;
 
 /// <summary>
 /// A manager to handle the top level interaction with all of the levels squares.
@@ -317,22 +318,7 @@ public class SquareManager : MonoBehaviour
         {
             if (KnightMoves.Contains(position - PlayerPos) && squares[position].IsPassable)
             {
-                if (squares[position].IsMultiState == true)
-                {
-                    if (squares[position].Type == TileType.MovingPlatform)
-                    {
-                        if (squares[position].State % (squares[position].Links.Count + 1) == 0)
-                        {
-                            Debug.Log("here");
-                            moves.Add(position);
-                        }
-                    }
-                }
-                else
-                {
-
-                    moves.Add(position);
-                }
+                moves.Add(position);
             }
         }
 
@@ -345,17 +331,6 @@ public class SquareManager : MonoBehaviour
     /// </summary>
     public void HighlightValidTiles()
     {
-        foreach (Square square in squares.Values)
-        {
-            if (square.Type == TileType.Portal)
-            {
-                square.gameObject.GetComponentInChildren<MeshRenderer>().material.color = Color.magenta;
-            }
-            else if (square.Type != TileType.MovingPlatform)
-            {
-                square.gameObject.GetComponentInChildren<MeshRenderer>().material.color = Color.white;
-            }
-        }
         foreach (Vector2Int newValidMove in GetValidMoves())
         {
             squares[newValidMove].gameObject.GetComponentInChildren<MeshRenderer>().material.color = Color.green;
