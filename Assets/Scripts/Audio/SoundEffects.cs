@@ -11,4 +11,6 @@ public class SoundEffects: ScriptableObject {
     public SoundEffect tap;
     public SoundEffect portal;
     public SoundEffect fallingPlatform;
+    public SoundEffect metalSwoosh;
+    public SoundEffect ouch;
 }

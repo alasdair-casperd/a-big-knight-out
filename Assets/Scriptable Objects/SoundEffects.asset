@@ -57,12 +57,24 @@ MonoBehaviour:
   portal:
     audioClip: {fileID: 8300000, guid: c63b83fcd845c4bf8bb165790f0aee85, type: 3}
     pitch: 1
-    volume: 1
+    volume: 0.494
     volumeVariance: 0
     pitchVariance: 0
   fallingPlatform:
     audioClip: {fileID: 8300000, guid: d4d07738286234980a6f63c9e75e27b6, type: 3}
     pitch: 1.29
     volume: 0.145
+    volumeVariance: 0.1
+    pitchVariance: 0.1
+  metalSwoosh:
+    audioClip: {fileID: 8300000, guid: 9b137b74e45f34674b728e74cc3b781c, type: 3}
+    pitch: 1
+    volume: 0.094
+    volumeVariance: 0.19
+    pitchVariance: 0
+  ouch:
+    audioClip: {fileID: 8300000, guid: a5e80f87068bf402298ccfcfd3e4ca81, type: 3}
+    pitch: 1
+    volume: 1
     volumeVariance: 0.1
     pitchVariance: 0.1

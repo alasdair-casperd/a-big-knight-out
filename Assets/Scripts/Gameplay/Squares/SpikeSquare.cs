@@ -126,6 +126,9 @@ public class SpikeSquare : Square
                 // Apply visuals for this spike and the next
                 ApplyVisuals();
                 nextSquare.ApplyVisuals();
+
+                // Play a sound effect
+                AudioManager.Play(AudioManager.SoundEffects.metalSwoosh);
             }
         }
     }
@@ -143,7 +146,7 @@ public class SpikeSquare : Square
         if (State == 1)
         {
             Debug.Log("Player Dies");
-
+            AudioManager.Play(AudioManager.SoundEffects.ouch);
         }
         else
         {
