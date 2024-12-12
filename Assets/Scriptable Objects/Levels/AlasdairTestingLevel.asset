@@ -157,3 +157,21 @@ MonoBehaviour:
       links: []
       initialState: 0
       graphicsVariant: 0
+  - position: {x: 0, y: 4}
+    tile:
+      type: 6
+      links: []
+      initialState: 0
+      graphicsVariant: 0
+  - position: {x: 1, y: 4}
+    tile:
+      type: 6
+      links: []
+      initialState: 0
+      graphicsVariant: 0
+  - position: {x: 2, y: 4}
+    tile:
+      type: 6
+      links: []
+      initialState: 0
+      graphicsVariant: 0

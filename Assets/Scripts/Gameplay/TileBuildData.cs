@@ -25,5 +25,7 @@ public enum TileType
     Spikes,
     Portal,
     Spike,
-    MovingPlatform
+    MovingPlatform,
+
+    FallingFloor
 }
