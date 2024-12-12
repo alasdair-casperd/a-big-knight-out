@@ -8,4 +8,6 @@ public class SoundEffects: ScriptableObject {
     public SoundEffect success;
     public SoundEffect powerUp;
     public SoundEffect click;
+    public SoundEffect tap;
+    public SoundEffect portal;
 }

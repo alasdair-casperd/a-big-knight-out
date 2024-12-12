@@ -42,5 +42,8 @@ public class PortalSquare : Square
     {
         // Attempt to move knight.
         PlayerController.MoveTo(Links[0].Position, AnimationController.MovementType.Teleport);
+
+        // Plays portal sound effect
+        AudioManager.Play(AudioManager.SoundEffects.portal);
     }
 }

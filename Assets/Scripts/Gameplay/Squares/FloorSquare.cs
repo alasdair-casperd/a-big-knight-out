@@ -32,6 +32,6 @@ public class FloorSquare : Square
 
     public override void OnPlayerLand()
     {
-        return;
+        AudioManager.Play(AudioManager.SoundEffects.thud);
     }
 }

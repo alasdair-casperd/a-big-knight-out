@@ -12,7 +12,8 @@ public class AudioManager : MonoBehaviour
     /// <summary>
     /// A scriptable object all of the game's sound effects
     /// </summary>
-    public static SoundEffects SoundEffects {
+    public static SoundEffects SoundEffects
+    {
         get {
             CheckInitialisation();
             return current.soundEffects;
@@ -22,8 +23,10 @@ public class AudioManager : MonoBehaviour
     /// <summary>
     /// A scriptable object containing all of the game's background sounds
     /// </summary>
-    public static BackgroundSounds BackgroundSounds {
-        get {
+    public static BackgroundSounds BackgroundSounds
+    {
+        get
+        {
             CheckInitialisation();
             return current.backgroundSounds;
         }
@@ -64,7 +67,8 @@ public class AudioManager : MonoBehaviour
     public bool loopMusic = true;
 
     // Check that the current instance is set, and that it's audio sources have been created
-    private static void CheckInitialisation() {
+    private static void CheckInitialisation()
+    {
         if (current == null) current = FindAnyObjectByType<AudioManager>();
         if (current == null) Debug.LogError("An attempt to use the AudioManager was made, but no Audio Manager is present");
         if (current.soundEffectSources == null) current.InitialiseSoundEffectSources();
@@ -75,7 +79,8 @@ public class AudioManager : MonoBehaviour
     /// Play a sound effect. Sound effects should be used for short sounds which play only once.
     /// </summary>
     /// <param name="soundEffect">The sound effect to be played</param>
-    public static void Play(SoundEffect soundEffect) {
+    public static void Play(SoundEffect soundEffect)
+    {
         CheckInitialisation();
         current.Perform(soundEffect);
     }
@@ -84,7 +89,8 @@ public class AudioManager : MonoBehaviour
     /// Play a background sound. Background sounds should be used for longer sounds or sounds which loop indefinitely.
     /// </summary>
     /// <param name="backgroundSound">The background sound to be played.</param>
-    public static void Play(BackgroundSound backgroundSound) {
+    public static void Play(BackgroundSound backgroundSound)
+    {
         CheckInitialisation();
         current.Perform(backgroundSound);
     }
@@ -93,7 +99,8 @@ public class AudioManager : MonoBehaviour
     /// Use this function instead of Play(SoundEffect soundEffect) during development when the desired sound effect has yet to be implemented 
     /// </summary>
     /// <param name="description">A description of the sound effect</param>
-    public static void LogSoundEffect(string description) {
+    public static void LogSoundEffect(string description)
+    {
         Debug.LogWarning($"Sound effect '{description}' needs to be implemented.");
     }
 
@@ -101,12 +108,14 @@ public class AudioManager : MonoBehaviour
     /// Use this function instead of Play(BackgroundSound backgroundSound) during development when the desired background sound has yet to be implemented 
     /// </summary>
     /// <param name="description">A description of the backgroundSound</param>
-    public static void LogBackgroundSound(string description) {
+    public static void LogBackgroundSound(string description)
+    {
         Debug.LogWarning($"Background Sound '{description}' needs to be implemented.");
     }
 
     // Create the audio sources to be used for playing sound effects
-    private void InitialiseSoundEffectSources() {
+    private void InitialiseSoundEffectSources()
+    {
         soundEffectSources = new List<AudioSource>();
         for (int i = 0; i < maximumConcurrentSoundEffects; i++)
         {
@@ -115,7 +124,8 @@ public class AudioManager : MonoBehaviour
     }
 
     // Create the audio sources to be used for playing background sounds
-    private void InitialiseBackgroundSoundSources() {
+    private void InitialiseBackgroundSoundSources()
+    {
         backgroundSoundSources = new List<AudioSource>();
         for (int i = 0; i < maximumConcurrentBackgroundSounds; i++)
         {

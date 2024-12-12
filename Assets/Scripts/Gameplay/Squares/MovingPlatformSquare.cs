@@ -105,12 +105,13 @@ public class MovingPlatformSquare : Square
         HasMoved = false;
     }
 
-    /// <summary>
-    /// Store that this square is now carrying the player
-    /// </summary>
     public override void OnPlayerLand()
     {
+        // Log that this platform is now carrying the player
         carryingPlayer = true;
+
+        // Play a sound effect
+        AudioManager.Play(AudioManager.SoundEffects.thud);
     }
 
     /// <summary>
