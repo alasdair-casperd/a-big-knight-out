@@ -19,6 +19,36 @@ public class SpikeSquare : Square
         get; set;
     }
 
+
+    /// <summary>
+    /// Recursively finds all spike squares linked to this one.
+    /// </summary>
+    private List<SpikeSquare> AllLinks
+    {
+        get
+        {
+            var output = new List<SpikeSquare>();
+
+            void Check(SpikeSquare target)
+            {
+                foreach (var square in target.Links)
+                {
+                    if (square is SpikeSquare spikeSquare)
+                    {
+                        if (!output.Contains(spikeSquare))
+                        {
+                            output.Add(spikeSquare);
+                            Check(spikeSquare);
+                        }
+                    }
+                }
+            }
+
+            Check(this);
+            return output;
+        }
+    }
+
     /// <summary>
     /// Note this is multistate as this is multiplatforms pretending to be one.
     /// </summary>
@@ -32,7 +62,13 @@ public class SpikeSquare : Square
         get; set;
     }
 
-    // Will always report as passable, but if state is wrong will not let you land.
+    // Has the square just been spiky? 
+    public bool HasSpiked { get; set; }
+
+    // An integer used to track which of the square's links should be used next time the platform is at this square
+    private int LinkState { get; set; }
+
+    // Is always passable but spikes will kill you.
     public override bool IsPassable
     {
         get
@@ -46,19 +82,34 @@ public class SpikeSquare : Square
     public override int GraphicsVariant { get; set; }
 
     /// <summary>
+    /// Reset HasMoved to false
+    /// </summary>
+    public override void OnPlayerTurnStart()
+    {
+        HasSpiked = false;
+    }
+
+    /// <summary>
     /// Changes the state as the player moves.
     /// </summary>
     public override void OnPlayerMove()
     {
-        State += 1;
-        if (State % (Links.Count + 1) == 0)
+        if (State == 1 && !HasSpiked)
         {
-            GetComponentInChildren<MeshRenderer>().material.color = Color.red;
+            if (Links[LinkState % Links.Count] is SpikeSquare nextSquare)
+            {
+                // Activates the next spike square
+                nextSquare.State = 1;
+                nextSquare.HasSpiked = true;
+                nextSquare.GetComponentInChildren<MeshRenderer>().material.color = Color.red;
 
-        }
-        else
-        {
-            GetComponentInChildren<MeshRenderer>().material.color = Color.white;
+                // Step this square's links
+                LinkState++;
+
+                // Stops it being spiky
+                GetComponentInChildren<MeshRenderer>().material.color = Color.white;
+                State = 0;
+            }
         }
     }
 
@@ -68,7 +119,11 @@ public class SpikeSquare : Square
     /// </summary>
     public override void OnPlayerLand()
     {
-        if (State % (Links.Count + 1) == 0)
+        // Play a sound effect
+        AudioManager.Play(AudioManager.SoundEffects.thud);
+
+        // Check for death
+        if (State == 1)
         {
             Debug.Log("Player Dies");
 
@@ -85,14 +140,15 @@ public class SpikeSquare : Square
     /// </summary>
     public override void OnLevelStart()
     {
-        if (State % (Links.Count + 1) == 0)
+        if (State == 1)
         {
             GetComponentInChildren<MeshRenderer>().material.color = Color.red;
-
         }
         else
         {
             GetComponentInChildren<MeshRenderer>().material.color = Color.white;
         }
+
     }
+
 }

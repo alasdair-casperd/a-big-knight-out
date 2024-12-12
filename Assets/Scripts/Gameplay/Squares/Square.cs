@@ -86,7 +86,6 @@ public abstract class Square : MonoBehaviour
     /// <param name="isValid">Can the player move to this square?</param>
     public virtual void IndicateMoveValidity(bool isValid)
     {
-        Debug.Log(isValid);
         if (isValid) validMoveIndicator.Show();
         else validMoveIndicator.Hide();
     }
