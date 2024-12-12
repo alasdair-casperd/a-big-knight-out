@@ -132,7 +132,7 @@ public class MovingPlatformSquare : Square
                 LinkState++;
 
                 // Moves the platform
-                Graphics.SlideTo(SquareManager.GridToWorldPos(nextSquare.Position), Graphics.SlideDuration);
+                Graphics.SlideTo(GridUtilities.GridToWorldPos(nextSquare.Position), Graphics.SlideDuration);
                 State = 0;
             }
         }

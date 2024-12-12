@@ -27,7 +27,7 @@ public class PlayerController : MonoBehaviour
         SquareManager.PlayerPos = to;
 
         // Convert grid position to world position
-        Vector3 endPosition = SquareManager.GridToWorldPos(to);
+        Vector3 endPosition = GridUtilities.GridToWorldPos(to);
 
         // Animate the movement
         switch (movementType)
