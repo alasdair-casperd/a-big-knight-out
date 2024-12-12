@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// A component used to animate a gameobject
+/// </summary>
 public class AnimationController : MonoBehaviour
 {
     /// <summary>
@@ -33,9 +36,8 @@ public class AnimationController : MonoBehaviour
     }
 
     /// <summary>
-    /// Animates the player's movement to a given position with a jump
+    /// Animates movement to a given position with a jump
     /// </summary>
-    /// <param name="endPosition">The world position to move the player to</param>
     public void JumpTo(Vector3 endPosition, float duration, bool gameBlocking = true)
     {
         // Applies default duration
@@ -54,12 +56,12 @@ public class AnimationController : MonoBehaviour
         LeanTween.value(tweenTarget, 0, 1, duration)
         .setOnUpdate(t => 
         {
-            // Moves the player
+            // Translates
             Vector3 outputPosition = t * endPosition + (1 - t) * startPosition;
             outputPosition.y += JumpHeight * t * (1 - t) * 4;
             transform.position = outputPosition;
 
-            // Rotates the player about the y-axis towards the end position
+            // Rotates about the y-axis towards the end position
             Vector3 direction = endPosition - startPosition;
             direction.y = 0;
             Quaternion targetRotation = Quaternion.LookRotation(direction);
@@ -70,7 +72,6 @@ public class AnimationController : MonoBehaviour
     /// <summary>
     /// Animates teleportation via a portal to a given position
     /// </summary>
-    /// <param name="endPosition">The world position to teleport the player to</param>
     public void TeleportTo(Vector3 endPosition, float duration, bool gameBlocking = true)
     {
         // Applies default duration
@@ -106,8 +107,6 @@ public class AnimationController : MonoBehaviour
     /// <summary>
     /// Animates a simple linear slide to a given position
     /// </summary>
-    /// <param name="endPosition"></param>
-    /// <param name="duration"></param>
     public void SlideTo(Vector3 endPosition, float duration, bool gameBlocking = true)
     {
         // Applies default duration
