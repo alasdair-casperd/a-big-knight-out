@@ -48,7 +48,7 @@ MonoBehaviour:
   validMoveIndicator: {fileID: 0}
   Graphics: {fileID: 7777843209991641581}
   FallHeight: 3
-  FallDuration: 0.5
+  FallDuration: 0.25
 --- !u!1 &7777843209991641581
 GameObject:
   m_ObjectHideFlags: 0

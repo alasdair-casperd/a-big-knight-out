@@ -19,6 +19,23 @@ public class SpikeSquare : Square
         get; set;
     }
 
+    /// <summary>
+    /// The animator on the graphics gameObject representing the retracting spikes for this tile
+    /// </summary>
+    [SerializeField]
+    private AnimationController SpikeGraphics;
+
+    /// <summary>
+    /// A transform indicating the position the spikes should protrude to
+    /// </summary>
+    [SerializeField]
+    private Transform activePosition;
+
+    /// <summary>
+    /// A transform indicating the position the spikes should retract to
+    /// </summary>
+    [SerializeField]
+    private Transform retractedPosition;
 
     /// <summary>
     /// Recursively finds all spike squares linked to this one.
@@ -49,9 +66,7 @@ public class SpikeSquare : Square
         }
     }
 
-    /// <summary>
-    /// Note this is multistate as this is multiplatforms pretending to be one.
-    /// </summary>
+    // State is used to indicate whether or not spikes are raised
     public override bool IsMultiState { get { return true; } }
 
     /// <summary>
@@ -101,14 +116,16 @@ public class SpikeSquare : Square
                 // Activates the next spike square
                 nextSquare.State = 1;
                 nextSquare.HasSpiked = true;
-                nextSquare.GetComponentInChildren<MeshRenderer>().material.color = Color.red;
 
                 // Step this square's links
                 LinkState++;
 
                 // Stops it being spiky
-                GetComponentInChildren<MeshRenderer>().material.color = Color.white;
                 State = 0;
+
+                // Apply visuals for this spike and the next
+                ApplyVisuals();
+                nextSquare.ApplyVisuals();
             }
         }
     }
@@ -140,15 +157,16 @@ public class SpikeSquare : Square
     /// </summary>
     public override void OnLevelStart()
     {
-        if (State == 1)
-        {
-            GetComponentInChildren<MeshRenderer>().material.color = Color.red;
-        }
-        else
-        {
-            GetComponentInChildren<MeshRenderer>().material.color = Color.white;
-        }
-
+        SpikeGraphics.transform.position = retractedPosition.transform.position;
+        ApplyVisuals();
     }
 
+    /// <summary>
+    /// Apply the visual positioning of the spike graphics
+    /// </summary>
+    public void ApplyVisuals()
+    {
+        Transform targetTransform = State == 1 ? activePosition : retractedPosition;
+        SpikeGraphics.SlideTo(targetTransform.position, -1, false);
+    }
 }
