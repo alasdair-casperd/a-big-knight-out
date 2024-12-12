@@ -17,24 +17,14 @@ public class FallingFloorSquare : Square
     /// <summary>
     /// Can be either fallen or not.
     /// </summary>
-    public override bool IsMultiState { get { return true; } }
-
-    /// <summary>
-    /// The state of this square. 0 = landed on, 1 = ready to fall.
-    /// </summary>
-    public override int State
-    {
-        get; set;
-    }
-
-
+    public override bool IsMultiState { get { return false; } }
 
     // Is only passable before it is landed on.
     public override bool IsPassable
     {
         get
         {
-            return State == 0;
+            return !hasFallen;
         }
         protected set
         {
@@ -45,29 +35,42 @@ public class FallingFloorSquare : Square
     // Sets up the property for graphics variant
     public override int GraphicsVariant { get; set; }
 
+    private bool hasFallen;
+
+    [Header("Graphics")]
+    public GameObject Graphics;
+
+    public float FallHeight = 3;
+
+    public float FallDuration = 0.5f;
+
     /// <summary>
-    /// When the platform lands, the state is set to 1.
+    /// When the platform lands
     /// </summary>
     public override void OnPlayerLand()
     {
-        // Sets the state ready to fall when the player leaves.
-        State = 1;
-
         // Play a sound effect
         AudioManager.Play(AudioManager.SoundEffects.thud);
     }
 
 
     /// <summary>
-    /// On the player landing, the square will dissapear
-    /// and will no longer become passable.
+    /// On the player leave, the square will fall away and will no longer be passable.
     /// </summary>
-    public override void OnPlayerMove()
+    public override void OnPlayerLeave()
     {
-        if (State == 1)
-        {
-            gameObject.SetActive(false);
-        }
+        // Sets the state ready to fall when the player leaves.
+        hasFallen = true;
+
+        // Fall away
+        Vector3 initialPosition = transform.position;
+        Vector3 initialScale = transform.localScale;
+        LeanTween.value(Graphics, 0, 1, FallDuration)
+            .setOnUpdate(t => {
+                transform.position = initialPosition - Vector3.up * FallHeight * t;
+                transform.localScale = initialScale * (1 - t);
+            })
+            .setOnComplete(() => Destroy(Graphics));
     }
 
 }

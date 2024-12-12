@@ -85,6 +85,9 @@ public class SquareManager : MonoBehaviour
             Vector2Int mousePos = GetMouseGridPos();
             if (GetValidMoves().Contains(mousePos))
             {
+                // Perform actions related to leaving the current square
+                squares[PlayerPos].OnPlayerLeave();
+
                 // Moves the player
                 player.MoveTo(mousePos, AnimationController.MovementType.Jump);
 

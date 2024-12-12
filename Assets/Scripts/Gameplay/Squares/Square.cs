@@ -122,6 +122,14 @@ public abstract class Square : MonoBehaviour
     }
 
     /// <summary>
+    /// The actions to be performed immediately when the player leaves the tile
+    /// </summary>
+    public virtual void OnPlayerLeave()
+    {
+        return;
+    }
+
+    /// <summary>
     /// The actions to be performed at the start of the Level's turn
     /// </summary>
     public virtual void OnLevelTurn()
