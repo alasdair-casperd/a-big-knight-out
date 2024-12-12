@@ -62,7 +62,7 @@ public class SquareManager : MonoBehaviour
         
         // Build the level
         squares = new Dictionary<Vector2Int, Square>();
-        LevelBuilder.BuildLevel(level, (square) => {
+        LevelBuilder.BuildLevel(transform, level, (square) => {
             squares.Add(square.Position, square);
             square.PlayerController = player;
         });

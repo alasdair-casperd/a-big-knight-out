@@ -11,6 +11,15 @@ public struct TileBuildData
     public List<Vector2Int> links; // List of location of linked tiles
     public int initialState;      // For tiles with multiple initial states
     public int graphicsVariant;   // For tiles with multiple graphics variants}
+
+    // Minimal initialiser
+    public TileBuildData(TileType type)
+    {
+        this.type = type;
+        this.links = new();
+        this.initialState = 0;
+        this.graphicsVariant = 0;
+    }
 }
 
 
