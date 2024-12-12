@@ -38,7 +38,7 @@ namespace UI
 
         private void Update()
         {
-            if (currentTool != null)
+            if (currentTool != null && !Utilities.MouseOverUI)
             {
                 // Read mouse position
                 Vector2Int mousePosition = GridUtilities.GetMouseGridPos();
