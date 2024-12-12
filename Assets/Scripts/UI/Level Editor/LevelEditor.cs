@@ -22,12 +22,16 @@ namespace UI
         [SerializeField]
         private LevelEditorTool currentTool;
 
+        private LevelEditorTool[] allTools;
+
         private Vector2Int targetPosition;
 
         private bool hasDragged;
 
         private void Start()
         {
+            allTools = FindObjectsByType<LevelEditorTool>(FindObjectsSortMode.InstanceID);
+            currentTool.Select();
             level = startingLevel;
             LevelBuilder.BuildLevel(levelParent, level);
         }
@@ -65,6 +69,7 @@ namespace UI
         {
             if (currentTool != null && currentTool != tool)
             {
+                currentTool.Deselect();
                 currentTool.OnDeselect.Invoke();
             }
 

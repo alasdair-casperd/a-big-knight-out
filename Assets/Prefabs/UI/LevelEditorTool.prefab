@@ -150,6 +150,7 @@ GameObject:
   - component: {fileID: 758350244807413424}
   - component: {fileID: 7614771850705414598}
   - component: {fileID: 6435052482311701574}
+  - component: {fileID: 399974414805806928}
   m_Layer: 5
   m_Name: LevelEditorTool
   m_TagString: Untagged
@@ -284,6 +285,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelEditor: {fileID: 0}
+  selectionStyler: {fileID: 399974414805806928}
   OnSelect:
     m_PersistentCalls:
       m_Calls: []
@@ -325,3 +327,17 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &399974414805806928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5708334409164428262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 239ae0240168947cba2ac68efb3ec874, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  childrenIgnoringFontWeightStyling: []
+  childrenIgnoringColorStyling: []

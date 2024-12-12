@@ -8,9 +8,12 @@ namespace UI
     public class LevelEditorTool : MonoBehaviour
     {
 
-        [Header("Level Editor")]
+        [Header("References")]
         [SerializeField]
         private LevelEditor levelEditor;
+        
+        [SerializeField]
+        private SelectionStyler selectionStyler;
 
         [Header("Events")]
         public UnityEvent OnSelect = new();
@@ -22,6 +25,13 @@ namespace UI
         public void Select()
         {
             levelEditor.SelectTool(this);
+            selectionStyler.SetHighlight(true);
+        }
+
+        public void Deselect()
+        {
+            levelEditor.SelectTool(this);
+            selectionStyler.SetHighlight(false);
         }
     }
 
