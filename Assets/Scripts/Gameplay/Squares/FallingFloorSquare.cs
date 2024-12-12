@@ -71,6 +71,9 @@ public class FallingFloorSquare : Square
                 transform.localScale = initialScale * (1 - t);
             })
             .setOnComplete(() => Destroy(Graphics));
+
+        // Play a sound effect
+        AudioManager.Play(AudioManager.SoundEffects.fallingPlatform);
     }
 
 }
