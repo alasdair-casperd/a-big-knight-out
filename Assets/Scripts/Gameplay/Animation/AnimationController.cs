@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// A component used to animate a gameobject
+/// A component used to animate a gameObject
 /// </summary>
 public class AnimationController : MonoBehaviour
 {

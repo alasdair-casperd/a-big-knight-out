@@ -74,6 +74,23 @@ public abstract class Square : MonoBehaviour
     /// </summary>
     public PlayerController PlayerController { get; set; }
 
+    /// <summary>
+    /// Am attached indicator used to show where the player can move
+    /// </summary>
+    [HideInInspector]
+    public ValidMoveIndicator validMoveIndicator;
+
+    /// <summary>
+    /// Show whether or not this square constitutes a valid move for the player
+    /// </summary>
+    /// <param name="isValid">Can the player move to this square?</param>
+    public virtual void IndicateMoveValidity(bool isValid)
+    {
+        Debug.Log(isValid);
+        if (isValid) validMoveIndicator.Show();
+        else validMoveIndicator.Hide();
+    }
+
     /*
 
     The following functions may or may not be implemented by a given square. They occur
@@ -120,7 +137,4 @@ public abstract class Square : MonoBehaviour
     {
         return;
     }
-
-
-
 }

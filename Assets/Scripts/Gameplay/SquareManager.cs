@@ -22,7 +22,12 @@ public class SquareManager : MonoBehaviour
     public Level level;
 
     /// <summary>
-    /// Tells the square manager how to convert the level's data into gameobjects
+    /// The scriptable object containing most of the game's prefabs
+    /// </summary>
+    public Prefabs prefabs;
+
+    /// <summary>
+    /// Tells the square manager how to convert the level's data into gameObjects
     /// </summary>
     public TilePrefabManager tilePrefabManager;
 
@@ -56,8 +61,6 @@ public class SquareManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        isPlayerTurn = true;
-
         squares = new Dictionary<Vector2Int, Square>();
 
         PlayerPos = level.startPos;
@@ -71,7 +74,7 @@ public class SquareManager : MonoBehaviour
             square.OnLevelStart();
         }
 
-        HighlightValidTiles();
+        OnPlayerTurnStart();
     }
 
     void Update()
@@ -104,11 +107,14 @@ public class SquareManager : MonoBehaviour
     void OnPlayerTurnStart()
     {
         isPlayerTurn = true;
-        HighlightValidTiles();
+
         foreach (Square square in squares.Values)
         {
             square.OnPlayerTurnStart();
         }
+
+        // Add square highlights to valid moves
+        HighlightSquares(GetValidMoves());
     }
 
     /// <summary>
@@ -116,6 +122,9 @@ public class SquareManager : MonoBehaviour
     /// </summary>
     void OnPlayerMove()
     {
+        // Remove all square highlights
+        HighlightSquares(new());
+
         isPlayerTurn = false;
         foreach (Square square in squares.Values)
         {
@@ -185,9 +194,13 @@ public class SquareManager : MonoBehaviour
             // Gets the square component from the prefab and adds it to the list of all squares
             currentSquare = currentSquareObject.GetComponent<Square>();
             
-            //Adds player controller script to the square.
+            // Sets properties of the square
             currentSquare.PlayerController = player;
             currentSquare.Position = tilePosPair.position;
+            currentSquare.validMoveIndicator = Instantiate(prefabs.validMoveIndicator, currentSquareObject.transform);
+            currentSquare.validMoveIndicator.gameObject.SetActive(false);
+
+            // Adds the square to the squares array
             squares.Add(pos, currentSquare);
 
             // Sets up the square's initial state
@@ -332,14 +345,15 @@ public class SquareManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Makes the valid tiles highlighted.
-    /// I don't imagine this function will look anything like this in the final product.
+    /// Highlight squares at a given set of Vector2Int coordinates
     /// </summary>
-    public void HighlightValidTiles()
+    /// <param name="coordinatesToHighlight">The set of coordinates to highlight</param>
+    public void HighlightSquares(List<Vector2Int> coordinatesToHighlight)
     {
-        foreach (Vector2Int newValidMove in GetValidMoves())
+
+        foreach (var (coordinate, square) in squares)
         {
-            // squares[newValidMove].gameObject.GetComponentInChildren<MeshRenderer>().material.color = Color.green;
+            square.IndicateMoveValidity(coordinatesToHighlight.Contains(coordinate));
         }
     }
 }

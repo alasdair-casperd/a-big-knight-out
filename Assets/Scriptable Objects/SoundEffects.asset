@@ -20,10 +20,10 @@ MonoBehaviour:
     pitchVariance: 0.1
   thud:
     audioClip: {fileID: 8300000, guid: ffe2c10c3e21d4918b63d43e884d4750, type: 3}
-    pitch: 1.86
-    volume: 0.378
+    pitch: 2.08
+    volume: 0.249
     volumeVariance: 0.1
-    pitchVariance: 0.1
+    pitchVariance: 0.264
   woodenSmash:
     audioClip: {fileID: 8300000, guid: 2c459d888c8d54b18b83d8a61f530214, type: 3}
     pitch: 1
@@ -44,6 +44,18 @@ MonoBehaviour:
     pitchVariance: 0
   click:
     audioClip: {fileID: 8300000, guid: c968eb9fd5ea343d9a92ca048cdfbb8f, type: 3}
+    pitch: 1
+    volume: 1
+    volumeVariance: 0
+    pitchVariance: 0
+  tap:
+    audioClip: {fileID: 8300000, guid: 4174b81a3ee0b4b2a9109de98bde4e86, type: 3}
+    pitch: 1.07
+    volume: 0.577
+    volumeVariance: 0.249
+    pitchVariance: 0.438
+  portal:
+    audioClip: {fileID: 8300000, guid: c63b83fcd845c4bf8bb165790f0aee85, type: 3}
     pitch: 1
     volume: 1
     volumeVariance: 0
