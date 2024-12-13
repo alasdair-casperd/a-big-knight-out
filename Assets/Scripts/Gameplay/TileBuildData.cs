@@ -36,18 +36,3 @@ public struct TileBuildData
         return output;
     }
 }
-
-
-
-/// <summary>
-/// A label to identify the type of tile
-/// </summary>
-public enum TileType
-{
-    Floor,
-    Wall,
-    Portal,
-    Spike,
-    MovingPlatform,
-    FallingFloor
-}

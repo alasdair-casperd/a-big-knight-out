@@ -9,7 +9,7 @@ public class SpikeSquare : Square
 {
     public override TileType Type
     {
-        get { return TileType.Spike; }
+        get { return TileType.Spikes; }
     }
 
     public override bool IsLinkable { get { return true; } }

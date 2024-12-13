@@ -306,7 +306,7 @@ namespace UI
 
         public void AddSpikes()
         {
-            AddTile(TileType.Spike, targetPosition);
+            AddTile(TileType.Spikes, targetPosition);
         }
 
         public void AddFallingFloor()

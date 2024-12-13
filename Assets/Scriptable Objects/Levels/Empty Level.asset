@@ -1,0 +1,266 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4abb1e6188e04b469f45d459b562b35, type: 3}
+  m_Name: Empty Level
+  m_EditorClassIdentifier: 
+  startPos: {x: 3, y: 2}
+  tiles:
+  - position: {x: 3, y: 7}
+    tile:
+      type: 5
+      links: []
+      initialState: 0
+      graphicsVariant: 0
+  - position: {x: -1, y: 11}
+    tile:
+      type: 5
+      links: []
+      initialState: 0
+      graphicsVariant: 0
+  - position: {x: 3, y: 1}
+    tile:
+      type: 5
+      links: []
+      initialState: 0
+      graphicsVariant: 0
+  - position: {x: 5, y: 1}
+    tile:
+      type: 5
+      links: []
+      initialState: 0
+      graphicsVariant: 0
+  - position: {x: 0, y: 8}
+    tile:
+      type: 3
+      links:
+      - {x: 1, y: 8}
+      initialState: 0
+      graphicsVariant: 0
+  - position: {x: 6, y: 1}
+    tile:
+      type: 5
+      links: []
+      initialState: 0
+      graphicsVariant: 0
+  - position: {x: -1, y: 10}
+    tile:
+      type: 5
+      links: []
+      initialState: 0
+      graphicsVariant: 0
+  - position: {x: 2, y: 8}
+    tile:
+      type: 3
+      links:
+      - {x: 1, y: 8}
+      initialState: 0
+      graphicsVariant: 0
+  - position: {x: 1, y: 8}
+    tile:
+      type: 3
+      links:
+      - {x: 2, y: 8}
+      - {x: 0, y: 8}
+      initialState: 1
+      graphicsVariant: 0
+  - position: {x: 3, y: 10}
+    tile:
+      type: 5
+      links: []
+      initialState: 0
+      graphicsVariant: 0
+  - position: {x: 1, y: 11}
+    tile:
+      type: 5
+      links: []
+      initialState: 0
+      graphicsVariant: 0
+  - position: {x: 0, y: 11}
+    tile:
+      type: 5
+      links: []
+      initialState: 0
+      graphicsVariant: 0
+  - position: {x: 2, y: 11}
+    tile:
+      type: 5
+      links: []
+      initialState: 0
+      graphicsVariant: 0
+  - position: {x: 2, y: 10}
+    tile:
+      type: 5
+      links: []
+      initialState: 0
+      graphicsVariant: 0
+  - position: {x: 3, y: 6}
+    tile:
+      type: 5
+      links: []
+      initialState: 0
+      graphicsVariant: 0
+  - position: {x: 0, y: 10}
+    tile:
+      type: 5
+      links: []
+      initialState: 0
+      graphicsVariant: 0
+  - position: {x: 4, y: 4}
+    tile:
+      type: 5
+      links: []
+      initialState: 0
+      graphicsVariant: 0
+  - position: {x: 4, y: 6}
+    tile:
+      type: 5
+      links: []
+      initialState: 0
+      graphicsVariant: 0
+  - position: {x: 6, y: 2}
+    tile:
+      type: 5
+      links: []
+      initialState: 0
+      graphicsVariant: 0
+  - position: {x: 5, y: 2}
+    tile:
+      type: 5
+      links: []
+      initialState: 0
+      graphicsVariant: 0
+  - position: {x: 4, y: 5}
+    tile:
+      type: 5
+      links: []
+      initialState: 0
+      graphicsVariant: 0
+  - position: {x: 3, y: 4}
+    tile:
+      type: 5
+      links: []
+      initialState: 0
+      graphicsVariant: 0
+  - position: {x: 6, y: 4}
+    tile:
+      type: 5
+      links: []
+      initialState: 0
+      graphicsVariant: 0
+  - position: {x: 3, y: 5}
+    tile:
+      type: 5
+      links: []
+      initialState: 0
+      graphicsVariant: 0
+  - position: {x: 4, y: 2}
+    tile:
+      type: 5
+      links: []
+      initialState: 0
+      graphicsVariant: 0
+  - position: {x: 3, y: 2}
+    tile:
+      type: 5
+      links: []
+      initialState: 0
+      graphicsVariant: 0
+  - position: {x: 3, y: 3}
+    tile:
+      type: 5
+      links: []
+      initialState: 0
+      graphicsVariant: 0
+  - position: {x: 6, y: 3}
+    tile:
+      type: 5
+      links: []
+      initialState: 0
+      graphicsVariant: 0
+  - position: {x: 4, y: 1}
+    tile:
+      type: 5
+      links: []
+      initialState: 0
+      graphicsVariant: 0
+  - position: {x: 5, y: 4}
+    tile:
+      type: 5
+      links: []
+      initialState: 0
+      graphicsVariant: 0
+  - position: {x: 4, y: 3}
+    tile:
+      type: 5
+      links: []
+      initialState: 0
+      graphicsVariant: 0
+  - position: {x: 5, y: 3}
+    tile:
+      type: 5
+      links: []
+      initialState: 0
+      graphicsVariant: 0
+  - position: {x: -2, y: 11}
+    tile:
+      type: 5
+      links: []
+      initialState: 0
+      graphicsVariant: 0
+  - position: {x: -2, y: 10}
+    tile:
+      type: 5
+      links: []
+      initialState: 0
+      graphicsVariant: 0
+  - position: {x: -2, y: 12}
+    tile:
+      type: 5
+      links: []
+      initialState: 0
+      graphicsVariant: 0
+  - position: {x: -1, y: 12}
+    tile:
+      type: 5
+      links: []
+      initialState: 0
+      graphicsVariant: 0
+  - position: {x: 0, y: 12}
+    tile:
+      type: 5
+      links: []
+      initialState: 0
+      graphicsVariant: 0
+  - position: {x: 0, y: 13}
+    tile:
+      type: 5
+      links: []
+      initialState: 0
+      graphicsVariant: 0
+  - position: {x: -1, y: 13}
+    tile:
+      type: 5
+      links: []
+      initialState: 0
+      graphicsVariant: 0
+  - position: {x: -2, y: 13}
+    tile:
+      type: 5
+      links: []
+      initialState: 0
+      graphicsVariant: 0
+  - position: {x: -2, y: 7}
+    tile:
+      type: 0
+      links: []
+      initialState: 0
+      graphicsVariant: 0
