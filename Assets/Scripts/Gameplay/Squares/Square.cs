@@ -78,7 +78,7 @@ public abstract class Square : MonoBehaviour
     /// Am attached indicator used to show where the player can move
     /// </summary>
     [HideInInspector]
-    public ValidMoveIndicator validMoveIndicator;
+    public UI.ValidMoveIndicator validMoveIndicator;
 
     /// <summary>
     /// Show whether or not this square constitutes a valid move for the player

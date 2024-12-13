@@ -20,7 +20,10 @@ namespace UI
         public UnityEvent OnDeselect = new();
         public UnityEvent OnSquareClick = new();
         public UnityEvent OnSquareMouseDown = new();
+        public UnityEvent OnSquareMouseUp = new();
         public UnityEvent OnSquareDrag = new();
+        public UnityEvent OnSquareMouseHeld = new();
+        public UnityEvent OnLinkMouseDown = new();
 
         public void Select()
         {

@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: Prefabs
   m_EditorClassIdentifier: 
   validMoveIndicator: {fileID: 557810200261857606, guid: 8231d56530f6f48e7a6a3453a231d20f, type: 3}
+  linkIndicator: {fileID: 7501199027688756106, guid: 378b97c742e264ec3bd80877c2bde740, type: 3}

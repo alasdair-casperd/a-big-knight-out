@@ -12,5 +12,6 @@ public class Prefabs: ScriptableObject {
     // Add gameplay prefabs here
 
     [Header("UI")]
-    public ValidMoveIndicator validMoveIndicator;
+    public UI.ValidMoveIndicator validMoveIndicator;
+    public UI.LinkIndicator linkIndicator;
 }

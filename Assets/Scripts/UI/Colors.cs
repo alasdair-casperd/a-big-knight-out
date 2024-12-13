@@ -1,8 +1,12 @@
 
 using UnityEngine;
 
-public static class Colors
+namespace UI
 {
-    public static Color32 selectedText = Color.black;
-    public static Color32 selectedPanel = Color.white;
+    public static class Colors
+    {
+        // Selection
+        public static Color32 selectedText = Color.black;
+        public static Color32 selectedPanel = Color.white;
+    }
 }
