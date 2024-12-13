@@ -36,7 +36,7 @@ public class WorkingLevel
 
         foreach (var tilePositionPair in level.tiles)
         {
-            tiles.Add(tilePositionPair.position, tilePositionPair.tile);
+            tiles.Add(tilePositionPair.position, tilePositionPair.tile.DeepCopy());
         }
     }
 }

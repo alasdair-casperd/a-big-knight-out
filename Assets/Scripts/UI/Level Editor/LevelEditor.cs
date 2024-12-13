@@ -327,5 +327,10 @@ namespace UI
 
             GenerateLinks();
         }
+
+        public void SaveLevel()
+        {
+            workingLevel.ExportTo(startingLevel);
+        }
     }
 }
