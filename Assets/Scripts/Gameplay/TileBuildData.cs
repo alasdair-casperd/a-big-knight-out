@@ -8,6 +8,7 @@ using UnityEngine;
 [System.Serializable]
 public struct TileBuildData
 {
+    [SerializeField]
     public TileType type;
     public List<Vector2Int> links; // List of location of linked tiles
     public int initialState;      // For tiles with multiple initial states

@@ -1,7 +1,10 @@
 
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEngine;
 
+
+[System.Serializable]
 public struct TileType
 {
     /*
@@ -36,10 +39,6 @@ public struct TileType
         ValidLinkTargets = validLinkTargets;
     }  
 
-    /*
-        All of the game's TileTypes
-    */
-
     public static TileType Floor = new
     (
         id: 0,
@@ -55,6 +54,7 @@ public struct TileType
         validStates: new(),
         validLinkTargets: new()
     );
+
 
     public static TileType FallingFloor = new
     (
@@ -87,6 +87,12 @@ public struct TileType
         validStates: new() { 0, 1 },
         validLinkTargets: new() { Spikes }
     );
+    
+    /*
+        All of the game's TileTypes
+    */
+    public static TileType[] All = {Floor, Wall, FallingFloor, Portal, MovingPlatform, Spikes};
+
 
     /*
         Operator Overloads
