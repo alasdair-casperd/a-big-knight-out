@@ -54,7 +54,7 @@ namespace UI
         private List<LinkIndicator> linkIndicators = new();
 
         private List<StateIndicator> stateIndicators = new();
-    
+
         private void Start()
         {
             allTools = FindObjectsByType<LevelEditorTool>(FindObjectsSortMode.InstanceID);
@@ -140,7 +140,7 @@ namespace UI
 
         private void MouseHeld(Vector2Int mousePosition)
         {
-            targetWorldPosition = GridUtilities.GetMouseWorldPos();
+            targetWorldPosition = MouseUtilities.GetMouseWorldPos();
             targetWorldPosition.y = 0;
             currentTool.OnSquareMouseHeld.Invoke();
         }
