@@ -41,6 +41,8 @@ namespace UI
 
         private GameObject stateContainer;
 
+        private GameObject levelStartIndicator;
+
         private bool ShowingLinks
         {
             set{ if (linksContainer != null) linksContainer.SetActive(value); }
@@ -65,6 +67,9 @@ namespace UI
             
             workingLevel = new WorkingLevel(startingLevel);
             LastEditedLevel = startingLevel;
+
+            levelStartIndicator = Instantiate(prefabs.levelStartIndicator);
+            PositionStartIndicator();
 
             LevelBuilder.BuildLevel(levelParent, workingLevel);
             GenerateLinkIndicators();
@@ -276,6 +281,11 @@ namespace UI
             GenerateStateIndicators();
         }
 
+        private void PositionStartIndicator()
+        {
+            levelStartIndicator.transform.position = GridUtilities.GridToWorldPos(workingLevel.startPos);
+        }
+
         /*
             Methods to be used as UnityEvents, assigned to LevelEditorTools via the inspector
             These methods make use of the field 'targetPosition'
@@ -390,7 +400,7 @@ namespace UI
         // ===========
 
         public void EnterStateEditingMode()
-        {
+        {            
             ShowingState = true;
         }
 
@@ -407,6 +417,19 @@ namespace UI
         public void DecrementState()
         {
             AddToState(targetPosition, -1);
+        }
+
+        // ===========
+        // Level Start
+        // ===========
+
+        public void SetLevelStart()
+        {
+            if (workingLevel.tiles.ContainsKey(targetPosition))
+            {
+                workingLevel.startPos = targetPosition;
+                PositionStartIndicator();
+            }
         }
 
         // =======
