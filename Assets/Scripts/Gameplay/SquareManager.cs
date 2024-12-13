@@ -56,6 +56,14 @@ public class SquareManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        // Override the selected level if transitioning directly from the level editor
+        // This should be removed when we add proper level management
+        var receivedLevel = UI.LevelEditor.LastEditedLevel;
+        if (receivedLevel != null)
+        {
+            level = receivedLevel;
+        }
+
         // Position the player
         PlayerPos = level.startPos;
         player.transform.position = GridUtilities.GridToWorldPos(PlayerPos);

@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Unity.VisualScripting;
+using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace UI
 {
@@ -12,6 +14,8 @@ namespace UI
         public LevelBuilder LevelBuilder;
 
         public Level startingLevel;
+
+        public static Level LastEditedLevel;
 
         public Transform levelParent;
 
@@ -60,6 +64,8 @@ namespace UI
             allTools = FindObjectsByType<LevelEditorTool>(FindObjectsSortMode.InstanceID);
             
             workingLevel = new WorkingLevel(startingLevel);
+            LastEditedLevel = startingLevel;
+
             LevelBuilder.BuildLevel(levelParent, workingLevel);
             GenerateLinkIndicators();
             GenerateStateIndicators();
@@ -403,13 +409,21 @@ namespace UI
             AddToState(targetPosition, -1);
         }
 
-        // ===========
-        // Load & Save
-        // ===========
+        // =======
+        // Actions
+        // =======
 
         public void SaveLevel()
         {
             workingLevel.ExportTo(startingLevel);
+        }
+
+        public void SafeAndPreviewLevel()
+        {
+            workingLevel.ExportTo(startingLevel);
+            LastEditedLevel = startingLevel;
+            
+            SceneManager.LoadScene("LevelPlayer");
         }
     }
 }
