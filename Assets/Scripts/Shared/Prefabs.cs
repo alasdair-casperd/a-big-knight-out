@@ -6,7 +6,8 @@ using UnityEngine;
 /// Note that square prefabs are stored on the TilePrefabManager instead
 /// </summary>
 [CreateAssetMenu(fileName = "Prefabs", menuName = "Scriptable Objects/Prefabs")]
-public class Prefabs: ScriptableObject {
+public class Prefabs: ScriptableObject
+{
 
     [Header("Gameplay")]
     // Add gameplay prefabs here

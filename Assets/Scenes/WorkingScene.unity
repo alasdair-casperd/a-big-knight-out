@@ -142,6 +142,7 @@ GameObject:
   - component: {fileID: 1486785047}
   - component: {fileID: 1486785046}
   - component: {fileID: 1486785049}
+  - component: {fileID: 1486785050}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -166,8 +167,8 @@ Camera:
   m_GameObject: {fileID: 1486785045}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -191,7 +192,7 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 0
+  orthographic: 1
   orthographic size: 5
   m_Depth: -1
   m_CullingMask:
@@ -217,7 +218,7 @@ Transform:
   m_GameObject: {fileID: 1486785045}
   serializedVersion: 2
   m_LocalRotation: {x: 0.4580629, y: -0, z: -0, w: 0.8889198}
-  m_LocalPosition: {x: 0, y: 12.25, z: -5.22}
+  m_LocalPosition: {x: 1.78, y: 12.83, z: -4.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -267,6 +268,20 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+--- !u!114 &1486785050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1486785045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8f82194cc646407391eca768bf238ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  useRightClick: 1
+  useMiddleClick: 1
 --- !u!1 &1618147288
 GameObject:
   m_ObjectHideFlags: 0
@@ -517,7 +532,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1237285558}
-  level: {fileID: 11400000, guid: 524751cf145494f6d8618b423aa2a2b0, type: 2}
+  level: {fileID: 11400000, guid: 5e90dff49f38a49f88c7d0f522446ff6, type: 2}
   LevelBuilder: {fileID: 2071151748}
   PlayerPos: {x: 0, y: 0}
 --- !u!4 &2071151747
