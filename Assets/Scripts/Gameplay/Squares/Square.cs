@@ -86,7 +86,6 @@ public abstract class Square : MonoBehaviour
     /// <param name="isValid">Can the player move to this square?</param>
     public virtual void IndicateMoveValidity(bool isValid)
     {
-        Debug.Log(isValid);
         if (isValid) validMoveIndicator.Show();
         else validMoveIndicator.Hide();
     }
@@ -118,6 +117,14 @@ public abstract class Square : MonoBehaviour
     /// The actions to be performed immediately when the player lands on this tile
     /// </summary>
     public virtual void OnPlayerLand()
+    {
+        return;
+    }
+
+    /// <summary>
+    /// The actions to be performed immediately when the player leaves the tile
+    /// </summary>
+    public virtual void OnPlayerLeave()
     {
         return;
     }

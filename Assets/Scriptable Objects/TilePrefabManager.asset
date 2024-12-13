@@ -15,9 +15,11 @@ MonoBehaviour:
   tilePrefabPairs:
   - tileType: 0
     prefab: {fileID: 5962543618662339616, guid: 981ff06b6d326e9448db2fe94e9d88e5, type: 3}
-  - tileType: 3
+  - tileType: 2
     prefab: {fileID: 5962543618662339616, guid: 25fd5e3b917a3694c8e7287ebe755be6, type: 3}
-  - tileType: 5
-    prefab: {fileID: 5962543618662339616, guid: 1578a47705dce91439b0a3b7d4fe3888, type: 3}
   - tileType: 4
+    prefab: {fileID: 5962543618662339616, guid: 1578a47705dce91439b0a3b7d4fe3888, type: 3}
+  - tileType: 3
     prefab: {fileID: 8055438432759459766, guid: c632e671712281d479b7b7fdcecd6a05, type: 3}
+  - tileType: 5
+    prefab: {fileID: 6314217338749998487, guid: 07aa9ed3596c17b439614059f20e26da, type: 3}
