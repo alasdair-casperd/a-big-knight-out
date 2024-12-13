@@ -35,9 +35,16 @@ namespace UI
 
         private GameObject linksContainer;
 
+        private GameObject stateContainer;
+
         private bool ShowingLinks
         {
             set{ if (linksContainer != null) linksContainer.SetActive(value); }
+        }
+
+        private bool ShowingState
+        {
+            set{ if (stateContainer != null) stateContainer.SetActive(value); }
         }
 
         private Vector2Int? linkStart;
@@ -45,6 +52,8 @@ namespace UI
         private LinkIndicator linkPreview;
 
         private List<LinkIndicator> linkIndicators = new();
+
+        private List<StateIndicator> stateIndicators = new();
     
         private void Start()
         {
@@ -52,9 +61,11 @@ namespace UI
             
             workingLevel = new WorkingLevel(startingLevel);
             LevelBuilder.BuildLevel(levelParent, workingLevel);
-            GenerateLinks();
+            GenerateLinkIndicators();
+            GenerateStateIndicators();
 
             ShowingLinks = false;
+            ShowingState = false;
             currentTool.Select();
         }
 
@@ -155,10 +166,11 @@ namespace UI
         private void RegenerateLevel()
         {
             LevelBuilder.BuildLevel(levelParent, workingLevel, null, 0.5f);
-            GenerateLinks();
+            GenerateLinkIndicators();
+            GenerateStateIndicators();
         }
 
-        private void GenerateLinks()
+        private void GenerateLinkIndicators()
         {            
             if (linksContainer == null)
             {
@@ -182,6 +194,31 @@ namespace UI
                     linkIndicator.InitialiseAsInteractiveLink(position, link);
                     linkIndicators.Add(linkIndicator);
                 }
+            }
+        }
+
+        private void GenerateStateIndicators()
+        {            
+            if (stateContainer == null)
+            {
+                stateContainer = new GameObject("State Indicators");
+                stateContainer.transform.parent = transform;
+            }
+
+            foreach (var stateIndicator in stateIndicators)
+            {
+                Destroy(stateIndicator.gameObject);
+            }
+
+            stateIndicators = new();
+
+            foreach (var (position, tile) in workingLevel.tiles)
+            {
+                var stateIndicator = Instantiate(prefabs.stateIndicator);
+                stateIndicator.transform.parent = stateContainer.transform;
+                stateIndicator.transform.position = GridUtilities.GridToWorldPos(position);
+                stateIndicator.Number = tile.initialState;
+                stateIndicators.Add(stateIndicator);
             }
         }
 
@@ -219,6 +256,18 @@ namespace UI
             {
                 tile.links?.RemoveAll(link => link == position);
             }
+        }
+
+        private void AddToState(Vector2Int position, int amount)
+        {
+            if (workingLevel.tiles.ContainsKey(position))
+            {
+                var targetTile = workingLevel.tiles[position];
+                targetTile.initialState += amount;
+                workingLevel.tiles[position] = targetTile;
+            }
+
+            GenerateStateIndicators();
         }
 
         /*
@@ -263,9 +312,9 @@ namespace UI
             AddTile(TileType.MovingPlatform, targetPosition);
         }
 
-        // =========
-        // Link Tool
-        // =========
+        // ==========
+        // Link Tools
+        // ==========
 
         public void EnterLinkEditingMode()
         {
@@ -310,7 +359,7 @@ namespace UI
                 if (targetPosition != startPosition && workingLevel.tiles.ContainsKey(targetPosition))
                 {
                     workingLevel.tiles[startPosition].links.Add(targetPosition);
-                    GenerateLinks();
+                    GenerateLinkIndicators();
                 }
             }
         }
@@ -325,8 +374,36 @@ namespace UI
                 }
             }
 
-            GenerateLinks();
+            GenerateLinkIndicators();
         }
+
+        // ===========
+        // State Tools
+        // ===========
+
+        public void EnterStateEditingMode()
+        {
+            ShowingState = true;
+        }
+
+        public void ExitStateEditingMode()
+        {
+            ShowingState = false;
+        }
+
+        public void IncrementState()
+        {
+            AddToState(targetPosition, 1);
+        }
+
+        public void DecrementState()
+        {
+            AddToState(targetPosition, -1);
+        }
+
+        // ===========
+        // Load & Save
+        // ===========
 
         public void SaveLevel()
         {

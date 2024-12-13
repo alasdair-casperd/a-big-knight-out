@@ -272,8 +272,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3159864457279949612}
+  - component: {fileID: 980959703344920209}
   m_Layer: 0
-  m_Name: Link Indicator
+  m_Name: State Indicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -295,3 +296,16 @@ Transform:
   - {fileID: 5729072135382361046}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &980959703344920209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7988565180567869324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0dc29c54784e54ba5b5e26077eeeab37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  indicatorText: {fileID: 5127710332173675841}

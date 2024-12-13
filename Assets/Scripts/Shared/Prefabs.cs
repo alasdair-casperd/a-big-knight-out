@@ -14,4 +14,5 @@ public class Prefabs: ScriptableObject {
     [Header("UI")]
     public UI.ValidMoveIndicator validMoveIndicator;
     public UI.LinkIndicator linkIndicator;
+    public UI.StateIndicator stateIndicator;
 }
