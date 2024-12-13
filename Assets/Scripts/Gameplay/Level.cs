@@ -31,6 +31,33 @@ public class Level : ScriptableObject
             {
                 throw new Exception("Multiple tiles found at position "+ tilePosPair.position.ToString());
             }
+
+            // TODO: Reinstate validation below, previously in LevelBuilder
+
+            // Loops over all of the tiles
+            // foreach (var (position, tile) in workingLevel.tiles)
+            // {
+            //     // Checks if the tile is trying to link to itself (bad)
+            //     if (tile.links.Contains(position))
+            //     {
+            //         Debug.LogWarning("Trying to link a tile to itself at position " + position.ToString());
+            //     }
+
+            //     // Checks if there are links registered to an unlinkable tile
+            //     if (tile.links.Count != 0 && !squares[position].IsLinkable)
+            //     {
+            //         Debug.LogWarning("Trying to link an unlinkable tile at position " + position.ToString());
+            //     }
+
+            //     // Checks if the link goes to a location with no tile created
+            //     foreach (Vector2Int link in tile.links)
+            //     {
+            //         if (!squares.Keys.Contains(link))
+            //         {
+            //             throw new Exception("Trying to create a link to a tile that does not exist from " + position.ToString() + " to " + link.ToString());
+            //         }
+            //     }
+            // }
         }
     }
 }

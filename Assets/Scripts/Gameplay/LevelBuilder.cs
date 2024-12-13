@@ -92,7 +92,7 @@ public class LevelBuilder: MonoBehaviour
             currentSquare.validMoveIndicator.gameObject.SetActive(false);
 
             // Sets up the square's initial state
-            if (currentSquare.IsMultiState)
+            if (currentSquare.Type.IsMultiState)
             {
                 currentSquare.State = initialState;
             }
@@ -124,9 +124,6 @@ public class LevelBuilder: MonoBehaviour
                 .setOnComplete(() => Destroy(g));
         }
 
-        // Does some custom error handling to make sure all the links are set up properly
-        ValidateLinks(squares, workingLevel);
-
         // loops over all the tiles in the level
         foreach (var (position, tile) in workingLevel.tiles)
         {
@@ -134,7 +131,7 @@ public class LevelBuilder: MonoBehaviour
             currentSquare = squares[position];
 
             // If it's linkable loop over all its links
-            if (currentSquare.IsLinkable)
+            if (currentSquare.Type.IsLinkable)
             {
                 // Creates a list for links to be added to
                 currentSquare.Links = new List<Square>();
@@ -142,38 +139,6 @@ public class LevelBuilder: MonoBehaviour
                 {
                     // Adds the square corresponding to the linked position to the square's list of links
                     currentSquare.Links.Add(squares[link]);
-                }
-            }
-        }
-    }
-
-    /// <summary>
-    /// Validate the links between squares in a coordinate-square dictionary against a those in a given workingLevel
-    /// </summary>
-    /// <exception cref="Exception"></exception>
-    public void ValidateLinks(Dictionary<Vector2Int, Square> squares, WorkingLevel workingLevel)
-    {
-        // Loops over all of the tiles
-        foreach (var (position, tile) in workingLevel.tiles)
-        {
-            // Checks if the tile is trying to link to itself (bad)
-            if (tile.links.Contains(position))
-            {
-                Debug.LogWarning("Trying to link a tile to itself at position " + position.ToString());
-            }
-
-            // Checks if there are links registered to an unlinkable tile
-            if (tile.links.Count != 0 && !squares[position].IsLinkable)
-            {
-                Debug.LogWarning("Trying to link an unlinkable tile at position " + position.ToString());
-            }
-
-            // Checks if the link goes to a location with no tile created
-            foreach (Vector2Int link in tile.links)
-            {
-                if (!squares.Keys.Contains(link))
-                {
-                    throw new Exception("Trying to create a link to a tile that does not exist from " + position.ToString() + " to " + link.ToString());
                 }
             }
         }
