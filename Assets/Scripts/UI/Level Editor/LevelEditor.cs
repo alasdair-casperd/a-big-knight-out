@@ -285,31 +285,33 @@ namespace UI
             RegenerateLevel();
         }
 
-        // ==========
-        // Floor Tool
-        // ==========
+        // ============
+        // Square Tools
+        // ============
 
         public void AddFloorTile()
         {
             AddTile(TileType.Floor, targetPosition);
         }
 
-        // ============
-        // Portals Tool
-        // ============
-
         public void AddPortal()
         {
             AddTile(TileType.Portal, targetPosition);
         }
 
-        // =====================
-        // Moving Platforms Tool
-        // =====================
-
         public void AddMovingPlatform()
         {
             AddTile(TileType.MovingPlatform, targetPosition);
+        }
+
+        public void AddSpikes()
+        {
+            AddTile(TileType.Spike, targetPosition);
+        }
+
+        public void AddFallingFloor()
+        {
+            AddTile(TileType.FallingFloor, targetPosition);
         }
 
         // ==========

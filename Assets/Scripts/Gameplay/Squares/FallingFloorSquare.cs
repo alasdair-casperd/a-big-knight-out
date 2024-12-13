@@ -9,7 +9,7 @@ public class FallingFloorSquare : Square
 
     public override TileType Type
     {
-        get { return TileType.Floor; }
+        get { return TileType.FallingFloor; }
     }
 
     public override bool IsLinkable { get { return false; } }
