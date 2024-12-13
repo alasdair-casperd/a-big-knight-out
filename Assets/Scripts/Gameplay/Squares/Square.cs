@@ -17,10 +17,6 @@ public abstract class Square : MonoBehaviour
     /// </summary>
     public Vector2Int Position { get; set; }
 
-    /// <summary>
-    /// Whether this type of square can have links to other tiles.
-    /// </summary>
-    public abstract bool IsLinkable { get; }
 
     /// <summary>
     /// The list of all of the squares that this square is linked to, if not implemented (e.g. for floor), it will raise a warning.
@@ -39,25 +35,21 @@ public abstract class Square : MonoBehaviour
     }
 
     /// <summary>
-    /// Whether this type of square can have multiple states.
-    /// </summary>
-    public abstract bool IsMultiState { get; }
-
-    /// <summary>
     /// The state of this square, if not implemented (e.g. for floor), it will raise a warning.
     /// </summary>
-    public virtual int State
+    public int State
     {
         get
         {
-            Debug.LogWarning("Multi-State not implemented for tile type " + Type.ToString());
-            return 0;
+            return _state;
         }
         set
         {
-            Debug.LogWarning("Multi-State not implemented for tile type " + Type.ToString());
+            if (Type.ValidStates.Contains(value)) _state = value;
+            else Debug.Log($"Attempting to assign a state of {value} to a tile of type '{Type.DisplayName}'");
         }
     }
+    private int _state;
 
     /// <summary>
     /// The graphics variant to use for this square.

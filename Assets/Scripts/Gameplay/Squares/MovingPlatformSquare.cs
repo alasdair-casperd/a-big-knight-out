@@ -12,8 +12,6 @@ public class MovingPlatformSquare : Square
         get { return TileType.MovingPlatform; }
     }
 
-    public override bool IsLinkable { get { return true; } }
-
     public override List<Square> Links
     {
         get; set;
@@ -58,19 +56,6 @@ public class MovingPlatformSquare : Square
     /// This animator is shared between this moving platform and all of its links
     /// </summary>
     public AnimationController Graphics { get; set; }
-
-    /// <summary>
-    /// Note this is multistate as this is multiplatforms pretending to be one.
-    /// </summary>
-    public override bool IsMultiState { get { return true; } }
-
-    /// <summary>
-    /// The state of this square.
-    /// </summary>
-    public override int State
-    {
-        get; set;
-    }
 
     // Has the platform just moved to this square? This is used to prevent multiple platform moves occurring in a single level turn
     public bool HasMoved { get; set; }

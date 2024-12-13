@@ -11,9 +11,6 @@ public class PortalSquare : Square
         get { return TileType.Portal; }
     }
 
-    public override bool IsLinkable { get { return true; } }
-    public override bool IsMultiState { get { return false; } }
-
     public override List<Square> Links
     {
         get; set;

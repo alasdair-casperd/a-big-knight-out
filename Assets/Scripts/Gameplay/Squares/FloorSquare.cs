@@ -11,9 +11,6 @@ public class FloorSquare : Square
         get { return TileType.Floor; }
     }
 
-    public override bool IsLinkable { get { return false; } }
-    public override bool IsMultiState { get { return false; } }
-
     // Will always report as passable, if you try to change that you get a warning.
     public override bool IsPassable
     {

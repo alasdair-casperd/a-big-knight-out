@@ -12,13 +12,6 @@ public class FallingFloorSquare : Square
         get { return TileType.FallingFloor; }
     }
 
-    public override bool IsLinkable { get { return false; } }
-
-    /// <summary>
-    /// Can be either fallen or not.
-    /// </summary>
-    public override bool IsMultiState { get { return false; } }
-
     // Is only passable before it is landed on.
     public override bool IsPassable
     {

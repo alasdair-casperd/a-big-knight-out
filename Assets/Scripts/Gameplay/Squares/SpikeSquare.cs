@@ -12,8 +12,6 @@ public class SpikeSquare : Square
         get { return TileType.Spikes; }
     }
 
-    public override bool IsLinkable { get { return true; } }
-
     public override List<Square> Links
     {
         get; set;
@@ -64,17 +62,6 @@ public class SpikeSquare : Square
             Check(this);
             return output;
         }
-    }
-
-    // State is used to indicate whether or not spikes are raised
-    public override bool IsMultiState { get { return true; } }
-
-    /// <summary>
-    /// The state of this square.
-    /// </summary>
-    public override int State
-    {
-        get; set;
     }
 
     // Has the square just been spiky? 
