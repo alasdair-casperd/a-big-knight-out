@@ -22,19 +22,6 @@ public class LevelBuilder: MonoBehaviour
     /// </summary>
     public void BuildLevel(Transform parent, Level level, Action<Square> onSquareCreated = null, float animationDuration = -1)
     {
-        // Validate the level
-        level.ValidateLevel();
-
-        // Build it
-        BuildLevel(parent, new WorkingLevel(level), onSquareCreated, animationDuration);
-    }
-
-    /// <summary>
-    /// Instantiates all the square prefabs for the specified level, sets up their initial conditions, and
-    /// optionally performs an action on each square
-    /// </summary>
-    public void BuildLevel(Transform parent, WorkingLevel workingLevel, Action<Square> onSquareCreated = null, float animationDuration = -1)
-    {
         // Find existing squares on the parent transform
         List<Square> existingSquares = parent.GetComponentsInChildren<Square>().ToList();
 
@@ -51,7 +38,7 @@ public class LevelBuilder: MonoBehaviour
         Dictionary<Vector2Int, Square> squares = new();
 
         // Loops over all the tiles in the level object received
-        foreach (var (position, tile) in workingLevel.tiles)
+        foreach (var (position, tile) in level.tiles)
         {
             // Remove any conflicting existing squares and decide whether to animate the tile or not
             animateInsertion = true;
@@ -125,7 +112,7 @@ public class LevelBuilder: MonoBehaviour
         }
 
         // loops over all the tiles in the level
-        foreach (var (position, tile) in workingLevel.tiles)
+        foreach (var (position, tile) in level.tiles)
         {
             // Finds the square corresponding to that tile
             currentSquare = squares[position];

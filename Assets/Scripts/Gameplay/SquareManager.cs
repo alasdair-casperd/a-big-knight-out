@@ -57,7 +57,7 @@ public class SquareManager : MonoBehaviour
     void Start()
     {
         // Position the player
-        PlayerPos = level.startPos;
+        PlayerPos = level.startPosition;
         player.transform.position = GridUtilities.GridToWorldPos(PlayerPos);
         
         // Build the level

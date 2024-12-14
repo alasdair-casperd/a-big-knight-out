@@ -1,5 +1,7 @@
 
 using System.Collections.Generic;
+using System.Diagnostics.Tracing;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using Unity.VisualScripting;
@@ -11,17 +13,18 @@ namespace UI
     {
         public LevelBuilder LevelBuilder;
 
-        public Level startingLevel;
+        [SerializeField]
+        private TextAsset startingLevelFile;
 
         public Transform levelParent;
 
         [SerializeField]
         private Prefabs prefabs;
 
-        private WorkingLevel workingLevel;
-
         [SerializeField]
         private LevelEditorTool currentTool;
+
+        public Level level;
 
         private LevelEditorTool[] allTools;
 
@@ -58,9 +61,25 @@ namespace UI
         private void Start()
         {
             allTools = FindObjectsByType<LevelEditorTool>(FindObjectsSortMode.InstanceID);
-            
-            workingLevel = new WorkingLevel(startingLevel);
-            LevelBuilder.BuildLevel(levelParent, workingLevel);
+
+            if (startingLevelFile == null)
+            {
+                level = new();
+            }   
+            else
+            {
+                try
+                {
+                    level = LevelFileUtilities.Parse(startingLevelFile.text);
+                }
+                catch
+                {
+                    Debug.LogError("Failed to parse level file");
+                    level = new();
+                }
+            }
+
+            LevelBuilder.BuildLevel(levelParent, level);
             GenerateLinkIndicators();
             GenerateStateIndicators();
 
@@ -165,7 +184,7 @@ namespace UI
 
         private void RegenerateLevel()
         {
-            LevelBuilder.BuildLevel(levelParent, workingLevel, null, 0.5f);
+            LevelBuilder.BuildLevel(levelParent, level, null, 0.5f);
             GenerateLinkIndicators();
             GenerateStateIndicators();
         }
@@ -185,7 +204,7 @@ namespace UI
 
             linkIndicators = new();
 
-            foreach (var (position, tile) in workingLevel.tiles)
+            foreach (var (position, tile) in level.tiles)
             {
                 foreach (var link in tile.links)
                 {
@@ -212,7 +231,7 @@ namespace UI
 
             stateIndicators = new();
 
-            foreach (var (position, tile) in workingLevel.tiles)
+            foreach (var (position, tile) in level.tiles)
             {
                 var stateIndicator = Instantiate(prefabs.stateIndicator);
                 stateIndicator.transform.parent = stateContainer.transform;
@@ -224,11 +243,11 @@ namespace UI
 
         private void AddTile(TileType type, Vector2Int position)
         {    
-            if (!workingLevel.tiles.ContainsKey(position))
+            if (!level.tiles.ContainsKey(position))
             {
                 AddTile();
             }
-            else if (workingLevel.tiles[position].type != type)
+            else if (level.tiles[position].type != type)
             {
                 RemoveLinksToPosition(position);
                 AddTile();
@@ -236,7 +255,7 @@ namespace UI
 
             void AddTile()
             {
-                workingLevel.tiles[position] = new(type);
+                level.tiles[position] = new(type);
                 RegenerateLevel();
             }
         }
@@ -252,7 +271,7 @@ namespace UI
 
         private void RemoveLinksToPosition(Vector2Int position)
         {
-            foreach (var (_, tile) in workingLevel.tiles)
+            foreach (var (_, tile) in level.tiles)
             {
                 tile.links?.RemoveAll(link => link == position);
             }
@@ -260,11 +279,11 @@ namespace UI
 
         private void AddToState(Vector2Int position, int amount)
         {
-            if (workingLevel.tiles.ContainsKey(position))
+            if (level.tiles.ContainsKey(position))
             {
-                var targetTile = workingLevel.tiles[position];
+                var targetTile = level.tiles[position];
                 targetTile.initialState += amount;
-                workingLevel.tiles[position] = targetTile;
+                level.tiles[position] = targetTile;
             }
 
             GenerateStateIndicators();
@@ -281,7 +300,7 @@ namespace UI
 
         public void EraseTile()
         {
-            workingLevel.tiles.Remove(targetPosition);
+            level.tiles.Remove(targetPosition);
             RegenerateLevel();
         }
 
@@ -330,7 +349,7 @@ namespace UI
 
         public void StartDrawingLink()
         {
-            linkStart = workingLevel.tiles.ContainsKey(targetPosition) ? targetPosition : null;
+            linkStart = level.tiles.ContainsKey(targetPosition) ? targetPosition : null;
         }
 
         public void CreateLinkPreview()
@@ -358,9 +377,9 @@ namespace UI
 
             if (linkStart is Vector2Int startPosition)
             {
-                if (targetPosition != startPosition && workingLevel.tiles.ContainsKey(targetPosition))
+                if (targetPosition != startPosition && level.tiles.ContainsKey(targetPosition))
                 {
-                    workingLevel.tiles[startPosition].links.Add(targetPosition);
+                    level.tiles[startPosition].links.Add(targetPosition);
                     GenerateLinkIndicators();
                 }
             }
@@ -370,9 +389,9 @@ namespace UI
         {
             if (targetLink != null)
             {
-                if (workingLevel.tiles.ContainsKey(targetLink.Start))
+                if (level.tiles.ContainsKey(targetLink.Start))
                 {
-                    workingLevel.tiles[targetLink.Start].links.Remove(targetLink.End);
+                    level.tiles[targetLink.Start].links.Remove(targetLink.End);
                 }
             }
 
@@ -409,7 +428,8 @@ namespace UI
 
         public void SaveLevel()
         {
-            workingLevel.ExportTo(startingLevel);
+            string path = Application.dataPath + "/Levels/ExportedLevel.txt";
+            File.WriteAllText(path, LevelFileUtilities.Export(level));
         }
     }
 }
