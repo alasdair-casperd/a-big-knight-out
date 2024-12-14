@@ -3357,7 +3357,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LevelBuilder: {fileID: 1408143802}
-  startingLevelFile: {fileID: 0}
+  startingLevelFile: {fileID: 4900000, guid: 4ca183f941a2a4eceb8e03e35e6e7ab3, type: 3}
   levelParent: {fileID: 1408143800}
   prefabs: {fileID: 11400000, guid: 27cc6ead7fb8f47748eb1582f6ec1a96, type: 2}
   currentTool: {fileID: 391449855}

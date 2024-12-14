@@ -13,15 +13,15 @@ public static class LevelFileUtilities
         }
 
         var output = "";
-        output += $"{level.Name}\n";
-        output += $"Start = {StringFor(level.startPosition)}\n";
+        output += $"{level.Name};\n";
+        output += $"Start = {StringFor(level.startPosition)};\n";
         output += "\n";
 
         foreach (var (position, tile) in level.tiles)
         {
-            output += $"{StringFor(position)} {tile.type.ID} ({tile.type.DisplayName})\n";
-            output += $"\tInitialState = {tile.initialState}\n";
-            output += $"\tGraphicsVariant = {tile.graphicsVariant}\n";
+            output += $"{StringFor(position)} {tile.type.ID} ({tile.type.DisplayName});\n";
+            output += $"\tInitialState = {tile.initialState};\n";
+            output += $"\tGraphicsVariant = {tile.graphicsVariant};\n";
             output += $"\tLinks = [";
 
             var i = 0;
@@ -31,7 +31,7 @@ public static class LevelFileUtilities
                 i += 1;
                 output += StringFor(link);
             }
-            output += "]\n";
+            output += "];\n";
             output += "\n";
         }
 
@@ -48,13 +48,15 @@ public static class LevelFileUtilities
             return new Vector2Int(int.Parse(parts[0]), int.Parse(parts[1]));
         }
 
-        var lines = input.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+        var lines = input.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+
+        Debug.Log(lines);
 
         var level = new Level();
         int index = 0;
 
         // Parse level name
-        level.Name = lines[index];
+        level.Name = lines[index].Trim();
         index++;
 
         // Parse start position
@@ -66,8 +68,15 @@ public static class LevelFileUtilities
         level.tiles = new();
         while (index < lines.Length)
         {
+            if (lines[index].Trim('\n', ' ').Length == 0)
+            {
+                index++;
+                break;
+            }
+
+            Debug.Log(index);
             // Parse tile position and type
-            var firstLine = lines[index];
+            var firstLine = lines[index].Trim();
             var parts = firstLine.Split(' ');
             var position = ParseVector2Int(parts[0]);
             var tileTypeID = int.Parse(parts[1]);
