@@ -43,6 +43,7 @@ public static class LevelFileUtilities
         // Helper function to parse Vector2Int from a string like "(x,y)"
         Vector2Int ParseVector2Int(string str)
         {
+            Debug.Log(str);
             var trimmed = str.Trim('(', ')');
             var parts = trimmed.Split(',');
             return new Vector2Int(int.Parse(parts[0]), int.Parse(parts[1]));

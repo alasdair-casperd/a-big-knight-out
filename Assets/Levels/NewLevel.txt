@@ -90,4 +90,3 @@ Start = (0,0);
 	InitialState = 0;
 	GraphicsVariant = 0;
 	Links = [];
-

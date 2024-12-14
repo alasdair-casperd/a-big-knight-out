@@ -9,40 +9,19 @@ using UnityEngine.UIElements;
 /// <summary>
 /// A manager to handle the top level interaction with all of the levels squares.
 /// </summary>
+[RequireComponent(typeof(GameManager))]
 public class SquareManager : MonoBehaviour
 {
     /// <summary>
-    /// The player object's player controller
-    /// </summary>
-    public PlayerController player;
-
-    /// <summary>
-    /// The text file storing the level data
-    /// </summary>
-    [SerializeField]
-    private TextAsset levelFile;
-
-    /// <summary>
-    /// The level object to build and manage.
-    /// </summary>
-    private Level level;
-
-    /// <summary>
-    /// A levelBuilder instance used to create the squares
-    /// </summary>
-    public LevelBuilder LevelBuilder;
-
-    /// <summary>
     /// A dictionary to find the square object at any given position
     /// </summary>
-    Dictionary<Vector2Int, Square> squares;
-
-    /// <summary>
-    /// The player's position
-    /// </summary>
-    public Vector2Int PlayerPos;
+    public Dictionary<Vector2Int, Square> squares;
 
     bool isPlayerTurn;
+
+    PlayerController player;
+
+    GameManager gameManager;
 
     /// <summary>
     /// The valid moves a knight can make
@@ -59,39 +38,21 @@ public class SquareManager : MonoBehaviour
         new Vector2Int(-2,-1)
     };
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+
+    public void InitialiseSquares(Dictionary<Vector2Int,Square> inputSquares)
     {
-        var receivedLevel = UI.LevelEditor.LastEditedLevel;
-        if (receivedLevel != null)
-        {
-			// Override the selected level if transitioning directly from the level editor
-        	// This should be removed when we add proper level management
-            level = receivedLevel;
-        }
-		else
-		{
-			// Generate the level
-			level = LevelFileUtilities.Parse(levelFile.text);	
-		}
-
-        // Position the player
-        PlayerPos = level.startPosition;
-        player.transform.position = GridUtilities.GridToWorldPos(PlayerPos);
-        
-        // Build the level
-        squares = new Dictionary<Vector2Int, Square>();
-        LevelBuilder.BuildLevel(transform, level, (square) => {
-            squares.Add(square.Position, square);
-            square.PlayerController = player;
-        });
-
-        // Initialise the squares and start gameplay
+        squares = inputSquares;
+        // Initialise the squares
         foreach (Square square in squares.Values)
         {
             square.OnLevelStart();
         }
-        OnPlayerTurnStart();
+    }
+
+    void Start()
+    {
+        gameManager = GetComponent<GameManager>();
+        player = gameManager.player;
     }
 
     void Update()
@@ -103,44 +64,24 @@ public class SquareManager : MonoBehaviour
             if (GetValidMoves().Contains(mousePos))
             {
                 // Perform actions related to leaving the current square
-                squares[PlayerPos].OnPlayerLeave();
+                squares[player.position].OnPlayerLeave();
 
                 // Moves the player
                 player.MoveTo(mousePos, AnimationController.MovementType.Jump);
 
                 // Informs the squares that the player has moved
-                OnPlayerMove();
+                gameManager.OnPlayerMove();
 
                 // Handles player land once game-blocking animations have finished
-                ActionQueue.QueueAction(OnPlayerLand);
+                ActionQueue.QueueAction(gameManager.OnPlayerLand);
             }
         }
-
-        // Process the action queue
-        ActionQueue.Update();
-    }
-
-
-    /// <summary>
-    /// The actions to be performed at the start of the player's turn.
-    /// </summary>
-    void OnPlayerTurnStart()
-    {
-        isPlayerTurn = true;
-
-        foreach (Square square in squares.Values)
-        {
-            square.OnPlayerTurnStart();
-        }
-
-        // Add square highlights to valid moves
-        HighlightSquares(GetValidMoves());
     }
 
     /// <summary>
     /// The actions to be performed once the player has input their move
     /// </summary>
-    void OnPlayerMove()
+    public void OnPlayerMove()
     {
         // Remove all square highlights
         HighlightSquares(new());
@@ -157,25 +98,35 @@ public class SquareManager : MonoBehaviour
     /// </summary>
     public void OnPlayerLand()
     {
-        squares[PlayerPos].OnPlayerLand();
-
-        // Once the horse has landed and game-blocking animations have finished, initiate the level's turn.
-        ActionQueue.QueueAction(OnLevelTurn);
+        squares[player.position].OnPlayerLand();
     }
 
     /// <summary>
     /// The actions to be performed on the level's turn.
     /// </summary>
-    void OnLevelTurn()
+    public void OnLevelTurn()
     {
         // Does all of the square's turns.
         foreach (Square square in squares.Values)
         {
             square.OnLevelTurn();
         }
+    }
 
-        // Triggers the start of the players turn once all game-blocking animations have finished
-        ActionQueue.QueueAction(OnPlayerTurnStart);
+    /// <summary>
+    /// The actions to be performed at the start of the player's turn.
+    /// </summary>
+    public void OnPlayerTurnStart()
+    {
+        isPlayerTurn = true;
+
+        foreach (Square square in squares.Values)
+        {
+            square.OnPlayerTurnStart();
+        }
+
+        // Add square highlights to valid moves
+        HighlightSquares(GetValidMoves());
     }
 
     public List<Vector2Int> GetValidMoves()
@@ -184,7 +135,7 @@ public class SquareManager : MonoBehaviour
 
         foreach (Vector2Int position in squares.Keys)
         {
-            if (KnightMoves.Contains(position - PlayerPos) && squares[position].IsPassable)
+            if (KnightMoves.Contains(position - player.position) && squares[position].IsPassable)
             {
                 moves.Add(position);
             }

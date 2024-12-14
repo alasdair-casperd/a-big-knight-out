@@ -12,9 +12,17 @@ public class PlayerController : MonoBehaviour
     /// </summary> 
     private AnimationController AnimationController;
 
+    public Vector2Int position {get; private set;}
+
     private void Start()
     {
         AnimationController = GetComponent<AnimationController>();
+    }
+
+    public void SetInitialPosition(Vector2Int startPos)
+    {
+        position = startPos;
+        transform.position = GridUtilities.GridToWorldPos(position);
     }
 
     /// <summary>
@@ -24,7 +32,7 @@ public class PlayerController : MonoBehaviour
     public void MoveTo(Vector2Int to, AnimationController.MovementType movementType, float duration = -1)
     {
         // Update the square manager
-        SquareManager.PlayerPos = to;
+        position = to;
 
         // Convert grid position to world position
         Vector3 endPosition = GridUtilities.GridToWorldPos(to);
