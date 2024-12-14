@@ -532,7 +532,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1237285558}
-  level: {fileID: 11400000, guid: ce31a8baf5418084fb1fb5115bd7a115, type: 2}
+  levelFile: {fileID: 4900000, guid: f63187f4745df449a91024dfde4b6780, type: 3}
   LevelBuilder: {fileID: 2071151748}
   PlayerPos: {x: 0, y: 0}
 --- !u!4 &2071151747

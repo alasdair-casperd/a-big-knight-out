@@ -12,14 +12,20 @@ using UnityEngine.UIElements;
 public class SquareManager : MonoBehaviour
 {
     /// <summary>
-    /// The player object's player controller.
+    /// The player object's player controller
     /// </summary>
     public PlayerController player;
 
     /// <summary>
+    /// The text file storing the level data
+    /// </summary>
+    [SerializeField]
+    private TextAsset levelFile;
+
+    /// <summary>
     /// The level object to build and manage.
     /// </summary>
-    public Level level;
+    private Level level;
 
     /// <summary>
     /// A levelBuilder instance used to create the squares
@@ -56,6 +62,9 @@ public class SquareManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        // Generate the level
+        level = LevelFileUtilities.Parse(levelFile.text);
+
         // Position the player
         PlayerPos = level.startPosition;
         player.transform.position = GridUtilities.GridToWorldPos(PlayerPos);
