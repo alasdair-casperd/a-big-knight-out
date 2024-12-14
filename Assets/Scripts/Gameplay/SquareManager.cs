@@ -62,8 +62,18 @@ public class SquareManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        // Generate the level
-        level = LevelFileUtilities.Parse(levelFile.text);
+        var receivedLevel = UI.LevelEditor.LastEditedLevel;
+        if (receivedLevel != null)
+        {
+			// Override the selected level if transitioning directly from the level editor
+        	// This should be removed when we add proper level management
+            level = receivedLevel;
+        }
+		else
+		{
+			// Generate the level
+			level = LevelFileUtilities.Parse(levelFile.text);	
+		}
 
         // Position the player
         PlayerPos = level.startPosition;

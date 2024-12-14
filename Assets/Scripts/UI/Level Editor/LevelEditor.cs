@@ -5,7 +5,9 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using Unity.VisualScripting;
+using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace UI
 {
@@ -15,6 +17,8 @@ namespace UI
 
         [SerializeField]
         private TextAsset startingLevelFile;
+
+        public static Level LastEditedLevel;
 
         public Transform levelParent;
 
@@ -39,6 +43,8 @@ namespace UI
         private GameObject linksContainer;
 
         private GameObject stateContainer;
+
+        private GameObject levelStartIndicator;
 
         private bool ShowingLinks
         {
@@ -80,6 +86,11 @@ namespace UI
             }
 
             LevelBuilder.BuildLevel(levelParent, level);
+            LastEditedLevel = level;
+
+            levelStartIndicator = Instantiate(prefabs.levelStartIndicator);
+            PositionStartIndicator();
+
             GenerateLinkIndicators();
             GenerateStateIndicators();
 
@@ -289,6 +300,11 @@ namespace UI
             GenerateStateIndicators();
         }
 
+        private void PositionStartIndicator()
+        {
+            levelStartIndicator.transform.position = GridUtilities.GridToWorldPos(level.startPosition);
+        }
+
         /*
             Methods to be used as UnityEvents, assigned to LevelEditorTools via the inspector
             These methods make use of the field 'targetPosition'
@@ -403,7 +419,7 @@ namespace UI
         // ===========
 
         public void EnterStateEditingMode()
-        {
+        {            
             ShowingState = true;
         }
 
@@ -423,13 +439,34 @@ namespace UI
         }
 
         // ===========
-        // Load & Save
+        // Level Start
         // ===========
+
+        public void SetLevelStart()
+        {
+            if (level.tiles.ContainsKey(targetPosition))
+            {
+                level.startPosition = targetPosition;
+                PositionStartIndicator();
+            }
+        }
+
+        // =======
+        // Actions
+        // =======
 
         public void SaveLevel()
         {
             string path = Application.dataPath + "/Levels/ExportedLevel.txt";
             File.WriteAllText(path, LevelFileUtilities.Export(level));
+        }
+
+        public void SafeAndPreviewLevel()
+        {
+            SaveLevel();
+            LastEditedLevel = level;
+            
+            SceneManager.LoadScene("LevelPlayer");
         }
     }
 }
