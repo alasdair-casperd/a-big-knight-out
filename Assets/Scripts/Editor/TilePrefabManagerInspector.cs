@@ -5,13 +5,14 @@ using UnityEngine;
 using System.Collections.Generic;
 
 [CustomEditor(typeof(TilePrefabManager))]
-public class SquarePrefabManagerInspector : Editor
+public class TilePrefabManagerInspector : Editor
 {
     public override void OnInspectorGUI()
     {
         TilePrefabManager prefabManager = (TilePrefabManager)target;
         EditorUtility.SetDirty(prefabManager);
 
+        // Scott please forgive me, and also don't design more than 1000 tiles.
         int maxTileNumber = 1000;
         if(prefabManager.prefabs == null || prefabManager.prefabs.Length != maxTileNumber)
         {

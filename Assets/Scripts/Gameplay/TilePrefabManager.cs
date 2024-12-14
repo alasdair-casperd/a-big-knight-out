@@ -9,7 +9,7 @@ public class TilePrefabManager : ScriptableObject
     public GameObject[] prefabs;
 
     /// <summary>
-    /// 
+    /// Returns the game object associated with a given tile type.
     /// </summary>
     /// <param name="tile"></param>
     /// <returns></returns>

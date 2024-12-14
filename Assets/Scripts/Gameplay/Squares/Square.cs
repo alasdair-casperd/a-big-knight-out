@@ -25,12 +25,12 @@ public abstract class Square : MonoBehaviour
     {
         get
         {
-            Debug.LogWarning("Links not implemented for tile type " + Type.ToString());
+            Debug.LogWarning("Links not implemented for tile type " + Type.DisplayName);
             return new List<Square>();
         }
         set
         {
-            Debug.LogWarning("Links not implemented for tile type " + Type.ToString());
+            Debug.LogWarning("Links not implemented for tile type " + Type.DisplayName);
         }
     }
 
