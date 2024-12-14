@@ -10,7 +10,7 @@ public class Level
     public Vector2Int startPosition = Vector2Int.zero;
 
     // A dictionary containing all of the level's tiles and their positions
-    public Dictionary<Vector2Int, TileBuildData> tiles = new();
+    public Dictionary<Vector2Int, Tile> tiles = new();
 
     public void ValidateLevel()
     {
@@ -56,6 +56,6 @@ public class Level
     private class SerializableLevel
     {
         public Vector2Int startPosition;
-        public List<(Vector2Int, TileBuildData)> tiles;
+        public List<(Vector2Int, Tile)> tiles;
     }
 }

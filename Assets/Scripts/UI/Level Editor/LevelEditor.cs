@@ -392,8 +392,8 @@ namespace UI
                 if (!level.tiles.ContainsKey(targetPosition)) return;
                 
                 // Read start and target tiles
-                TileBuildData startTile = level.tiles[startPosition];
-                TileBuildData targetTile = level.tiles[targetPosition];
+                Tile startTile = level.tiles[startPosition];
+                Tile targetTile = level.tiles[targetPosition];
 
                 // Check that the tiles are compatible
                 if (!startTile.type.ValidLinkTargets.Contains(targetTile.type))

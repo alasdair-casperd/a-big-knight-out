@@ -6,7 +6,7 @@ using UnityEngine;
 /// This gives all of the information necessary to build a tile, it is used by the <c>Level</c> class.
 /// </summary>
 [System.Serializable]
-public struct TileBuildData
+public struct Tile
 {
     [SerializeField]
     public TileType type;
@@ -15,7 +15,7 @@ public struct TileBuildData
     public int graphicsVariant;   // For tiles with multiple graphics variants}
 
     // Minimal initialiser
-    public TileBuildData(TileType type)
+    public Tile(TileType type)
     {
         this.type = type;
         this.links = new();

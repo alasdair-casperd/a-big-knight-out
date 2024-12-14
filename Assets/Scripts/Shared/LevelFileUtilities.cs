@@ -95,7 +95,7 @@ public static class LevelFileUtilities
             index++;
 
             // Add parsed tile to the level
-            var tile = new TileBuildData
+            var tile = new Tile
             {
                 type = TileType.All.First(t => t.ID == tileTypeID),
                 initialState = initialState,
