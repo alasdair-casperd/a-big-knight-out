@@ -1,11 +1,6 @@
 
 using System.Collections.Generic;
-using System.Diagnostics.Tracing;
 using System.IO;
-using System.Linq;
-using System.Threading;
-using Unity.VisualScripting;
-using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -244,11 +239,14 @@ namespace UI
 
             foreach (var (position, tile) in level.tiles)
             {
-                var stateIndicator = Instantiate(prefabs.stateIndicator);
-                stateIndicator.transform.parent = stateContainer.transform;
-                stateIndicator.transform.position = GridUtilities.GridToWorldPos(position);
-                stateIndicator.Number = tile.initialState;
-                stateIndicators.Add(stateIndicator);
+                if (tile.type.IsMultiState)
+                {
+                    var stateIndicator = Instantiate(prefabs.stateIndicator);
+                    stateIndicator.transform.parent = stateContainer.transform;
+                    stateIndicator.transform.position = GridUtilities.GridToWorldPos(position);
+                    stateIndicator.Number = tile.initialState;
+                    stateIndicators.Add(stateIndicator);
+                }
             }
         }
 
@@ -266,7 +264,8 @@ namespace UI
 
             void AddTile()
             {
-                level.tiles[position] = new(type);
+                level.tiles.Remove(position);
+                level.tiles.Add(position, new(type));
                 RegenerateLevel();
             }
         }
@@ -286,18 +285,6 @@ namespace UI
             {
                 tile.links?.RemoveAll(link => link == position);
             }
-        }
-
-        private void AddToState(Vector2Int position, int amount)
-        {
-            if (level.tiles.ContainsKey(position))
-            {
-                var targetTile = level.tiles[position];
-                targetTile.initialState += amount;
-                level.tiles[position] = targetTile;
-            }
-
-            GenerateStateIndicators();
         }
 
         private void PositionStartIndicator()
@@ -389,15 +376,35 @@ namespace UI
 
         public void CreateLink()
         {
+            // Destroy the link preview
             if (linkPreview != null) Destroy(linkPreview.gameObject);
 
+            // Check that link start was defined
             if (linkStart is Vector2Int startPosition)
             {
-                if (targetPosition != startPosition && level.tiles.ContainsKey(targetPosition))
+                // Prevent self-links
+                if (targetPosition == startPosition) return;
+
+                // Check link starts at a tile
+                if (!level.tiles.ContainsKey(startPosition)) return;
+
+                // Prevent links to non-existant tiles
+                if (!level.tiles.ContainsKey(targetPosition)) return;
+                
+                // Read start and target tiles
+                TileBuildData startTile = level.tiles[startPosition];
+                TileBuildData targetTile = level.tiles[targetPosition];
+
+                // Check that the tiles are compatible
+                if (!startTile.type.ValidLinkTargets.Contains(targetTile.type))
                 {
-                    level.tiles[startPosition].links.Add(targetPosition);
-                    GenerateLinkIndicators();
+                    Debug.Log($"Attempting to create a link from a {startTile.type.DisplayName} tile to a {targetTile.type.DisplayName} tile");
+                    return;
                 }
+
+                // Create the link
+                level.tiles[startPosition].links.Add(targetPosition);
+                GenerateLinkIndicators();
             }
         }
 
@@ -430,12 +437,26 @@ namespace UI
 
         public void IncrementState()
         {
-            AddToState(targetPosition, 1);
+            if (level.tiles.ContainsKey(targetPosition))
+            {
+                var targetTile = level.tiles[targetPosition];
+                targetTile.IncrementInitialState();
+                level.tiles[targetPosition] = targetTile;
+            }
+
+            GenerateStateIndicators();
         }
 
         public void DecrementState()
         {
-            AddToState(targetPosition, -1);
+            if (level.tiles.ContainsKey(targetPosition))
+            {
+                var targetTile = level.tiles[targetPosition];
+                targetTile.DecrementInitialState();
+                level.tiles[targetPosition] = targetTile;
+            }
+
+            GenerateStateIndicators();
         }
 
         // ===========

@@ -19,21 +19,28 @@ public struct TileBuildData
     {
         this.type = type;
         this.links = new();
-        this.initialState = 0;
+        this.initialState = type.IsMultiState ? type.ValidStates[0] : 0;
         this.graphicsVariant = 0;
     }
 
-    /// <summary>
-    /// A function to generate a 'deep copy' of the struct
-    /// </summary>
-    /// <returns></returns>
-    public TileBuildData DeepCopy()
+    private void IncrementInitialState(int step)
     {
-        var output = new TileBuildData(type);
-        output.links = new(links);
-        output.initialState = initialState;
-        output.graphicsVariant = graphicsVariant;
+        Debug.Log(initialState);
+        if (type.IsMultiState)
+        {
+            var index = type.ValidStates.IndexOf(initialState);
+            initialState = type.ValidStates[(index + step) % type.ValidStates.Count];
+        }
+        Debug.Log(initialState);
+    }
 
-        return output;
+    public void IncrementInitialState()
+    {
+        IncrementInitialState(1);
+    }
+
+    public void DecrementInitialState()
+    {
+        IncrementInitialState(-11);
     }
 }

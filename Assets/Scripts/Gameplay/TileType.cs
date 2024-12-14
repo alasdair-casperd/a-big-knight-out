@@ -1,5 +1,6 @@
 
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -15,7 +16,16 @@ public struct TileType
     public readonly string DisplayName;
 
     public readonly List<int> ValidStates;
-    public readonly List<TileType> ValidLinkTargets;
+    public readonly List<int> ValidLinkTargetIDs;
+
+    public readonly List<TileType> ValidLinkTargets
+    {
+        get
+        {
+            var targetIDs = ValidLinkTargetIDs;
+            return All.Where(type => targetIDs.Contains(type.ID)).ToList();
+        }
+    }
     
     public readonly bool IsMultiState
     {
@@ -31,12 +41,12 @@ public struct TileType
         TileType Properties
     */
     
-    public TileType(int id, string displayName, List<int> validStates, List<TileType> validLinkTargets)
+    public TileType(int id, string displayName, List<int> validStates, List<int > validLinkTargetIDs)
     {
         ID = id;
         DisplayName = displayName;
         ValidStates = validStates;
-        ValidLinkTargets = validLinkTargets;
+        ValidLinkTargetIDs = validLinkTargetIDs;
     }  
 
     public static TileType Floor = new
@@ -44,7 +54,7 @@ public struct TileType
         id: 0,
         displayName: "Floor",
         validStates: new(),
-        validLinkTargets: new()
+        validLinkTargetIDs: new()
     );
 
     public static TileType Wall = new
@@ -52,7 +62,7 @@ public struct TileType
         id: 1,
         displayName: "Wall",
         validStates: new(),
-        validLinkTargets: new()
+        validLinkTargetIDs: new()
     );
 
 
@@ -61,7 +71,7 @@ public struct TileType
         id: 2,
         displayName: "Falling Platform",
         validStates: new(),
-        validLinkTargets: new()
+        validLinkTargetIDs: new()
     );
 
     public static TileType Portal = new
@@ -69,7 +79,7 @@ public struct TileType
         id: 3,
         displayName: "Portal",
         validStates: new(),
-        validLinkTargets: new() { Floor, Portal, Spikes }
+        validLinkTargetIDs: new() { 0, 3, 5 }
     );
 
     public static TileType MovingPlatform = new
@@ -77,7 +87,7 @@ public struct TileType
         id: 4,
         displayName: "Moving Platform",
         validStates: new() { 0, 1 },
-        validLinkTargets: new() { MovingPlatform }
+        validLinkTargetIDs: new() { 4 }
     );
 
     public static TileType Spikes = new
@@ -85,14 +95,14 @@ public struct TileType
         id: 5,
         displayName: "Spikes",
         validStates: new() { 0, 1 },
-        validLinkTargets: new() { Spikes }
+        validLinkTargetIDs: new() { 5 }
     );
     
     /*
         All of the game's TileTypes
     */
-    public static TileType[] All = {Floor, Wall, FallingFloor, Portal, MovingPlatform, Spikes};
 
+    public static TileType[] All = {Floor, Wall, FallingFloor, Portal, MovingPlatform, Spikes};
 
     /*
         Operator Overloads
