@@ -190,7 +190,7 @@ public class LevelEditor: MonoBehaviour
 
     private void RegenerateLevel()
     {
-        LevelBuilder.BuildLevel(levelParent, level, null, 0.5f);
+        LevelBuilder.BuildLevel(levelParent, level, 0.5f);
         GenerateLinkIndicators();
         GenerateStateIndicators();
     }

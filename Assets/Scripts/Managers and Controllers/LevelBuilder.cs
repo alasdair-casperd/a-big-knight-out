@@ -17,10 +17,9 @@ public class LevelBuilder: MonoBehaviour
     public Prefabs prefabs;
 
     /// <summary>
-    /// Instantiates all the square prefabs for the specified level, sets up their initial conditions, and
-    /// optionally performs an action on each square
+    /// Instantiates all the square prefabs for the specified level, and returns a list of these
     /// </summary>
-    public void BuildLevel(Transform parent, Level level, Action<Square> onSquareCreated = null, float animationDuration = -1)
+    public Dictionary<Vector2Int, Square> BuildLevel(Transform parent, Level level, float animationDuration = -1)
     {
         // Find existing squares on the parent transform
         List<Square> existingSquares = parent.GetComponentsInChildren<Square>().ToList();
@@ -87,9 +86,6 @@ public class LevelBuilder: MonoBehaviour
             // Sets up the square's graphics variant
             currentSquare.GraphicsVariant = graphicsVariant;
 
-            // If onSquareCreated is not null, apply it to this square
-            onSquareCreated?.Invoke(currentSquare);
-
             // Store the square in the list of created squares
             squares.Add(pos, currentSquare);
 
@@ -129,5 +125,8 @@ public class LevelBuilder: MonoBehaviour
                 }
             }
         }
+
+        // Return
+        return squares;
     }
 }

@@ -42,9 +42,11 @@ public class SquareManager : MonoBehaviour
     public void InitialiseSquares(Dictionary<Vector2Int,Square> inputSquares)
     {
         squares = inputSquares;
+
         // Initialise the squares
         foreach (Square square in squares.Values)
         {
+            square.PlayerController = player;
             square.OnLevelStart();
         }
     }

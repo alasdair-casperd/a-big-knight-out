@@ -53,12 +53,7 @@ public class GameManager : MonoBehaviour
         player.SetInitialPosition(level.StartPosition);  
         
         // Build the level
-        Dictionary<Vector2Int,Square> squares = new Dictionary<Vector2Int, Square>();
-        
-        levelBuilder.BuildLevel(transform, level, (square) => {
-            squares.Add(square.Position, square);
-            square.PlayerController = player;
-        });
+        Dictionary<Vector2Int,Square> squares = levelBuilder.BuildLevel(transform, level);
 
         // Give the square manager its squares to manage, and initialize them
         squareManager.InitialiseSquares(squares);
