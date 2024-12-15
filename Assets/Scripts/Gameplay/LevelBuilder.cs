@@ -38,7 +38,7 @@ public class LevelBuilder: MonoBehaviour
         Dictionary<Vector2Int, Square> squares = new();
 
         // Loops over all the tiles in the level object received
-        foreach (var (position, tile) in level.tiles)
+        foreach (var (position, tile) in level.Tiles)
         {
             // Remove any conflicting existing squares and decide whether to animate the tile or not
             animateInsertion = true;
@@ -46,7 +46,7 @@ public class LevelBuilder: MonoBehaviour
             if (conflictingSquares.Count > 0)
             {
                 // Only animate insertion if the tile type has changed
-                animateInsertion = tile.type != conflictingSquares[0].Type;
+                animateInsertion = tile.Type != conflictingSquares[0].Type;
                 
                 foreach (var square in conflictingSquares)
                 {
@@ -56,12 +56,12 @@ public class LevelBuilder: MonoBehaviour
             }
 
             //Gets the prefab for the tile's type from the prefab manager
-            prefab = tilePrefabManager.GetPrefab(tile.type);
+            prefab = tilePrefabManager.GetPrefab(tile.Type);
             pos = position;
 
             //Reads the initial state and graphics variant for the tile
-            initialState = tile.initialState;
-            graphicsVariant = tile.graphicsVariant;
+            initialState = tile.InitialState;
+            graphicsVariant = tile.GraphicsVariant;
 
             // Creates an instance of the prefab
             currentSquareObject = Instantiate(prefab, GridUtilities.GridToWorldPos(pos), Quaternion.identity);
@@ -112,7 +112,7 @@ public class LevelBuilder: MonoBehaviour
         }
 
         // loops over all the tiles in the level
-        foreach (var (position, tile) in level.tiles)
+        foreach (var (position, tile) in level.Tiles)
         {
             // Finds the square corresponding to that tile
             currentSquare = squares[position];
@@ -122,7 +122,7 @@ public class LevelBuilder: MonoBehaviour
             {
                 // Creates a list for links to be added to
                 currentSquare.Links = new List<Square>();
-                foreach (Vector2Int link in tile.links)
+                foreach (Vector2Int link in tile.Links)
                 {
                     // Adds the square corresponding to the linked position to the square's list of links
                     currentSquare.Links.Add(squares[link]);

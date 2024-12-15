@@ -35,21 +35,22 @@ public class GameManager : MonoBehaviour
         squareManager = GetComponent<SquareManager>();
         levelBuilder = GetComponent<LevelBuilder>(); 
 
-        var receivedLevel = UI.LevelEditor.LastEditedLevel;
+        // Override the selected level if transitioning directly from the level editor
+        // This should be removed when we add proper level management
+        var receivedLevel = UI.LevelEditor.LevelToPreview;
         if (receivedLevel != null)
         {
-			// Override the selected level if transitioning directly from the level editor
-        	// This should be removed when we add proper level management
             level = receivedLevel;
         }
+
+        // Generate the level from the JSON file provided
 		else
 		{
-			// Generate the level
-			level = LevelFileUtilities.Parse(levelFile.text);	
+			level = LevelFileManager.ParseLevelFromJSON(levelFile.text);
 		}
 
         // Position the player
-        player.SetInitialPosition(level.startPosition);  
+        player.SetInitialPosition(level.StartPosition);  
         
         // Build the level
         Dictionary<Vector2Int,Square> squares = new Dictionary<Vector2Int, Square>();

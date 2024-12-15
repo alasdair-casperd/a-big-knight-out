@@ -3,14 +3,48 @@ using UnityEngine;
 
 public class Level
 {
-    // A name for the level
-    public string Name = "New Level";
+    /*
+        Level Properties
+    */
 
-    // The player's starting position
-    public Vector2Int startPosition = Vector2Int.zero;
+    /// <summary>
+    /// A name for the level
+    /// </summary>
+    public string Name;
 
-    // A dictionary containing all of the level's tiles and their positions
-    public Dictionary<Vector2Int, Tile> tiles = new();
+    /// <summary>
+    /// The player's starting position
+    /// </summary>
+    public Vector2Int StartPosition;
+
+    /// <summary>
+    /// A dictionary containing all of the level's tiles and their positions
+    /// </summary>
+    public Dictionary<Vector2Int, Tile> Tiles;
+
+    /*
+        Initialisers
+    */
+
+    // Default initialiser
+    public Level()
+    {
+        Name = "New Level";
+        StartPosition = Vector2Int.zero;
+        Tiles = new();
+    }
+
+    // Full initialiser
+    public Level(string name, Vector2Int startPosition, Dictionary<Vector2Int, Tile> tiles)
+    {
+        Name = name;
+        StartPosition = startPosition;
+        Tiles = tiles;
+    }
+
+    /*
+        Validation
+    */
 
     public void ValidateLevel()
     {
@@ -53,9 +87,5 @@ public class Level
         // }
     }
 
-    private class SerializableLevel
-    {
-        public Vector2Int startPosition;
-        public List<(Vector2Int, Tile)> tiles;
-    }
+
 }

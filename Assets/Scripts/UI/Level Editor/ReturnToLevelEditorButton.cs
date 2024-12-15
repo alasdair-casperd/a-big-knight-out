@@ -12,7 +12,7 @@ namespace UI
     {
         private void Start()
         {
-            gameObject.SetActive(LevelEditor.LastEditedLevel != null);
+            gameObject.SetActive(LevelEditor.LevelToPreview != null);
         }
 
         public void TransitionToLevelEditor()
