@@ -1,5 +1,6 @@
 
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 /// <summary>
 /// A class storing utility functions relating to the grid layout of the levels
@@ -32,6 +33,17 @@ public static class MouseUtilities
         {
             Debug.LogError("No world position found for mouse position.");
             return Vector3.zero;
+        }
+    }
+
+    /// <summary>
+    /// Is the mouse currently over a UI element?
+    /// </summary>
+    public static bool MouseOverUI
+    {
+        get
+        {
+            return EventSystem.current.IsPointerOverGameObject(0);
         }
     }
 }
