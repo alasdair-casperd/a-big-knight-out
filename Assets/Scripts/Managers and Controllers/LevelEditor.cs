@@ -70,7 +70,7 @@ public class LevelEditor: MonoBehaviour
         {
             if (startingLevelJSON == null)
             {
-                level = new();
+                level = new Level(startPosition: Vector2Int.zero);
             }   
             else
             {
@@ -81,12 +81,12 @@ public class LevelEditor: MonoBehaviour
                 catch
                 {
                     Debug.LogError("Failed to parse level file");
-                    level = new();
+                    level = new Level(startPosition: Vector2Int.zero);
                 }
             }
         }
 
-        LevelBuilder.BuildLevel(levelParent, level);
+        LevelBuilder.BuildLevel(levelParent, level, animationDuration: -1, ignoreErrors: true);
 
         levelStartIndicator = Instantiate(prefabs.levelStartIndicator);
         PositionStartIndicator();
@@ -190,7 +190,7 @@ public class LevelEditor: MonoBehaviour
 
     private void RegenerateLevel()
     {
-        LevelBuilder.BuildLevel(levelParent, level, 0.5f);
+        LevelBuilder.BuildLevel(levelParent, level, animationDuration: 0.5f, ignoreErrors: true);
         GenerateLinkIndicators();
         GenerateStateIndicators();
     }
@@ -258,6 +258,13 @@ public class LevelEditor: MonoBehaviour
         }
         else if (level.Tiles[position].Type != type)
         {
+            // Check if the position is the level's start location
+            if (level.StartPosition == position)
+            {
+                // Abort if the new type is not a valid start location
+                if (!type.IsValidStartPosition) return;
+            }
+
             RemoveLinksToPosition(position);
             AddTile();
         }
@@ -303,6 +310,10 @@ public class LevelEditor: MonoBehaviour
 
     public void EraseTile()
     {
+        // Do not erase a tile that is used as the level's start position
+        if (level.StartPosition == targetPosition) return;
+
+        RemoveLinksToPosition(targetPosition);
         level.Tiles.Remove(targetPosition);
         RegenerateLevel();
     }
@@ -478,7 +489,10 @@ public class LevelEditor: MonoBehaviour
 
     public void SaveLevel()
     {
-        LevelFileManager.ExportLevelAsJson(level, "ExportedLevel");
+        if (level.IsValidLevel)
+        {
+            LevelFileManager.ExportLevelAsJson(level, "ExportedLevel");
+        }
     }
 
     public void PreviewLevel()

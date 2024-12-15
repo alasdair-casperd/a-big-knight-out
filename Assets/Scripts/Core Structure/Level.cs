@@ -34,6 +34,17 @@ public class Level
         Tiles = new();
     }
 
+    // Create a level with a single starting square
+    public Level(Vector2Int startPosition)
+    {
+        Name = "New Level";
+        StartPosition = startPosition;
+        Tiles = new()
+        {
+            { startPosition, new Tile(TileType.Floor) }
+        };
+    }
+
     // Full initialiser
     public Level(string name, Vector2Int startPosition, Dictionary<Vector2Int, Tile> tiles)
     {
@@ -46,46 +57,66 @@ public class Level
         Validation
     */
 
-    public void ValidateLevel()
+    public bool IsValidLevel
     {
-        // // Loops over all the tiles
-        // foreach (TilePositionPair tilePosPair in tiles)
-        // {
-        //     // Finds all tiles with the position of this tile, if there is more than one, raise an error.
-        //     List<TilePositionPair> tilesAtPosition = tiles.FindAll(tile => tile.position == tilePosPair.position);
-        //     if(tilesAtPosition.Count !=1)
-        //     {
-        //         throw new Exception("Multiple tiles found at position "+ tilePosPair.position.ToString());
-        //     }
+        get
+        {
+            // Check that the start position corresponds to a tile
+            if (!Tiles.ContainsKey(StartPosition))
+            {
+                Debug.LogWarning("No tile found at level's start position");
+                return false;
+            }
 
-        //     // TODO: Reinstate validation below, previously in LevelBuilder
+            // Check that the tile at the start position is a valid start location
+            var startTile = Tiles[StartPosition];
+            if (!startTile.Type.IsValidStartPosition)
+            {
+                Debug.LogWarning($"Tile at level's start position is not a valid start position. The player cannot start on a tile of type '{startTile.Type.DisplayName}'");
+                return false;
+            }
 
-        //     // Loops over all of the tiles
-        //     // foreach (var (position, tile) in workingLevel.tiles)
-        //     // {
-        //     //     // Checks if the tile is trying to link to itself (bad)
-        //     //     if (tile.links.Contains(position))
-        //     //     {
-        //     //         Debug.LogWarning("Trying to link a tile to itself at position " + position.ToString());
-        //     //     }
+            // Loop over all tiles
+            foreach (var (position, tile) in Tiles)
+            {
+                // Create a string description of the tile's name and position
+                string tileDescription = $"A tile of type {tile.Type.DisplayName} at position '({position.x},{position.y})";
 
-        //     //     // Checks if there are links registered to an unlinkable tile
-        //     //     if (tile.links.Count != 0 && !squares[position].IsLinkable)
-        //     //     {
-        //     //         Debug.LogWarning("Trying to link an unlinkable tile at position " + position.ToString());
-        //     //     }
+                // Check initial state
+                if (tile.InitialState != 0 && !tile.Type.ValidStates.Contains(tile.InitialState))
+                {
+                    Debug.LogWarning(tileDescription + $" has state {tile.InitialState}, which is invalid for this tile type'");
+                    return false;
+                }
 
-        //     //     // Checks if the link goes to a location with no tile created
-        //     //     foreach (Vector2Int link in tile.links)
-        //     //     {
-        //     //         if (!squares.Keys.Contains(link))
-        //     //         {
-        //     //             throw new Exception("Trying to create a link to a tile that does not exist from " + position.ToString() + " to " + link.ToString());
-        //     //         }
-        //     //     }
-        //     // }
-        // }
+                // Check links
+                foreach(var link in tile.Links)
+                {
+                    // Check for self-links
+                    if (link == position)
+                    {
+                        Debug.LogWarning(tileDescription + $" is linked to itself'");
+                        return false;
+                    }
+
+                    // Check that there is a tile at the linked location
+                    if (!Tiles.ContainsKey(link))
+                    {
+                        Debug.LogWarning(tileDescription + $" contains a link to a position with no corresponding tile'");
+                        return false;
+                    }
+                    
+                    // Check that the link is to a tile of an appropriate type
+                    var linkedTile = Tiles[link];
+                    if (!tile.Type.ValidLinkTargets.Contains(linkedTile.Type))
+                    {
+                        Debug.LogWarning(tileDescription + $" contains a link to a position to a tile of type {linkedTile.Type.DisplayName}.'");
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
     }
-
-
 }

@@ -30,7 +30,7 @@ public struct TileType
     /// <summary>
     /// The list of the ID's of the tile types that this tile can be linked to
     /// </summary>
-    public readonly List<int> ValidLinkTargetIDs;
+    private readonly List<int> ValidLinkTargetIDs;
 
     /// <summary>
     /// Can a tile of this type be used as the start location for the player?

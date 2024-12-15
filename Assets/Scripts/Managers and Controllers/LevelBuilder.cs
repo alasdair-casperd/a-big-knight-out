@@ -19,8 +19,13 @@ public class LevelBuilder: MonoBehaviour
     /// <summary>
     /// Instantiates all the square prefabs for the specified level, and returns a list of these
     /// </summary>
-    public Dictionary<Vector2Int, Square> BuildLevel(Transform parent, Level level, float animationDuration = -1)
+    public Dictionary<Vector2Int, Square> BuildLevel(Transform parent, Level level, float animationDuration = -1, bool ignoreErrors = false)
     {
+        if (!level.IsValidLevel && !ignoreErrors)
+        {
+            return null;
+        }
+
         // Find existing squares on the parent transform
         List<Square> existingSquares = parent.GetComponentsInChildren<Square>().ToList();
 
@@ -106,22 +111,24 @@ public class LevelBuilder: MonoBehaviour
             LeanTween.scale(g, Vector3.zero, animationDuration / 2)
                 .setOnComplete(() => Destroy(g));
         }
-
+        
         // loops over all the tiles in the level
         foreach (var (position, tile) in level.Tiles)
         {
-            // Finds the square corresponding to that tile
-            currentSquare = squares[position];
-
-            // If it's linkable loop over all its links
-            if (currentSquare.Type.IsLinkable)
+            if (tile.Type.IsLinkable)
             {
+                // Finds the square corresponding to that tile
+                currentSquare = squares[position];
+
                 // Creates a list for links to be added to
                 currentSquare.Links = new List<Square>();
                 foreach (Vector2Int link in tile.Links)
                 {
                     // Adds the square corresponding to the linked position to the square's list of links
-                    currentSquare.Links.Add(squares[link]);
+                    if (squares.ContainsKey(link))
+                    {
+                        currentSquare.Links.Add(squares[link]);
+                    }
                 }
             }
         }
