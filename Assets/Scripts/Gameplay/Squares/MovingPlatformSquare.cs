@@ -109,24 +109,25 @@ public class MovingPlatformSquare : Square
         {
             if (Links[LinkState % Links.Count] is MovingPlatformSquare nextSquare)
             {
-                // Activates the next linked moving platform square
+                // Activate the next linked moving platform square
                 nextSquare.State = 1;
                 nextSquare.HasMoved = true;
 
-                // Step this square's links
+                // Step this square's links and reset state
                 LinkState++;
+                State = 0;
 
                 // Moves the platform
                 Graphics.SlideTo(GridUtilities.GridToWorldPos(nextSquare.Position), Graphics.SlideDuration);
-                State = 0;
+
+                // Move the player, if carrying
+                if (carryingPlayer)
+                {
+                    PlayerController.MoveTo(nextSquare.Position, AnimationController.MovementType.Slide, Graphics.SlideDuration);
+                }
             }
         }
 
-        // Moves the player, if carrying
-        if (carryingPlayer)
-        {
-            PlayerController.MoveTo(Links[0].Position, AnimationController.MovementType.Slide, Graphics.SlideDuration);
-        }
 
         carryingPlayer = false;
     }
