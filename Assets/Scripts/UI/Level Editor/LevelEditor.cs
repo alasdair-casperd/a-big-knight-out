@@ -466,7 +466,7 @@ namespace UI
 
         public void SetLevelStart()
         {
-            if (level.Tiles.ContainsKey(targetPosition))
+            if (level.Tiles.ContainsKey(targetPosition) && level.Tiles[targetPosition].Type.IsValidStartPosition)
             {
                 level.StartPosition = targetPosition;
                 PositionStartIndicator();
