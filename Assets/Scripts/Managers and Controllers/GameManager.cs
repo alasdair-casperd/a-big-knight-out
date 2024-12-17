@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(SquareManager))]
 [RequireComponent(typeof(LevelBuilder))]
@@ -109,5 +110,13 @@ public class GameManager : MonoBehaviour
     public void OnPlayerTurnStart()
     {
         squareManager.OnPlayerTurnStart();
+    }
+    
+    /// <summary>
+    /// This is a *very temporary* method for restarting the level player, to be replaced later
+    /// </summary>
+    public void ReloadScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
