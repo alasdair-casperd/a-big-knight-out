@@ -3359,7 +3359,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LevelBuilder: {fileID: 1408143802}
-  startingLevelJSON: {fileID: 0}
+  startingLevelJSON: {fileID: 4900000, guid: 8ba10c0f5a4a647f590dee1d7193e57f, type: 3}
   levelParent: {fileID: 1408143800}
   prefabs: {fileID: 11400000, guid: 27cc6ead7fb8f47748eb1582f6ec1a96, type: 2}
   currentTool: {fileID: 391449855}
