@@ -11,7 +11,7 @@ namespace UI
         [Header("References")]
         [SerializeField]
         private LevelEditor levelEditor;
-        
+
         [SerializeField]
         private SelectionStyler selectionStyler;
 

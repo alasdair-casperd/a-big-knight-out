@@ -151,6 +151,15 @@ public struct TileType
         validLinkTargetIDs: new()
     );
 
+    public static TileType Finish = new
+    (
+        id: 8,
+        displayName: "FinishTile",
+        validStates: new(),
+        validLinkTargetIDs: new(),
+        isValidStartPosition: false
+    );
+
     // A list of all the tile types
     public static TileType[] All =
     {
@@ -162,6 +171,7 @@ public struct TileType
         Spikes,
         SpikeUp,
         SpikeDown,
+        Finish
     };
 
     /*
