@@ -48,7 +48,7 @@ public struct TileType
             return All.Where(type => targetIDs.Contains(type.ID)).ToList();
         }
     }
-    
+
     /// <summary>
     /// Can this tile be given initial states?
     /// </summary>
@@ -68,15 +68,15 @@ public struct TileType
     /*
         TileType Initialiser
     */
-    
-    public TileType(int id, string displayName, List<int> validStates, List<int > validLinkTargetIDs, bool isValidStartPosition = false)
+
+    public TileType(int id, string displayName, List<int> validStates, List<int> validLinkTargetIDs, bool isValidStartPosition = false)
     {
         ID = id;
         DisplayName = displayName;
         ValidStates = validStates;
         ValidLinkTargetIDs = validLinkTargetIDs;
         IsValidStartPosition = isValidStartPosition;
-    }  
+    }
 
     /*
         All of the game's TileTypes
@@ -135,6 +135,14 @@ public struct TileType
         isValidStartPosition: true
     );
 
+    public static TileType SpikeUp = new
+    (
+        id: 6,
+        displayName: "SpikeUp",
+        validStates: new() { 2, 3, 4, 5, 6, 7, 8, 9, 10 },
+        validLinkTargetIDs: new()
+    );
+
     // A list of all the tile types
     public static TileType[] All =
     {
@@ -143,7 +151,8 @@ public struct TileType
         FallingFloor,
         Portal,
         MovingPlatform,
-        Spikes
+        Spikes,
+        SpikeUp
     };
 
     /*

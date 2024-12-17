@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UI;
 
-public class LevelEditor: MonoBehaviour
+public class LevelEditor : MonoBehaviour
 {
     public LevelBuilder LevelBuilder;
 
@@ -27,7 +27,7 @@ public class LevelEditor: MonoBehaviour
     private LevelEditorTool[] allTools;
 
     private Vector2Int targetPosition;
-    
+
     private Vector3 targetWorldPosition;
 
     private LinkIndicator targetLink;
@@ -42,12 +42,12 @@ public class LevelEditor: MonoBehaviour
 
     private bool ShowingLinks
     {
-        set{ if (linksContainer != null) linksContainer.SetActive(value); }
+        set { if (linksContainer != null) linksContainer.SetActive(value); }
     }
 
     private bool ShowingState
     {
-        set{ if (stateContainer != null) stateContainer.SetActive(value); }
+        set { if (stateContainer != null) stateContainer.SetActive(value); }
     }
 
     private Vector2Int? linkStart;
@@ -65,13 +65,13 @@ public class LevelEditor: MonoBehaviour
         if (LevelToPreview != null)
         {
             level = LevelToPreview;
-        } 
+        }
         else
         {
             if (startingLevelJSON == null)
             {
                 level = new Level(startPosition: Vector2Int.zero);
-            }   
+            }
             else
             {
                 try
@@ -130,7 +130,7 @@ public class LevelEditor: MonoBehaviour
                 {
                     MouseDrag(mousePosition);
                 }
-                
+
                 MouseHeld(mousePosition);
             }
         }
@@ -196,7 +196,7 @@ public class LevelEditor: MonoBehaviour
     }
 
     private void GenerateLinkIndicators()
-    {            
+    {
         if (linksContainer == null)
         {
             linksContainer = new GameObject("Links");
@@ -223,7 +223,7 @@ public class LevelEditor: MonoBehaviour
     }
 
     private void GenerateStateIndicators()
-    {            
+    {
         if (stateContainer == null)
         {
             stateContainer = new GameObject("State Indicators");
@@ -251,7 +251,7 @@ public class LevelEditor: MonoBehaviour
     }
 
     private void AddTile(TileType type, Vector2Int position)
-    {    
+    {
         if (!level.Tiles.ContainsKey(position))
         {
             AddTile();
@@ -347,6 +347,11 @@ public class LevelEditor: MonoBehaviour
         AddTile(TileType.FallingFloor, targetPosition);
     }
 
+    public void AddSpikeUp()
+    {
+        AddTile(TileType.SpikeUp, targetPosition);
+    }
+
     // ==========
     // Link Tools
     // ==========
@@ -401,7 +406,7 @@ public class LevelEditor: MonoBehaviour
 
             // Prevent links to non-existant tiles
             if (!level.Tiles.ContainsKey(targetPosition)) return;
-            
+
             // Read start and target tiles
             Tile startTile = level.Tiles[startPosition];
             Tile targetTile = level.Tiles[targetPosition];
@@ -437,7 +442,7 @@ public class LevelEditor: MonoBehaviour
     // ===========
 
     public void EnterStateEditingMode()
-    {            
+    {
         ShowingState = true;
     }
 
@@ -497,7 +502,7 @@ public class LevelEditor: MonoBehaviour
 
     public void PreviewLevel()
     {
-        LevelToPreview = level;   
+        LevelToPreview = level;
         SceneManager.LoadScene("LevelPlayer");
     }
 }

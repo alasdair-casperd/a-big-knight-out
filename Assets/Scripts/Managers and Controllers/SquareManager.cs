@@ -39,7 +39,7 @@ public class SquareManager : MonoBehaviour
     };
 
 
-    public void InitialiseSquares(Dictionary<Vector2Int,Square> inputSquares)
+    public void InitialiseSquares(Dictionary<Vector2Int, Square> inputSquares)
     {
         squares = inputSquares;
 
