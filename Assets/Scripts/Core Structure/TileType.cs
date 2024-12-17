@@ -143,6 +143,14 @@ public struct TileType
         validLinkTargetIDs: new()
     );
 
+    public static TileType SpikeDown = new
+    (
+        id: 7,
+        displayName: "SpikeDown",
+        validStates: new() { 2, 3, 4, 5, 6, 7, 8, 9, 10 },
+        validLinkTargetIDs: new()
+    );
+
     // A list of all the tile types
     public static TileType[] All =
     {
@@ -152,7 +160,8 @@ public struct TileType
         Portal,
         MovingPlatform,
         Spikes,
-        SpikeUp
+        SpikeUp,
+        SpikeDown,
     };
 
     /*

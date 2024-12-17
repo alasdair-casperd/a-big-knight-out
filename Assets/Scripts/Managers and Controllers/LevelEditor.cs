@@ -352,6 +352,11 @@ public class LevelEditor : MonoBehaviour
         AddTile(TileType.SpikeUp, targetPosition);
     }
 
+    public void AddSpikeDown()
+    {
+        AddTile(TileType.SpikeDown, targetPosition);
+    }
+
     // ==========
     // Link Tools
     // ==========
