@@ -160,6 +160,15 @@ public struct TileType
         isValidStartPosition: false
     );
 
+    public static TileType ColourFlip = new
+    (
+        id: 9,
+        displayName: "ColourFlip",
+        validStates: new() { 0, 1 },
+        validLinkTargetIDs: new(),
+        isValidStartPosition: true
+    );
+
     // A list of all the tile types
     public static TileType[] All =
     {
@@ -171,6 +180,7 @@ public struct TileType
         Spikes,
         SpikeUp,
         SpikeDown,
+        ColourFlip,
         Finish
     };
 

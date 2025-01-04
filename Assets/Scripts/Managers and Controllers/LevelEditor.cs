@@ -362,6 +362,11 @@ public class LevelEditor : MonoBehaviour
         AddTile(TileType.Finish, targetPosition);
     }
 
+    public void AddColourFlipTile()
+    {
+        AddTile(TileType.ColourFlip, targetPosition);
+    }
+
     // ==========
     // Link Tools
     // ==========
