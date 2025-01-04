@@ -7,10 +7,7 @@ using System.Collections.Generic;
 /// </summary>
 public class ColourFlipSquare : Square
 {
-    public override TileType Type
-    {
-        get { return TileType.ColourFlip; }
-    }
+    public override TileType Type =>  TileType.ColourFlip;
 
     // Will always report as passable, if you try to change that you get a warning.
     public override bool IsPassable

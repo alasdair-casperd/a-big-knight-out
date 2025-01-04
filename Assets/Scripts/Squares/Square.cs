@@ -89,7 +89,7 @@ public abstract class Square : MonoBehaviour
 
     // A dictionary whose keys are all the squares that could be sending charge to this square. The
     // dictionary's values indicate and whether each square is sending charge
-    public Dictionary<Square, bool> IncomingCharges;
+    public Dictionary<Square, bool?> IncomingCharges;
 
     // Is the square emitting a charge? Updating this propagates changes through the electrical network
     protected bool OutgoingCharge
@@ -106,7 +106,7 @@ public abstract class Square : MonoBehaviour
     }
 
     // Is the square receiving any charge?
-    protected bool IsReceivingCharge => IncomingCharges.Values.Any(charge => charge);
+    protected bool IsReceivingCharge => IncomingCharges.Values.Any(charge => charge ?? false);
 
     // A function called whenever the charge of this square has been updated
     public virtual void OnChargeChanged() {}
@@ -128,13 +128,13 @@ public abstract class Square : MonoBehaviour
     }
 
     // Call RecalculateCharge to update the outgoing charge
-    protected void UpdateOutgoingCharge()
+    public void UpdateOutgoingCharge()
     {
-        OutgoingCharge = RecalculateCharge();
+        OutgoingCharge = CalculateCharge();
     }
 
     // A function to be implemented by each square to control how outgoing charge is determined
-    protected virtual bool RecalculateCharge()
+    public virtual bool CalculateCharge()
     {
         return false;
     }

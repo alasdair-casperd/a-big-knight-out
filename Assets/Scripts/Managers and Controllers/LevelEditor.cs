@@ -366,7 +366,7 @@ public class LevelEditor : MonoBehaviour
     {
         AddTile(TileType.ColourFlip, targetPosition);
     }
-    
+
     public void AddButton()
     {
         AddTile(TileType.Button, targetPosition);
@@ -375,6 +375,21 @@ public class LevelEditor : MonoBehaviour
     public void AddSwitch()
     {
         AddTile(TileType.Switch, targetPosition);
+    }
+
+    public void AddAndGate()
+    {
+        AddTile(TileType.AndGate, targetPosition);
+    }
+    
+    public void AddOrGate()
+    {
+        AddTile(TileType.OrGate, targetPosition);
+    }
+
+    public void AddNotGate()
+    {
+        AddTile(TileType.NotGate, targetPosition);
     }
 
     // ==========

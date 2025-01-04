@@ -158,4 +158,19 @@ public class SquareManager : MonoBehaviour
             square.IndicateMoveValidity(coordinatesToHighlight.Contains(coordinate));
         }
     }
+    
+    /// <summary>
+    /// Sets initial charge states for all conductive squares
+    /// </summary>
+    public void InitialiseElectricity()
+    {
+        foreach (var (_, square) in squares)
+        {
+            if (square.Type.IsConductor)
+            {
+                square.OnChargeChanged();
+                square.UpdateOutgoingCharge();
+            }
+        }
+    }
 }

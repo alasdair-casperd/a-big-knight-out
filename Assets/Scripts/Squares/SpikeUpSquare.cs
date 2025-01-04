@@ -28,6 +28,15 @@ public class SpikeUpSquare : Square
     [SerializeField]
     private Transform retractedPosition;
 
+    /// <summary>
+    /// Are the spikes currently retracted?
+    /// </summary>
+    private bool spikesRetracted;
+
+    /// <summary>
+    /// Have the spike graphics retracted (or at least started the animation)?
+    /// </summary>
+    private bool graphicsRetracted;
 
     // Is always passable but spikes will kill you.
     public override bool IsPassable
@@ -47,8 +56,6 @@ public class SpikeUpSquare : Square
     /// </summary>
     private int _turnCounter { get; set; }
 
-    private bool retracted;
-    private bool graphicsRetracted;
 
     /// <summary>
     /// Changes the spike up and down depending on the frequency.
@@ -69,10 +76,9 @@ public class SpikeUpSquare : Square
         AudioManager.Play(AudioManager.SoundEffects.thud);
 
         // Check for death
-        if (_turnCounter % State == 0)
+        if (spikesRetracted)
         {
             Debug.Log("You have survived... for now");
-
         }
         else
         {
@@ -98,22 +104,21 @@ public class SpikeUpSquare : Square
 
     public override void OnChargeChanged()
     {
-        Debug.Log("Update spikes");
         UpdateSpikes();
     }
 
     public void UpdateSpikes()
     {
-        retracted = IsReceivingCharge;
+        spikesRetracted = IsReceivingCharge;
         if (_turnCounter % State == 0 && State != 1)
         {
-            retracted = !retracted;
+            spikesRetracted = !spikesRetracted;
         }
         
-        if (graphicsRetracted != retracted)
+        if (graphicsRetracted != spikesRetracted)
         {
-            graphicsRetracted = retracted;
-            Transform targetTransform = retracted ? retractedPosition : activePosition;
+            graphicsRetracted = spikesRetracted;
+            Transform targetTransform = spikesRetracted ? retractedPosition : activePosition;
             SpikeGraphics.SlideTo(targetTransform.position, -1, false);
             AudioManager.Play(AudioManager.SoundEffects.metalSwoosh);
         }

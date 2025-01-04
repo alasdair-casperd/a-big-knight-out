@@ -180,7 +180,7 @@ public struct TileType
         id: 10,
         displayName: "Button",
         validStates: new(),
-        validLinkTargetIDs: new() { 5, 6, 7, 11 },
+        validLinkTargetIDs: new() { 5, 6, 7, 11, 12, 13, 14 },
         isConductor: true
     );
 
@@ -189,7 +189,34 @@ public struct TileType
         id: 11,
         displayName: "Switch",
         validStates: new() { 0, 1 },
-        validLinkTargetIDs: new() { 5, 6, 7, 11 },
+        validLinkTargetIDs: new() { 5, 6, 7, 11, 12, 13, 14 },
+        isConductor: true
+    );
+
+    public static TileType AndGate = new
+    (
+        id: 12,
+        displayName: "AND Gate",
+        validStates: new(),
+        validLinkTargetIDs: new() { 5, 6, 7, 11, 12, 13, 14 },
+        isConductor: true
+    );
+
+    public static TileType OrGate = new
+    (
+        id: 13,
+        displayName: "OR Gate",
+        validStates: new(),
+        validLinkTargetIDs: new() { 5, 6, 7, 11, 12, 13, 14 },
+        isConductor: true
+    );
+
+    public static TileType NotGate = new
+    (
+        id: 14,
+        displayName: "NOT Gate",
+        validStates: new(),
+        validLinkTargetIDs: new() { 5, 6, 7, 11, 12, 13, 14 },
         isConductor: true
     );
 
@@ -207,7 +234,10 @@ public struct TileType
         ColourFlip,
         Finish,
         Button,
-        Switch
+        Switch,
+        AndGate,
+        OrGate,
+        NotGate
     };
 
     /*

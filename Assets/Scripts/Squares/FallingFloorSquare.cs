@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 
 /// <summary>
-/// A square that after you land on, will dissapear.
+/// A square that after you land on, will disappear.
 /// </summary>
 public class FallingFloorSquare : Square
 {

@@ -6,10 +6,7 @@ using System.Collections.Generic;
 /// </summary>
 public class FinishSquare : Square
 {
-    public override TileType Type
-    {
-        get { return TileType.Finish; }
-    }
+    public override TileType Type =>  TileType.Finish;
 
     // Will always report as passable, if you try to change that you get a warning.
     public override bool IsPassable

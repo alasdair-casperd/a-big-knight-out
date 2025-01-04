@@ -59,6 +59,9 @@ public class GameManager : MonoBehaviour
         // Give the square manager its squares to manage, and initialize them
         squareManager.InitialiseSquares(squares);
 
+        // Initialise electricity
+        squareManager.InitialiseElectricity();
+        
         // Start the player's turn
         squareManager.OnPlayerTurnStart();
     }
