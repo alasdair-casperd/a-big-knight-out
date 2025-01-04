@@ -8,23 +8,7 @@ using Unity.VisualScripting;
 /// </summary>
 public class SpikeUpSquare : Square
 {
-    public override TileType Type
-    {
-        get { return TileType.SpikeUp; }
-    }
-
-    public override List<Square> Links
-    {
-        get
-        {
-            Debug.LogWarning("This type of spike cannot be linked.");
-            return new List<Square>();
-        }
-        set
-        {
-            Debug.LogWarning("Not meant to set this");
-        }
-    }
+    public override TileType Type =>  TileType.SpikeUp;
 
     /// <summary>
     /// The animator on the graphics gameObject representing the retracting spikes for this tile
@@ -63,25 +47,16 @@ public class SpikeUpSquare : Square
     /// </summary>
     private int _turnCounter { get; set; }
 
-
+    private bool retracted;
+    private bool graphicsRetracted;
 
     /// <summary>
-    /// Changes the spike up and down depending on the frquency.
+    /// Changes the spike up and down depending on the frequency.
     /// </summary>
     public override void OnPlayerMove()
     {
         _turnCounter++;
-        if (_turnCounter % State == 0)
-        {
-            ApplyVisuals();
-
-            // Play a sound effect
-            AudioManager.Play(AudioManager.SoundEffects.metalSwoosh);
-        }
-        else if (_turnCounter % State == 1)
-        {
-            ApplyVisuals();
-        }
+        UpdateSpikes();
     }
 
     /// <summary>
@@ -92,6 +67,7 @@ public class SpikeUpSquare : Square
     {
         // Play a sound effect
         AudioManager.Play(AudioManager.SoundEffects.thud);
+
         // Check for death
         if (_turnCounter % State == 0)
         {
@@ -106,31 +82,40 @@ public class SpikeUpSquare : Square
 
     }
 
-
+    public override void OnLevelTurn()
+    {
+        UpdateSpikes();
+    }
+    
     /// <summary>
     /// Setting up the platforms for the start of the level.
     /// </summary>
     public override void OnLevelStart()
     {
         _turnCounter = 1;
-        SpikeGraphics.transform.position = activePosition.transform.position;
-        ApplyVisuals();
+        UpdateSpikes();
     }
 
-    /// <summary>
-    /// Increases the turn counter by one.
-    /// </summary>
-    public override void OnLevelTurn()
+    public override void OnChargeChanged()
     {
-        //
+        Debug.Log("Update spikes");
+        UpdateSpikes();
     }
 
-    /// <summary>
-    /// Apply the visual positioning of the spike graphics
-    /// </summary>
-    public void ApplyVisuals()
+    public void UpdateSpikes()
     {
-        Transform targetTransform = _turnCounter % State == 0 ? retractedPosition : activePosition;
-        SpikeGraphics.SlideTo(targetTransform.position, -1, false);
+        retracted = IsReceivingCharge;
+        if (_turnCounter % State == 0 && State != 1)
+        {
+            retracted = !retracted;
+        }
+        
+        if (graphicsRetracted != retracted)
+        {
+            graphicsRetracted = retracted;
+            Transform targetTransform = retracted ? retractedPosition : activePosition;
+            SpikeGraphics.SlideTo(targetTransform.position, -1, false);
+            AudioManager.Play(AudioManager.SoundEffects.metalSwoosh);
+        }
     }
 }

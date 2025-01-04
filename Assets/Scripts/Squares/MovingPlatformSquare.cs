@@ -7,15 +7,7 @@ using Unity.VisualScripting;
 /// </summary>
 public class MovingPlatformSquare : Square
 {
-    public override TileType Type
-    {
-        get { return TileType.MovingPlatform; }
-    }
-
-    public override List<Square> Links
-    {
-        get; set;
-    }
+    public override TileType Type =>  TileType.MovingPlatform;
 
     /// <summary>
     /// Recursively finds all moving platform squares linked to this one

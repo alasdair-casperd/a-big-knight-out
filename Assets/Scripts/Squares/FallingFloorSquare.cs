@@ -7,10 +7,7 @@ using System.Collections.Generic;
 public class FallingFloorSquare : Square
 {
 
-    public override TileType Type
-    {
-        get { return TileType.FallingFloor; }
-    }
+    public override TileType Type =>  TileType.FallingFloor;
 
     // Is only passable before it is landed on.
     public override bool IsPassable

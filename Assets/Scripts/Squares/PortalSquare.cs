@@ -6,15 +6,7 @@ using System.Collections.Generic;
 /// </summary>
 public class PortalSquare : Square
 {
-    public override TileType Type
-    {
-        get { return TileType.Portal; }
-    }
-
-    public override List<Square> Links
-    {
-        get; set;
-    }
+    public override TileType Type =>  TileType.Portal;
 
     // Will always report as passable, if you try to change that you get a warning.
     public override bool IsPassable

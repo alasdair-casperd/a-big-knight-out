@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -17,22 +19,21 @@ public abstract class Square : MonoBehaviour
     /// </summary>
     public Vector2Int Position { get; set; }
 
-
     /// <summary>
-    /// The list of all of the squares that this square is linked to, if not implemented (e.g. for floor), it will raise a warning.
+    /// The list of all of the squares that this square is linked to
     /// </summary>
-    public virtual List<Square> Links
-    {
+    public List<Square> Links {
         get
         {
-            Debug.LogWarning("Links not implemented for tile type " + Type.DisplayName);
-            return new List<Square>();
+            return _links;
         }
         set
         {
-            Debug.LogWarning("Links not implemented for tile type " + Type.DisplayName);
+            if (Type.IsLinkable) _links = value;
+            else Debug.Log($"Attempting to assign links to a tile of type '{Type.DisplayName}'");
         }
     }
+    private List<Square> _links;
 
     /// <summary>
     /// The state of this square, if not implemented (e.g. for floor), it will raise a warning.
@@ -83,6 +84,62 @@ public abstract class Square : MonoBehaviour
     }
 
     /*
+        Electricity Functions and Properties
+    */
+
+    // A dictionary whose keys are all the squares that could be sending charge to this square. The
+    // dictionary's values indicate and whether each square is sending charge
+    public Dictionary<Square, bool> IncomingCharges;
+
+    // Is the square emitting a charge? Updating this propagates changes through the electrical network
+    protected bool OutgoingCharge
+    {
+        set
+        {
+            if (!Type.IsConductor) return;
+            foreach (var link in Links)
+            {
+                // TODO: Guard against cycles causing stack overflows
+                link.UpdateIncomingCharge(value, this);
+            }
+        }
+    }
+
+    // Is the square receiving any charge?
+    protected bool IsReceivingCharge => IncomingCharges.Values.Any(charge => charge);
+
+    // A function called whenever the charge of this square has been updated
+    public virtual void OnChargeChanged() {}
+
+    // A function called by other squares when their charge is updated
+    private void UpdateIncomingCharge(bool newCharge, Square sender)
+    {
+        if (!IncomingCharges.ContainsKey(sender))
+        {
+            Debug.LogWarning($"Conductive links incorrectly set up for square of type {Type.DisplayName}");
+        }
+        
+        if (IncomingCharges[sender] != newCharge)
+        {
+            IncomingCharges[sender] = newCharge;
+            OnChargeChanged();
+            UpdateOutgoingCharge();
+        }
+    }
+
+    // Call RecalculateCharge to update the outgoing charge
+    protected void UpdateOutgoingCharge()
+    {
+        OutgoingCharge = RecalculateCharge();
+    }
+
+    // A function to be implemented by each square to control how outgoing charge is determined
+    protected virtual bool RecalculateCharge()
+    {
+        return false;
+    }
+
+    /*
 
     The following functions may or may not be implemented by a given square. They occur
     in the order that they are written below, and are called by SquareManager.
@@ -90,50 +147,32 @@ public abstract class Square : MonoBehaviour
     */
 
     /// <summary>
-    /// The actions to be perfomed at the start of the player's turn
+    /// The actions to be performed at the start of the level.
     /// </summary>
-    public virtual void OnPlayerTurnStart()
-    {
-        return;
-    }
+    public virtual void OnLevelStart() {}
+
+    /// <summary>
+    /// The actions to be performed at the start of the player's turn
+    /// </summary>
+    public virtual void OnPlayerTurnStart() {}
 
     /// <summary>
     /// The actions to be performed once the player has input their move
     /// </summary>
-    public virtual void OnPlayerMove()
-    {
-        return;
-    }
+    public virtual void OnPlayerMove() {}
 
     /// <summary>
     /// The actions to be performed immediately when the player lands on this tile
     /// </summary>
-    public virtual void OnPlayerLand()
-    {
-        return;
-    }
+    public virtual void OnPlayerLand() {}
 
     /// <summary>
     /// The actions to be performed immediately when the player leaves the tile
     /// </summary>
-    public virtual void OnPlayerLeave()
-    {
-        return;
-    }
+    public virtual void OnPlayerLeave() {}
 
     /// <summary>
     /// The actions to be performed at the start of the Level's turn
     /// </summary>
-    public virtual void OnLevelTurn()
-    {
-        return;
-    }
-
-    /// <summary>
-    /// The actions to be performed at the start of the level.
-    /// </summary>
-    public virtual void OnLevelStart()
-    {
-        return;
-    }
+    public virtual void OnLevelTurn() {}
 }

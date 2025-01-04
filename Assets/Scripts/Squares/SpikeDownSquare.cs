@@ -9,23 +9,7 @@ using Unity.VisualScripting;
 /// </summary>
 public class SpikeDownSquare : Square
 {
-    public override TileType Type
-    {
-        get { return TileType.SpikeDown; }
-    }
-
-    public override List<Square> Links
-    {
-        get
-        {
-            Debug.LogWarning("This type of spike cannot be linked.");
-            return new List<Square>();
-        }
-        set
-        {
-            Debug.LogWarning("Not meant to set this");
-        }
-    }
+    public override TileType Type =>  TileType.SpikeDown;
 
     /// <summary>
     /// The animator on the graphics gameObject representing the retracting spikes for this tile

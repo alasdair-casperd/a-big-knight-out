@@ -38,6 +38,11 @@ public struct TileType
     public readonly bool IsValidStartPosition;
 
     /// <summary>
+    /// Should the links of this tile be considered as electrical links?
+    /// </summary>
+    public readonly bool IsConductor;
+
+    /// <summary>
     /// The list of tile types that this tile can be linked to
     /// </summary>
     public readonly List<TileType> ValidLinkTargets
@@ -69,13 +74,14 @@ public struct TileType
         TileType Initialiser
     */
 
-    public TileType(int id, string displayName, List<int> validStates, List<int> validLinkTargetIDs, bool isValidStartPosition = false)
+    public TileType(int id, string displayName, List<int> validStates, List<int> validLinkTargetIDs, bool isValidStartPosition = false, bool isConductor = false)
     {
         ID = id;
         DisplayName = displayName;
         ValidStates = validStates;
         ValidLinkTargetIDs = validLinkTargetIDs;
         IsValidStartPosition = isValidStartPosition;
+        IsConductor = isConductor;
     }
 
     /*
@@ -138,17 +144,35 @@ public struct TileType
     public static TileType SpikeUp = new
     (
         id: 6,
-        displayName: "SpikeUp",
-        validStates: new() { 2, 3, 4, 5, 6, 7, 8, 9, 10 },
+        displayName: "Spike Up",
+        validStates: new() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 },
         validLinkTargetIDs: new()
     );
 
     public static TileType SpikeDown = new
     (
         id: 7,
-        displayName: "SpikeDown",
-        validStates: new() { 2, 3, 4, 5, 6, 7, 8, 9, 10 },
+        displayName: "Spike Down",
+        validStates: new() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 },
         validLinkTargetIDs: new()
+    );
+
+    public static TileType Button = new
+    (
+        id: 8,
+        displayName: "Button",
+        validStates: new(),
+        validLinkTargetIDs: new() { 5, 6, 7, 9 },
+        isConductor: true
+    );
+
+    public static TileType Switch = new
+    (
+        id: 9,
+        displayName: "Switch",
+        validStates: new() { 0, 1 },
+        validLinkTargetIDs: new() { 5, 6, 7, 9 },
+        isConductor: true
     );
 
     // A list of all the tile types
@@ -162,6 +186,8 @@ public struct TileType
         Spikes,
         SpikeUp,
         SpikeDown,
+        Button,
+        Switch
     };
 
     /*

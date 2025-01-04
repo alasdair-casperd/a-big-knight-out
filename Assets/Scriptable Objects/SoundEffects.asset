@@ -45,7 +45,7 @@ MonoBehaviour:
   click:
     audioClip: {fileID: 8300000, guid: c968eb9fd5ea343d9a92ca048cdfbb8f, type: 3}
     pitch: 1
-    volume: 1
+    volume: 0.18
     volumeVariance: 0
     pitchVariance: 0
   tap:

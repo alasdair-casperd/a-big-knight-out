@@ -81,6 +81,7 @@ public class LevelBuilder: MonoBehaviour
             currentSquare.Position = position;
             currentSquare.validMoveIndicator = Instantiate(prefabs.validMoveIndicator, currentSquareObject.transform);
             currentSquare.validMoveIndicator.gameObject.SetActive(false);
+            currentSquare.IncomingCharges = new Dictionary<Square, bool>();
 
             // Sets up the square's initial state
             if (currentSquare.Type.IsMultiState)
@@ -124,10 +125,15 @@ public class LevelBuilder: MonoBehaviour
                 currentSquare.Links = new List<Square>();
                 foreach (Vector2Int link in tile.Links)
                 {
-                    // Adds the square corresponding to the linked position to the square's list of links
+                    // Adds the square corresponding to the linked position to the square's list of links and sets up incoming charges
                     if (squares.ContainsKey(link))
                     {
                         currentSquare.Links.Add(squares[link]);
+
+                        if (tile.Type.IsConductor)
+                        {
+                            squares[link].IncomingCharges.Add(currentSquare, false);
+                        }
                     }
                 }
             }

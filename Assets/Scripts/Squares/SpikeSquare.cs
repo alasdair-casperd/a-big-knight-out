@@ -7,15 +7,7 @@ using Unity.VisualScripting;
 /// </summary>
 public class SpikeSquare : Square
 {
-    public override TileType Type
-    {
-        get { return TileType.Spikes; }
-    }
-
-    public override List<Square> Links
-    {
-        get; set;
-    }
+    public override TileType Type =>  TileType.Spikes;
 
     /// <summary>
     /// The animator on the graphics gameObject representing the retracting spikes for this tile
@@ -140,7 +132,6 @@ public class SpikeSquare : Square
             Debug.Log("You have survived... for now");
         }
     }
-
 
     /// <summary>
     /// Setting up the platforms for the start of the level.
