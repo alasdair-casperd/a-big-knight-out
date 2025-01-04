@@ -157,21 +157,39 @@ public struct TileType
         validLinkTargetIDs: new()
     );
 
-    public static TileType Button = new
+    public static TileType Finish = new
     (
         id: 8,
+        displayName: "FinishTile",
+        validStates: new(),
+        validLinkTargetIDs: new(),
+        isValidStartPosition: false
+    );
+
+    public static TileType ColourFlip = new
+    (
+        id: 9,
+        displayName: "ColourFlip",
+        validStates: new() { 0, 1 },
+        validLinkTargetIDs: new(),
+        isValidStartPosition: true
+    );
+
+    public static TileType Button = new
+    (
+        id: 10,
         displayName: "Button",
         validStates: new(),
-        validLinkTargetIDs: new() { 5, 6, 7, 9 },
+        validLinkTargetIDs: new() { 5, 6, 7, 11 },
         isConductor: true
     );
 
     public static TileType Switch = new
     (
-        id: 9,
+        id: 11,
         displayName: "Switch",
         validStates: new() { 0, 1 },
-        validLinkTargetIDs: new() { 5, 6, 7, 9 },
+        validLinkTargetIDs: new() { 5, 6, 7, 11 },
         isConductor: true
     );
 
@@ -186,6 +204,8 @@ public struct TileType
         Spikes,
         SpikeUp,
         SpikeDown,
+        ColourFlip,
+        Finish,
         Button,
         Switch
     };

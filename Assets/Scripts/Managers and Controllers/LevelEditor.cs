@@ -357,6 +357,16 @@ public class LevelEditor : MonoBehaviour
         AddTile(TileType.SpikeDown, targetPosition);
     }
 
+    public void AddFinish()
+    {
+        AddTile(TileType.Finish, targetPosition);
+    }
+
+    public void AddColourFlipTile()
+    {
+        AddTile(TileType.ColourFlip, targetPosition);
+    }
+    
     public void AddButton()
     {
         AddTile(TileType.Button, targetPosition);
