@@ -106,7 +106,6 @@ public struct TileType
         validLinkTargetIDs: new()
     );
 
-
     public static TileType FallingFloor = new
     (
         id: 2,

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Level
@@ -22,6 +23,11 @@ public class Level
     /// </summary>
     public Dictionary<Vector2Int, Tile> Tiles;
 
+    /// <summary>
+    /// A dictionary containing all of the level's entities and their positions
+    /// </summary>
+    public Dictionary<Vector2Int, Entity> Entities;
+
     /*
         Initialisers
     */
@@ -32,9 +38,10 @@ public class Level
         Name = "New Level";
         StartPosition = Vector2Int.zero;
         Tiles = new();
+        Entities = new();
     }
 
-    // Create a level with a single starting square
+    // Create a level with a single starting square (used in the level editor when making a new level)
     public Level(Vector2Int startPosition)
     {
         Name = "New Level";
@@ -43,14 +50,16 @@ public class Level
         {
             { startPosition, new Tile(TileType.Floor) }
         };
+        Entities = new();
     }
 
     // Full initialiser
-    public Level(string name, Vector2Int startPosition, Dictionary<Vector2Int, Tile> tiles)
+    public Level(string name, Vector2Int startPosition, Dictionary<Vector2Int, Tile> tiles, Dictionary<Vector2Int, Entity> entities)
     {
         Name = name;
         StartPosition = startPosition;
         Tiles = tiles;
+        Entities = entities;
     }
 
     /*
@@ -74,6 +83,24 @@ public class Level
             {
                 Debug.LogWarning($"Tile at level's start position is not a valid start position. The player cannot start on a tile of type '{startTile.Type.DisplayName}'");
                 return false;
+            }
+
+            // Check that the entities are placed on valid squares
+            foreach (var (position, entity) in Entities)
+            {
+                // Check the entity is on a square
+                if (!Tiles.ContainsKey(position))
+                {
+                    Debug.LogWarning($"Entity '{entity.Type.DisplayName}' is placed on a tile that does not exist");
+                    return false;
+                }
+
+                // Check the entity is on a valid start square
+                if (!Tiles[position].Type.IsValidStartPosition)
+                {
+                    Debug.LogWarning($"Entity '{entity.Type.DisplayName}' is placed on a tile that is not a valid start position");
+                    return false;
+                }
             }
 
             // Loop over all tiles

@@ -40,15 +40,29 @@ public static class LevelFileManager
                 links: t.Links.Select(l => Vector2Int(l)).ToList()
             );
         }
+
+        // Converts a Serializing_Entity to an Entity (ignores position information on the former)
+        Entity Entity(Serializing_Entity e)
+        {
+            EntityType entityType = EntityType.All.Where(type => type.ID == e.EntityTypeID).First();
+            return new Entity(entityType, e.InitialState, e.GraphicsVariant);
+        }
         
         // Deserialize json into a Serializing_Level object
         var l = JsonUtility.FromJson<Serializing_Level>(json);
 
-        // Extract a list of tiles from this
+        // Extract a dictionary of tiles from the deserialized Serializing_Level
         var tiles = new Dictionary<Vector2Int, Tile>();
         foreach (var t in l.Tiles)
         {
             tiles.Add(Vector2Int(t.Position), Tile(t));
+        }
+
+        // Extract a dictionary of entities from the deserialized Serializing_Level
+        var entities = new Dictionary<Vector2Int, Entity>();
+        foreach (var e in l.Entities)
+        {
+            entities.Add(Vector2Int(e.Position), Entity(e));
         }
 
         // Return the corresponding level
@@ -56,7 +70,8 @@ public static class LevelFileManager
         (
             name: l.Name,
             startPosition: Vector2Int(l.StartPosition),
-            tiles: tiles
+            tiles: tiles,
+            entities: entities
         );
     }
 
@@ -105,17 +120,28 @@ public static class LevelFileManager
         public string Name;
         public Serializing_Vector2Int StartPosition;
         public Serializing_Tile[] Tiles;
+        public Serializing_Entity[] Entities;
 
         public Serializing_Level(Level level)
         {
             Name = level.Name;
             StartPosition = new Serializing_Vector2Int(level.StartPosition);
-            var list = new List<Serializing_Tile>();
+            var tiles_list = new List<Serializing_Tile>();
+
+            // Add tiles
             foreach (var (position, tile) in level.Tiles)
             {
-                list.Add(new Serializing_Tile(tile, position));
+                tiles_list.Add(new Serializing_Tile(tile, position));
             }
-            Tiles = list.ToArray();
+            Tiles = tiles_list.ToArray();
+            
+            // Add entities
+            var entities_list = new List<Serializing_Entity>();
+            foreach (var (position, entity) in level.Entities)
+            {
+                entities_list.Add(new Serializing_Entity(entity, position));
+            }
+            Entities = entities_list.ToArray();
         }
     }
 
@@ -123,18 +149,35 @@ public static class LevelFileManager
     private struct Serializing_Tile
     {
         public int TileTypeID;
-        public Serializing_Vector2Int Position;
         public int InitialState;
         public int GraphicsVariant;
+        public Serializing_Vector2Int Position;
         public List<Serializing_Vector2Int> Links;
 
         public Serializing_Tile(Tile tile, Vector2Int position)
         {
             TileTypeID = tile.Type.ID;
-            Position = new Serializing_Vector2Int(position);
             InitialState = tile.InitialState;
             GraphicsVariant = tile.GraphicsVariant;
+            Position = new Serializing_Vector2Int(position);
             Links = tile.Links.Select(link => new Serializing_Vector2Int(link)).ToList();
+        }
+    }
+
+    [Serializable]
+    private struct Serializing_Entity
+    {
+        public int EntityTypeID;
+        public int GraphicsVariant;
+        public int InitialState;
+        public Serializing_Vector2Int Position;
+
+        public Serializing_Entity(Entity entity, Vector2Int position)
+        {
+            EntityTypeID = entity.Type.ID;
+            GraphicsVariant = entity.GraphicsVariant;
+            InitialState = entity.InitialState;
+            Position = new Serializing_Vector2Int(position);
         }
     }
     
@@ -150,6 +193,4 @@ public static class LevelFileManager
             y = vector2Int.y;
         }
     }
-    
-    
 }
