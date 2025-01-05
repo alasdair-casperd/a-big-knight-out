@@ -4584,7 +4584,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LevelBuilder: {fileID: 1408143802}
-  startingLevelJSON: {fileID: 4900000, guid: 61898a57eac0a426382f20d7cfe51812, type: 3}
+  startingLevelJSON: {fileID: 4900000, guid: f29b9b0528ea641cf8f281e7952f850b, type: 3}
   levelParent: {fileID: 1408143800}
   prefabs: {fileID: 11400000, guid: 27cc6ead7fb8f47748eb1582f6ec1a96, type: 2}
   currentTool: {fileID: 391449855}

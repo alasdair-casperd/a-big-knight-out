@@ -1,1 +1,63 @@
-{"Name":"New Level","StartPosition":{"x":0,"y":0},"Tiles":[{"TileTypeID":0,"Position":{"x":0,"y":0},"InitialState":0,"GraphicsVariant":0,"Links":[]},{"TileTypeID":0,"Position":{"x":-1,"y":2},"InitialState":0,"GraphicsVariant":0,"Links":[]},{"TileTypeID":6,"Position":{"x":3,"y":0},"InitialState":2,"GraphicsVariant":0,"Links":[]},{"TileTypeID":6,"Position":{"x":3,"y":1},"InitialState":3,"GraphicsVariant":0,"Links":[]},{"TileTypeID":6,"Position":{"x":3,"y":2},"InitialState":4,"GraphicsVariant":0,"Links":[]},{"TileTypeID":6,"Position":{"x":3,"y":3},"InitialState":5,"GraphicsVariant":0,"Links":[]},{"TileTypeID":0,"Position":{"x":1,"y":3},"InitialState":0,"GraphicsVariant":0,"Links":[]},{"TileTypeID":0,"Position":{"x":1,"y":2},"InitialState":0,"GraphicsVariant":0,"Links":[]}]}
+{
+  "Name": "New Level",
+  "StartPosition": { "x": 0, "y": 0 },
+  "Tiles": [
+    {
+      "TileTypeID": 0,
+      "Position": { "x": 0, "y": 0 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 0,
+      "Position": { "x": -1, "y": 2 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 6,
+      "Position": { "x": 3, "y": 0 },
+      "InitialState": 2,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 6,
+      "Position": { "x": 3, "y": 1 },
+      "InitialState": 3,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 6,
+      "Position": { "x": 3, "y": 2 },
+      "InitialState": 4,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 6,
+      "Position": { "x": 3, "y": 3 },
+      "InitialState": 5,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 0,
+      "Position": { "x": 1, "y": 3 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 0,
+      "Position": { "x": 1, "y": 2 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": []
+    }
+  ],
+  "Entities": []
+}

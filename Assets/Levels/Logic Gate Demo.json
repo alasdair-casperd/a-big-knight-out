@@ -1,1 +1,566 @@
-{"Name":"New Level","StartPosition":{"x":1,"y":-1},"Tiles":[{"TileTypeID":0,"Position":{"x":0,"y":0},"InitialState":0,"GraphicsVariant":0,"Links":[]},{"TileTypeID":0,"Position":{"x":1,"y":0},"InitialState":0,"GraphicsVariant":0,"Links":[]},{"TileTypeID":0,"Position":{"x":2,"y":0},"InitialState":0,"GraphicsVariant":0,"Links":[]},{"TileTypeID":0,"Position":{"x":3,"y":0},"InitialState":0,"GraphicsVariant":0,"Links":[]},{"TileTypeID":0,"Position":{"x":3,"y":1},"InitialState":0,"GraphicsVariant":0,"Links":[]},{"TileTypeID":0,"Position":{"x":2,"y":1},"InitialState":0,"GraphicsVariant":0,"Links":[]},{"TileTypeID":0,"Position":{"x":1,"y":1},"InitialState":0,"GraphicsVariant":0,"Links":[]},{"TileTypeID":0,"Position":{"x":1,"y":-1},"InitialState":0,"GraphicsVariant":0,"Links":[]},{"TileTypeID":0,"Position":{"x":2,"y":-1},"InitialState":0,"GraphicsVariant":0,"Links":[]},{"TileTypeID":0,"Position":{"x":0,"y":-1},"InitialState":0,"GraphicsVariant":0,"Links":[]},{"TileTypeID":0,"Position":{"x":1,"y":-2},"InitialState":0,"GraphicsVariant":0,"Links":[]},{"TileTypeID":0,"Position":{"x":2,"y":-2},"InitialState":0,"GraphicsVariant":0,"Links":[]},{"TileTypeID":0,"Position":{"x":3,"y":-2},"InitialState":0,"GraphicsVariant":0,"Links":[]},{"TileTypeID":0,"Position":{"x":1,"y":2},"InitialState":0,"GraphicsVariant":0,"Links":[]},{"TileTypeID":0,"Position":{"x":2,"y":2},"InitialState":0,"GraphicsVariant":0,"Links":[]},{"TileTypeID":0,"Position":{"x":3,"y":2},"InitialState":0,"GraphicsVariant":0,"Links":[]},{"TileTypeID":11,"Position":{"x":4,"y":2},"InitialState":0,"GraphicsVariant":0,"Links":[{"x":6,"y":1}]},{"TileTypeID":11,"Position":{"x":4,"y":1},"InitialState":0,"GraphicsVariant":0,"Links":[{"x":6,"y":1}]},{"TileTypeID":11,"Position":{"x":4,"y":0},"InitialState":0,"GraphicsVariant":0,"Links":[{"x":6,"y":1}]},{"TileTypeID":0,"Position":{"x":0,"y":-2},"InitialState":0,"GraphicsVariant":0,"Links":[]},{"TileTypeID":0,"Position":{"x":3,"y":-3},"InitialState":0,"GraphicsVariant":0,"Links":[]},{"TileTypeID":0,"Position":{"x":2,"y":-3},"InitialState":0,"GraphicsVariant":0,"Links":[]},{"TileTypeID":0,"Position":{"x":1,"y":-3},"InitialState":0,"GraphicsVariant":0,"Links":[]},{"TileTypeID":11,"Position":{"x":4,"y":-3},"InitialState":0,"GraphicsVariant":0,"Links":[{"x":6,"y":-3}]},{"TileTypeID":0,"Position":{"x":3,"y":-4},"InitialState":0,"GraphicsVariant":0,"Links":[]},{"TileTypeID":0,"Position":{"x":2,"y":-4},"InitialState":0,"GraphicsVariant":0,"Links":[]},{"TileTypeID":0,"Position":{"x":1,"y":-4},"InitialState":0,"GraphicsVariant":0,"Links":[]},{"TileTypeID":0,"Position":{"x":0,"y":1},"InitialState":0,"GraphicsVariant":0,"Links":[]},{"TileTypeID":0,"Position":{"x":0,"y":2},"InitialState":0,"GraphicsVariant":0,"Links":[]},{"TileTypeID":0,"Position":{"x":0,"y":-3},"InitialState":0,"GraphicsVariant":0,"Links":[]},{"TileTypeID":0,"Position":{"x":0,"y":-4},"InitialState":0,"GraphicsVariant":0,"Links":[]},{"TileTypeID":0,"Position":{"x":0,"y":3},"InitialState":0,"GraphicsVariant":0,"Links":[]},{"TileTypeID":0,"Position":{"x":1,"y":3},"InitialState":0,"GraphicsVariant":0,"Links":[]},{"TileTypeID":0,"Position":{"x":2,"y":3},"InitialState":0,"GraphicsVariant":0,"Links":[]},{"TileTypeID":0,"Position":{"x":2,"y":4},"InitialState":0,"GraphicsVariant":0,"Links":[]},{"TileTypeID":0,"Position":{"x":1,"y":4},"InitialState":0,"GraphicsVariant":0,"Links":[]},{"TileTypeID":0,"Position":{"x":0,"y":4},"InitialState":0,"GraphicsVariant":0,"Links":[]},{"TileTypeID":0,"Position":{"x":3,"y":4},"InitialState":0,"GraphicsVariant":0,"Links":[]},{"TileTypeID":11,"Position":{"x":4,"y":4},"InitialState":0,"GraphicsVariant":0,"Links":[{"x":6,"y":5}]},{"TileTypeID":11,"Position":{"x":4,"y":5},"InitialState":0,"GraphicsVariant":0,"Links":[{"x":6,"y":5}]},{"TileTypeID":11,"Position":{"x":4,"y":6},"InitialState":0,"GraphicsVariant":0,"Links":[{"x":6,"y":5}]},{"TileTypeID":0,"Position":{"x":3,"y":6},"InitialState":0,"GraphicsVariant":0,"Links":[]},{"TileTypeID":0,"Position":{"x":2,"y":6},"InitialState":0,"GraphicsVariant":0,"Links":[]},{"TileTypeID":0,"Position":{"x":1,"y":6},"InitialState":0,"GraphicsVariant":0,"Links":[]},{"TileTypeID":0,"Position":{"x":0,"y":6},"InitialState":0,"GraphicsVariant":0,"Links":[]},{"TileTypeID":0,"Position":{"x":0,"y":5},"InitialState":0,"GraphicsVariant":0,"Links":[]},{"TileTypeID":0,"Position":{"x":1,"y":5},"InitialState":0,"GraphicsVariant":0,"Links":[]},{"TileTypeID":0,"Position":{"x":2,"y":5},"InitialState":0,"GraphicsVariant":0,"Links":[]},{"TileTypeID":0,"Position":{"x":3,"y":5},"InitialState":0,"GraphicsVariant":0,"Links":[]},{"TileTypeID":14,"Position":{"x":6,"y":-3},"InitialState":0,"GraphicsVariant":0,"Links":[{"x":5,"y":-2},{"x":6,"y":-2},{"x":7,"y":-2},{"x":7,"y":-3},{"x":7,"y":-4},{"x":6,"y":-4},{"x":5,"y":-4},{"x":5,"y":-3}]},{"TileTypeID":13,"Position":{"x":6,"y":1},"InitialState":0,"GraphicsVariant":0,"Links":[{"x":5,"y":1},{"x":5,"y":2},{"x":6,"y":2},{"x":7,"y":2},{"x":7,"y":1},{"x":7,"y":0},{"x":6,"y":0},{"x":5,"y":0}]},{"TileTypeID":6,"Position":{"x":6,"y":2},"InitialState":1,"GraphicsVariant":0,"Links":[]},{"TileTypeID":6,"Position":{"x":6,"y":0},"InitialState":1,"GraphicsVariant":0,"Links":[]},{"TileTypeID":6,"Position":{"x":6,"y":-2},"InitialState":1,"GraphicsVariant":0,"Links":[]},{"TileTypeID":6,"Position":{"x":6,"y":-4},"InitialState":1,"GraphicsVariant":0,"Links":[]},{"TileTypeID":6,"Position":{"x":6,"y":4},"InitialState":1,"GraphicsVariant":0,"Links":[]},{"TileTypeID":12,"Position":{"x":6,"y":5},"InitialState":0,"GraphicsVariant":0,"Links":[{"x":5,"y":6},{"x":6,"y":6},{"x":7,"y":6},{"x":7,"y":5},{"x":7,"y":4},{"x":6,"y":4},{"x":5,"y":4},{"x":5,"y":5}]},{"TileTypeID":6,"Position":{"x":6,"y":6},"InitialState":1,"GraphicsVariant":0,"Links":[]},{"TileTypeID":6,"Position":{"x":5,"y":1},"InitialState":1,"GraphicsVariant":0,"Links":[]},{"TileTypeID":6,"Position":{"x":5,"y":2},"InitialState":1,"GraphicsVariant":0,"Links":[]},{"TileTypeID":6,"Position":{"x":5,"y":0},"InitialState":1,"GraphicsVariant":0,"Links":[]},{"TileTypeID":6,"Position":{"x":7,"y":0},"InitialState":1,"GraphicsVariant":0,"Links":[]},{"TileTypeID":6,"Position":{"x":7,"y":1},"InitialState":1,"GraphicsVariant":0,"Links":[]},{"TileTypeID":6,"Position":{"x":7,"y":2},"InitialState":1,"GraphicsVariant":0,"Links":[]},{"TileTypeID":6,"Position":{"x":5,"y":-2},"InitialState":1,"GraphicsVariant":0,"Links":[]},{"TileTypeID":6,"Position":{"x":5,"y":-3},"InitialState":1,"GraphicsVariant":0,"Links":[]},{"TileTypeID":6,"Position":{"x":5,"y":-4},"InitialState":1,"GraphicsVariant":0,"Links":[]},{"TileTypeID":6,"Position":{"x":7,"y":-4},"InitialState":1,"GraphicsVariant":0,"Links":[]},{"TileTypeID":6,"Position":{"x":7,"y":-3},"InitialState":1,"GraphicsVariant":0,"Links":[]},{"TileTypeID":6,"Position":{"x":7,"y":-2},"InitialState":1,"GraphicsVariant":0,"Links":[]},{"TileTypeID":6,"Position":{"x":5,"y":4},"InitialState":1,"GraphicsVariant":0,"Links":[]},{"TileTypeID":6,"Position":{"x":5,"y":5},"InitialState":1,"GraphicsVariant":0,"Links":[]},{"TileTypeID":6,"Position":{"x":5,"y":6},"InitialState":1,"GraphicsVariant":0,"Links":[]},{"TileTypeID":6,"Position":{"x":7,"y":6},"InitialState":1,"GraphicsVariant":0,"Links":[]},{"TileTypeID":6,"Position":{"x":7,"y":5},"InitialState":1,"GraphicsVariant":0,"Links":[]},{"TileTypeID":6,"Position":{"x":7,"y":4},"InitialState":1,"GraphicsVariant":0,"Links":[]}]}
+{
+  "Name": "New Level",
+  "StartPosition": { "x": 1, "y": -1 },
+  "Tiles": [
+    {
+      "TileTypeID": 0,
+      "Position": { "x": 0, "y": 0 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 0,
+      "Position": { "x": 1, "y": 0 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 0,
+      "Position": { "x": 2, "y": 0 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 0,
+      "Position": { "x": 3, "y": 0 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 0,
+      "Position": { "x": 3, "y": 1 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 0,
+      "Position": { "x": 2, "y": 1 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 0,
+      "Position": { "x": 1, "y": 1 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 0,
+      "Position": { "x": 1, "y": -1 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 0,
+      "Position": { "x": 2, "y": -1 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 0,
+      "Position": { "x": 0, "y": -1 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 0,
+      "Position": { "x": 1, "y": -2 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 0,
+      "Position": { "x": 2, "y": -2 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 0,
+      "Position": { "x": 3, "y": -2 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 0,
+      "Position": { "x": 1, "y": 2 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 0,
+      "Position": { "x": 2, "y": 2 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 0,
+      "Position": { "x": 3, "y": 2 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 11,
+      "Position": { "x": 4, "y": 2 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": [{ "x": 6, "y": 1 }]
+    },
+    {
+      "TileTypeID": 11,
+      "Position": { "x": 4, "y": 1 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": [{ "x": 6, "y": 1 }]
+    },
+    {
+      "TileTypeID": 11,
+      "Position": { "x": 4, "y": 0 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": [{ "x": 6, "y": 1 }]
+    },
+    {
+      "TileTypeID": 0,
+      "Position": { "x": 0, "y": -2 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 0,
+      "Position": { "x": 3, "y": -3 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 0,
+      "Position": { "x": 2, "y": -3 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 0,
+      "Position": { "x": 1, "y": -3 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 11,
+      "Position": { "x": 4, "y": -3 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": [{ "x": 6, "y": -3 }]
+    },
+    {
+      "TileTypeID": 0,
+      "Position": { "x": 3, "y": -4 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 0,
+      "Position": { "x": 2, "y": -4 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 0,
+      "Position": { "x": 1, "y": -4 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 0,
+      "Position": { "x": 0, "y": 1 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 0,
+      "Position": { "x": 0, "y": 2 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 0,
+      "Position": { "x": 0, "y": -3 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 0,
+      "Position": { "x": 0, "y": -4 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 0,
+      "Position": { "x": 0, "y": 3 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 0,
+      "Position": { "x": 1, "y": 3 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 0,
+      "Position": { "x": 2, "y": 3 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 0,
+      "Position": { "x": 2, "y": 4 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 0,
+      "Position": { "x": 1, "y": 4 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 0,
+      "Position": { "x": 0, "y": 4 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 0,
+      "Position": { "x": 3, "y": 4 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 11,
+      "Position": { "x": 4, "y": 4 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": [{ "x": 6, "y": 5 }]
+    },
+    {
+      "TileTypeID": 11,
+      "Position": { "x": 4, "y": 5 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": [{ "x": 6, "y": 5 }]
+    },
+    {
+      "TileTypeID": 11,
+      "Position": { "x": 4, "y": 6 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": [{ "x": 6, "y": 5 }]
+    },
+    {
+      "TileTypeID": 0,
+      "Position": { "x": 3, "y": 6 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 0,
+      "Position": { "x": 2, "y": 6 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 0,
+      "Position": { "x": 1, "y": 6 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 0,
+      "Position": { "x": 0, "y": 6 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 0,
+      "Position": { "x": 0, "y": 5 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 0,
+      "Position": { "x": 1, "y": 5 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 0,
+      "Position": { "x": 2, "y": 5 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 0,
+      "Position": { "x": 3, "y": 5 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 14,
+      "Position": { "x": 6, "y": -3 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": [
+        { "x": 5, "y": -2 },
+        { "x": 6, "y": -2 },
+        { "x": 7, "y": -2 },
+        { "x": 7, "y": -3 },
+        { "x": 7, "y": -4 },
+        { "x": 6, "y": -4 },
+        { "x": 5, "y": -4 },
+        { "x": 5, "y": -3 }
+      ]
+    },
+    {
+      "TileTypeID": 13,
+      "Position": { "x": 6, "y": 1 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": [
+        { "x": 5, "y": 1 },
+        { "x": 5, "y": 2 },
+        { "x": 6, "y": 2 },
+        { "x": 7, "y": 2 },
+        { "x": 7, "y": 1 },
+        { "x": 7, "y": 0 },
+        { "x": 6, "y": 0 },
+        { "x": 5, "y": 0 }
+      ]
+    },
+    {
+      "TileTypeID": 6,
+      "Position": { "x": 6, "y": 2 },
+      "InitialState": 1,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 6,
+      "Position": { "x": 6, "y": 0 },
+      "InitialState": 1,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 6,
+      "Position": { "x": 6, "y": -2 },
+      "InitialState": 1,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 6,
+      "Position": { "x": 6, "y": -4 },
+      "InitialState": 1,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 6,
+      "Position": { "x": 6, "y": 4 },
+      "InitialState": 1,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 12,
+      "Position": { "x": 6, "y": 5 },
+      "InitialState": 0,
+      "GraphicsVariant": 0,
+      "Links": [
+        { "x": 5, "y": 6 },
+        { "x": 6, "y": 6 },
+        { "x": 7, "y": 6 },
+        { "x": 7, "y": 5 },
+        { "x": 7, "y": 4 },
+        { "x": 6, "y": 4 },
+        { "x": 5, "y": 4 },
+        { "x": 5, "y": 5 }
+      ]
+    },
+    {
+      "TileTypeID": 6,
+      "Position": { "x": 6, "y": 6 },
+      "InitialState": 1,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 6,
+      "Position": { "x": 5, "y": 1 },
+      "InitialState": 1,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 6,
+      "Position": { "x": 5, "y": 2 },
+      "InitialState": 1,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 6,
+      "Position": { "x": 5, "y": 0 },
+      "InitialState": 1,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 6,
+      "Position": { "x": 7, "y": 0 },
+      "InitialState": 1,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 6,
+      "Position": { "x": 7, "y": 1 },
+      "InitialState": 1,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 6,
+      "Position": { "x": 7, "y": 2 },
+      "InitialState": 1,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 6,
+      "Position": { "x": 5, "y": -2 },
+      "InitialState": 1,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 6,
+      "Position": { "x": 5, "y": -3 },
+      "InitialState": 1,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 6,
+      "Position": { "x": 5, "y": -4 },
+      "InitialState": 1,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 6,
+      "Position": { "x": 7, "y": -4 },
+      "InitialState": 1,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 6,
+      "Position": { "x": 7, "y": -3 },
+      "InitialState": 1,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 6,
+      "Position": { "x": 7, "y": -2 },
+      "InitialState": 1,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 6,
+      "Position": { "x": 5, "y": 4 },
+      "InitialState": 1,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 6,
+      "Position": { "x": 5, "y": 5 },
+      "InitialState": 1,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 6,
+      "Position": { "x": 5, "y": 6 },
+      "InitialState": 1,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 6,
+      "Position": { "x": 7, "y": 6 },
+      "InitialState": 1,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 6,
+      "Position": { "x": 7, "y": 5 },
+      "InitialState": 1,
+      "GraphicsVariant": 0,
+      "Links": []
+    },
+    {
+      "TileTypeID": 6,
+      "Position": { "x": 7, "y": 4 },
+      "InitialState": 1,
+      "GraphicsVariant": 0,
+      "Links": []
+    }
+  ],
+  "Entities": []
+}
