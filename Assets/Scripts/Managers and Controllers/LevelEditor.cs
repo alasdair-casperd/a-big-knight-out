@@ -58,6 +58,12 @@ public class LevelEditor : MonoBehaviour
 
     private List<StateIndicator> stateIndicators = new();
 
+    public GameObject TileToolsContainer;
+    public GameObject EntityToolsContainer;
+
+    public LevelEditorTileTool TileToolPrefab;
+    public LevelEditorEntityTool EntityToolPrefab;
+
     private void Start()
     {
         allTools = FindObjectsByType<LevelEditorTool>(FindObjectsSortMode.InstanceID);
@@ -94,6 +100,8 @@ public class LevelEditor : MonoBehaviour
         GenerateLinkIndicators();
         GenerateStateIndicators();
 
+        CreateDynamicTools();
+
         ShowingLinks = false;
         ShowingState = false;
         currentTool.Select();
@@ -102,6 +110,27 @@ public class LevelEditor : MonoBehaviour
     private void Update()
     {
         TriageMouseAction();
+    }
+
+    private void CreateDynamicTools()
+    {
+        foreach (var tileType in TileType.All)
+        {
+            var tool = Instantiate(TileToolPrefab, TileToolsContainer.transform);
+            tool.levelEditor = this;
+            tool.TileType = tileType;
+            tool.OnSquareClick = new UnityEngine.Events.UnityEvent();
+            tool.OnSquareClick.AddListener(AddTile);
+        }
+
+        foreach (var entityType in EntityType.All)
+        {
+            var tool = Instantiate(EntityToolPrefab, EntityToolsContainer.transform);
+            tool.levelEditor = this;
+            tool.EntityType = entityType;
+            tool.OnSquareClick = new UnityEngine.Events.UnityEvent();
+            tool.OnSquareClick.AddListener(AddEntity);
+        }
     }
 
     private void TriageMouseAction()
@@ -154,6 +183,7 @@ public class LevelEditor : MonoBehaviour
     private void MouseClick(Vector2Int mousePosition)
     {
         currentTool.OnSquareClick.Invoke();
+        Debug.Log($"calling on square click for {currentTool.name}");
     }
 
     private void MouseUp(Vector2Int mousePosition)
@@ -319,77 +349,26 @@ public class LevelEditor : MonoBehaviour
     }
 
     // ============
-    // Square Tools
+    // Tile Tools
     // ============
 
-    public void AddFloorTile()
+    public void AddTile()
     {
-        AddTile(TileType.Floor, targetPosition);
+        if (currentTool is LevelEditorTileTool tileTool)
+        {
+            AddTile(tileTool.TileType, targetPosition);
+        }
     }
 
-    public void AddPortal()
+    // ============
+    // Entity Tools
+    // ============
+    public void AddEntity()
     {
-        AddTile(TileType.Portal, targetPosition);
-    }
-
-    public void AddMovingPlatform()
-    {
-        AddTile(TileType.MovingPlatform, targetPosition);
-    }
-
-    public void AddSpikes()
-    {
-        AddTile(TileType.Spikes, targetPosition);
-    }
-
-    public void AddFallingFloor()
-    {
-        AddTile(TileType.FallingFloor, targetPosition);
-    }
-
-    public void AddSpikeUp()
-    {
-        AddTile(TileType.SpikeUp, targetPosition);
-    }
-
-    public void AddSpikeDown()
-    {
-        AddTile(TileType.SpikeDown, targetPosition);
-    }
-
-    public void AddFinish()
-    {
-        AddTile(TileType.Finish, targetPosition);
-    }
-
-    public void AddColourFlipTile()
-    {
-        AddTile(TileType.ColourFlip, targetPosition);
-    }
-
-    public void AddButton()
-    {
-        AddTile(TileType.Button, targetPosition);
-    }
-
-    public void AddSwitch()
-    {
-        AddTile(TileType.Switch, targetPosition);
-    }
-
-    public void AddAndGate()
-    {
-        AddTile(TileType.AndGate, targetPosition);
-    }
-    
-    public void AddOrGate()
-    {
-        AddTile(TileType.OrGate, targetPosition);
-    }
-
-    public void AddNotGate()
-    {
-        AddTile(TileType.NotGate, targetPosition);
+        if (currentTool is LevelEditorEntityTool entityTool)
+        {
+            Debug.Log("Entities not yet implemented in level editor");
+        }
     }
 
     // ==========

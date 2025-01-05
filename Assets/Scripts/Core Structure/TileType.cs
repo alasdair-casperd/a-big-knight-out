@@ -159,7 +159,7 @@ public struct TileType
     public static TileType Finish = new
     (
         id: 8,
-        displayName: "FinishTile",
+        displayName: "Finish Tile",
         validStates: new(),
         validLinkTargetIDs: new(),
         isValidStartPosition: false
@@ -168,7 +168,7 @@ public struct TileType
     public static TileType ColourFlip = new
     (
         id: 9,
-        displayName: "ColourFlip",
+        displayName: "Colour Flip Tile",
         validStates: new() { 0, 1 },
         validLinkTargetIDs: new(),
         isValidStartPosition: true
