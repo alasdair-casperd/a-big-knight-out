@@ -1,8 +1,7 @@
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
-using UnityEngine;
 
 
 [System.Serializable]
@@ -71,7 +70,7 @@ public struct TileType
     }
 
     /*
-        TileType Initialiser
+        TileType Initialisers
     */
 
     public TileType(int id, string displayName, List<int> validStates, List<int> validLinkTargetIDs, bool isValidStartPosition = false, bool isConductor = false)
@@ -82,6 +81,40 @@ public struct TileType
         ValidLinkTargetIDs = validLinkTargetIDs;
         IsValidStartPosition = isValidStartPosition;
         IsConductor = isConductor;
+    }
+
+    /*
+        Utility Properties
+    */
+
+    // Property to generate all possible spike states
+    // This is horrible, and will be removed as soon as enough custom tools have been created in the level editor
+    private static List<int> _validSpikeStates;
+    private static List<int> ValidSpikeStates
+    {   
+        get
+        {
+            if (_validSpikeStates != null) return _validSpikeStates;            
+            List<int> numbers = new List<int>();
+            Queue<int> queue = new Queue<int>();
+            queue.Enqueue(1);
+            queue.Enqueue(2);
+
+            while (queue.Count > 0)
+            {
+                int current = queue.Dequeue();
+                if (current > 2222222)
+                {
+                    continue;
+                }
+                numbers.Add(current);
+                queue.Enqueue(current * 10 + 1);
+                queue.Enqueue(current * 10 + 2);
+            }
+            
+            _validSpikeStates = numbers;
+            return _validSpikeStates;
+        }
     }
 
     /*
@@ -135,25 +168,9 @@ public struct TileType
     (
         id: 5,
         displayName: "Spikes",
-        validStates: new() { 0, 1 },
+        validStates: ValidSpikeStates,
         validLinkTargetIDs: new() { 5 },
         isValidStartPosition: true
-    );
-
-    public static TileType SpikeUp = new
-    (
-        id: 6,
-        displayName: "Spike Up",
-        validStates: new() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 },
-        validLinkTargetIDs: new()
-    );
-
-    public static TileType SpikeDown = new
-    (
-        id: 7,
-        displayName: "Spike Down",
-        validStates: new() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 },
-        validLinkTargetIDs: new()
     );
 
     public static TileType Finish = new
@@ -179,7 +196,7 @@ public struct TileType
         id: 10,
         displayName: "Button",
         validStates: new(),
-        validLinkTargetIDs: new() { 5, 6, 7, 11, 12, 13, 14 },
+        validLinkTargetIDs: new() { 5, 11, 12, 13, 14 },
         isConductor: true
     );
 
@@ -188,7 +205,7 @@ public struct TileType
         id: 11,
         displayName: "Switch",
         validStates: new() { 0, 1 },
-        validLinkTargetIDs: new() { 5, 6, 7, 11, 12, 13, 14 },
+        validLinkTargetIDs: new() { 5, 11, 12, 13, 14 },
         isConductor: true
     );
 
@@ -197,7 +214,7 @@ public struct TileType
         id: 12,
         displayName: "AND Gate",
         validStates: new(),
-        validLinkTargetIDs: new() { 5, 6, 7, 11, 12, 13, 14 },
+        validLinkTargetIDs: new() { 5, 11, 12, 13, 14 },
         isConductor: true
     );
 
@@ -206,7 +223,7 @@ public struct TileType
         id: 13,
         displayName: "OR Gate",
         validStates: new(),
-        validLinkTargetIDs: new() { 5, 6, 7, 11, 12, 13, 14 },
+        validLinkTargetIDs: new() { 5, 11, 12, 13, 14 },
         isConductor: true
     );
 
@@ -219,6 +236,8 @@ public struct TileType
         isConductor: true
     );
 
+    // ^^ Please add IDs 6 and 7 (formerly spike up and spike down) before using 15, 16 etc. tysm
+
     // A list of all the tile types
     public static TileType[] All =
     {
@@ -228,8 +247,6 @@ public struct TileType
         Portal,
         MovingPlatform,
         Spikes,
-        SpikeUp,
-        SpikeDown,
         ColourFlip,
         Finish,
         Button,

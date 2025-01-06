@@ -1,9 +1,9 @@
 using UnityEngine;
-using System.Collections.Generic;
-using Unity.VisualScripting;
+using System.Linq;
 
 /// <summary>
-/// A Spike square that is impassable when active.
+/// A Spike square that is deadly to the player when active, controlled by an retraction
+/// pattern and electricity
 /// </summary>
 public class SpikeSquare : Square
 {
@@ -28,39 +28,38 @@ public class SpikeSquare : Square
     private Transform retractedPosition;
 
     /// <summary>
-    /// Recursively finds all spike squares linked to this one.
+    /// Are the spikes currently retracted?
     /// </summary>
-    private List<SpikeSquare> AllLinks
+    private bool spikesRetracted;
+
+    /// <summary>
+    /// The retraction pattern that the spikes will loop through, where false is retracted and true is active.
+    /// Electricity effectively toggles each value.
+    /// </summary>
+    private bool[] retractionPattern
     {
         get
-        {
-            var output = new List<SpikeSquare>();
-
-            void Check(SpikeSquare target)
+        {   
+            // Parse the initial state integer as a retraction pattern
+            string stateString = State.ToString();
+            if (stateString.All(c => c == '1' || c == '2'))
             {
-                foreach (var square in target.Links)
+                bool[] output = stateString.Select(c => c == '2').ToArray();
+                if (output.Length > 0)
                 {
-                    if (square is SpikeSquare spikeSquare)
-                    {
-                        if (!output.Contains(spikeSquare))
-                        {
-                            output.Add(spikeSquare);
-                            Check(spikeSquare);
-                        }
-                    }
+                    return output;
                 }
             }
 
-            Check(this);
-            return output;
+            Debug.LogError("Invalid retraction pattern for SpikeSquare: " + State);
+            return new bool[1] { false };
         }
     }
 
-    // Has the square just been spiky? 
-    public bool HasSpiked { get; set; }
-
-    // An integer used to track which of the square's links should be used next time the platform is at this square
-    private int LinkState { get; set; }
+    /// <summary>
+    /// Have the spike graphics retracted (or at least started the animation)?
+    /// </summary>
+    private bool graphicsRetracted;
 
     // Is always passable but spikes will kill you.
     public override bool IsPassable
@@ -76,40 +75,18 @@ public class SpikeSquare : Square
     public override int GraphicsVariant { get; set; }
 
     /// <summary>
-    /// Reset HasMoved to false
+    /// Keeps track of what turn it is on.
     /// </summary>
-    public override void OnPlayerTurnStart()
-    {
-        HasSpiked = false;
-    }
+    private int turnCounter { get; set; }
+
 
     /// <summary>
-    /// Changes the state as the player moves.
+    /// Changes the spike up and down depending on the frequency.
     /// </summary>
     public override void OnPlayerMove()
     {
-        if (State == 1 && !HasSpiked)
-        {
-            if (Links[LinkState % Links.Count] is SpikeSquare nextSquare)
-            {
-                // Activates the next spike square
-                nextSquare.State = 1;
-                nextSquare.HasSpiked = true;
-
-                // Step this square's links
-                LinkState++;
-
-                // Stops it being spiky
-                State = 0;
-
-                // Apply visuals for this spike and the next
-                ApplyVisuals();
-                nextSquare.ApplyVisuals();
-
-                // Play a sound effect
-                AudioManager.Play(AudioManager.SoundEffects.metalSwoosh);
-            }
-        }
+        turnCounter++;
+        UpdateSpikes();
     }
 
     /// <summary>
@@ -122,32 +99,55 @@ public class SpikeSquare : Square
         AudioManager.Play(AudioManager.SoundEffects.thud);
 
         // Check for death
-        if (State == 1)
+        if (spikesRetracted)
+        {
+            Debug.Log("You have survived... for now");
+        }
+        else
         {
             Debug.Log("Player Dies");
             AudioManager.Play(AudioManager.SoundEffects.ouch);
         }
-        else
-        {
-            Debug.Log("You have survived... for now");
-        }
+
     }
 
+    public override void OnLevelTurn()
+    {
+        UpdateSpikes();
+    }
+    
     /// <summary>
     /// Setting up the platforms for the start of the level.
     /// </summary>
     public override void OnLevelStart()
     {
-        SpikeGraphics.transform.position = retractedPosition.transform.position;
-        ApplyVisuals();
+        turnCounter = 0;
+        UpdateSpikes();
     }
 
-    /// <summary>
-    /// Apply the visual positioning of the spike graphics
-    /// </summary>
-    public void ApplyVisuals()
+    public override void OnChargeChanged()
     {
-        Transform targetTransform = State == 1 ? activePosition : retractedPosition;
-        SpikeGraphics.SlideTo(targetTransform.position, -1, false);
+        UpdateSpikes();
+    }
+
+    public void UpdateSpikes()
+    {
+        // Read the current state of the spikes from the retraction pattern
+        spikesRetracted = !retractionPattern[turnCounter % retractionPattern.Length];
+        
+        // If the spikes are receiving charge, invert the retraction pattern
+        if (IsReceivingCharge)
+        {
+            spikesRetracted = !spikesRetracted;
+        }
+        
+        // Apply graphics updates
+        if (graphicsRetracted != spikesRetracted)
+        {
+            graphicsRetracted = spikesRetracted;
+            Transform targetTransform = spikesRetracted ? retractedPosition : activePosition;
+            SpikeGraphics.SlideTo(targetTransform.position, -1, false);
+            AudioManager.Play(AudioManager.SoundEffects.metalSwoosh);
+        }
     }
 }

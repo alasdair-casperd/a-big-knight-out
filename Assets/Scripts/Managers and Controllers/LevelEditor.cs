@@ -183,7 +183,6 @@ public class LevelEditor : MonoBehaviour
     private void MouseClick(Vector2Int mousePosition)
     {
         currentTool.OnSquareClick.Invoke();
-        Debug.Log($"calling on square click for {currentTool.name}");
     }
 
     private void MouseUp(Vector2Int mousePosition)

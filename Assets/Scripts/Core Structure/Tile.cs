@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.Collections;
 using UnityEngine;
 
 /// <summary>
@@ -65,7 +66,13 @@ public struct Tile
         if (Type.IsMultiState)
         {
             var index = Type.ValidStates.IndexOf(InitialState);
-            InitialState = Type.ValidStates[(index + step) % Type.ValidStates.Count];
+
+            // Shortcut to achieve proper modulo behaviour in C#
+            int x = index + step;
+            int r = Type.ValidStates.Count;
+            int i = (x % r + r) % r;
+
+            InitialState = Type.ValidStates[i];
         }
     }
 
@@ -78,6 +85,6 @@ public struct Tile
     // Decrease the initial state by 1
     public void DecrementInitialState()
     {
-        IncrementInitialState(-11);
+        IncrementInitialState(-1);
     }
 }
