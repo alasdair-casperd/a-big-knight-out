@@ -171,7 +171,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 29, y: 0}
+  m_SizeDelta: {x: 25.3764, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1320110146556822796
 CanvasRenderer:
@@ -226,6 +226,7 @@ GameObject:
   - component: {fileID: 2843528795201082136}
   - component: {fileID: 8411160112892302769}
   - component: {fileID: 8866801056809691316}
+  - component: {fileID: 8406482671620987441}
   m_Layer: 5
   m_Name: LevelEditorTileTool
   m_TagString: Untagged
@@ -252,7 +253,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 25.16}
+  m_SizeDelta: {x: 255.1, y: 25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &401668035192120745
 CanvasRenderer:
@@ -426,4 +427,19 @@ MonoBehaviour:
   OnLinkMouseDown:
     m_PersistentCalls:
       m_Calls: []
+  PreviewImage: {fileID: 4351477351069383894}
   ToolName: {fileID: 8488216985051873120}
+--- !u!114 &8406482671620987441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7827075543473525731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d84651a17f3d642d887eeaa7611d3572, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  previewCameraPrefab: {fileID: 2209736184678766891, guid: 3f625716a1ac44dd7aeac7f0fb2cc3c5, type: 3}
+  tilePrefabManager: {fileID: 11400000, guid: ad295a78a3633f14b80a8dd9c4889e05, type: 2}
