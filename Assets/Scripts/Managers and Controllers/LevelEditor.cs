@@ -92,7 +92,8 @@ public class LevelEditor : MonoBehaviour
             }
         }
 
-        LevelBuilder.BuildLevel(levelParent, level, animationDuration: -1, ignoreErrors: true);
+        LevelBuilder.BuildLevelSquares(levelParent, level, animationDuration: -1, ignoreErrors: true);
+        LevelBuilder.BuildLevelEnemies(levelParent, level, animationDuration: -1, ignoreErrors: true);
 
         levelStartIndicator = Instantiate(prefabs.levelStartIndicator);
         PositionStartIndicator();
@@ -219,7 +220,8 @@ public class LevelEditor : MonoBehaviour
 
     private void RegenerateLevel()
     {
-        LevelBuilder.BuildLevel(levelParent, level, animationDuration: 0.5f, ignoreErrors: true);
+        LevelBuilder.BuildLevelSquares(levelParent, level, animationDuration: 0.5f, ignoreErrors: true);
+        LevelBuilder.BuildLevelEnemies(levelParent, level, animationDuration: 0.5f, ignoreErrors: true);
         GenerateLinkIndicators();
         GenerateStateIndicators();
     }
