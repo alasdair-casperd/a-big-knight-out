@@ -1,5 +1,6 @@
-using UnityEngine;
-
+using UnityEditor;
+using System.Linq;
+using System.Collections.Generic;
 
 /// <summary>
 /// The information which defines a particular entity type and which is required for level validation (probably)
@@ -22,32 +23,52 @@ public struct EntityType
     /// </summary>
     public readonly string DisplayName;
 
+    /// <summary>
+    /// The list of valid states this entity can have, e.g. {0, 1}
+    /// </summary>
+    public readonly List<int> ValidStates;
+
+
+    /// <summary>
+    /// Can this tile be given initial states?
+    /// </summary>
+    public readonly bool IsMultiState
+    {
+        get { return ValidStates.Count > 0; }
+    }
+
     /*
-        TileType Initialiser
+        EntityType Initialiser
     */
 
-    public EntityType(int id, string displayName)
+    public EntityType(int id, string displayName, List<int> validStates)
     {
         ID = id;
         DisplayName = displayName;
+        ValidStates = validStates;
     }
 
     public static EntityType Pawn = new
     (
         id: 0,
-        displayName: "Pawn"
+        displayName: "Pawn",
+        validStates: new() { 0, 1, 2, 3 }
     );
     public static EntityType Rook = new
     (
         id: 1,
-        displayName: "Rook"
+        displayName: "Rook",
+        validStates: new() { 0, 1, 2, 3 }
+
     );
     public static EntityType Bishop = new
     (
         id: 2,
-        displayName: "Bishop"
+        displayName: "Bishop",
+        validStates: new() { 0, 1, 2, 3 }
+
     );
-    
+
     // A list of all the tile types
     public static EntityType[] All =
     {
@@ -55,4 +76,37 @@ public struct EntityType
         Rook,
         Bishop
     };
+
+
+    /*
+        Operator Overloads
+    */
+
+    // Equality
+    public static bool operator ==(EntityType a, EntityType b)
+    {
+        return a.ID == b.ID;
+    }
+
+    // Inequality
+    public static bool operator !=(EntityType a, EntityType b)
+    {
+        return a.ID != b.ID;
+    }
+
+    // Object equality
+    public override bool Equals(object obj)
+    {
+        if (obj is EntityType other)
+        {
+            return ID == other.ID;
+        }
+        return false;
+    }
+
+    // Hash code
+    public override int GetHashCode()
+    {
+        return ID.GetHashCode();
+    }
 }

@@ -4,11 +4,11 @@ using UnityEngine;
 /// This gives all of the information necessary to build an entity, it is used by the <c>Level</c> class.
 /// </summary>
 [System.Serializable]
-public class Entity
+public struct Entity
 {
-     /*
-        Entity Properties
-    */
+    /*
+       Entity Properties
+   */
 
     /// <summary>
     /// The entity's entityType, e.g. Pawn, Rook or Knight
@@ -25,6 +25,8 @@ public class Entity
     /// An integer used to store the graphics variant the entity uses
     /// </summary>
     public int GraphicsVariant;
+
+
 
     /*
         Initialisers

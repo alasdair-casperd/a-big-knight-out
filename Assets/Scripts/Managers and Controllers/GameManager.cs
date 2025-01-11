@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(SquareManager))]
 [RequireComponent(typeof(LevelBuilder))]
+[RequireComponent(typeof(EnemyManager))]
 public class GameManager : MonoBehaviour
 {
     /// <summary>
@@ -20,6 +21,8 @@ public class GameManager : MonoBehaviour
     SquareManager squareManager;
     LevelBuilder levelBuilder;
 
+    EnemyManager enemyManager;
+
     /// <summary>
     /// A levelBuilder instance used to create the squares
     /// </summary>
@@ -34,7 +37,8 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         squareManager = GetComponent<SquareManager>();
-        levelBuilder = GetComponent<LevelBuilder>(); 
+        enemyManager = GetComponent<EnemyManager>();
+        levelBuilder = GetComponent<LevelBuilder>();
 
         // Override the selected level if transitioning directly from the level editor
         // This should be removed when we add proper level management
@@ -45,23 +49,28 @@ public class GameManager : MonoBehaviour
         }
 
         // Generate the level from the JSON file provided
-		else
-		{
-			level = LevelFileManager.ParseLevelFromJSON(levelFile.text);
-		}
+        else
+        {
+            level = LevelFileManager.ParseLevelFromJSON(levelFile.text);
+        }
 
         // Position the player
-        player.SetInitialPosition(level.StartPosition);  
-        
+        player.SetInitialPosition(level.StartPosition);
+
+
         // Build the level
-        Dictionary<Vector2Int,Square> squares = levelBuilder.BuildLevel(transform, level);
+        Dictionary<Vector2Int, Square> squares = levelBuilder.BuildLevelSquares(transform, level);
+
+        Dictionary<Vector2Int, Enemy> enemies = levelBuilder.BuildLevelEnemies(transform, level);
 
         // Give the square manager its squares to manage, and initialize them
         squareManager.InitialiseSquares(squares);
 
         // Initialise electricity
         squareManager.InitialiseElectricity();
-        
+
+        enemyManager.InitialiseEnemies(enemies);
+
         // Start the player's turn
         squareManager.OnPlayerTurnStart();
     }
@@ -81,6 +90,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void OnPlayerMove()
     {
+        enemyManager.OnPlayerMove();
         squareManager.OnPlayerMove();
     }
 
@@ -90,6 +100,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void OnPlayerLand()
     {
+        enemyManager.OnPlayerLand();
         squareManager.OnPlayerLand();
 
         // Once the horse has landed and game-blocking animations have finished, initiate the level's turn.
@@ -101,8 +112,9 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void OnLevelTurn()
     {
+        enemyManager.OnLevelTurn();
         squareManager.OnLevelTurn();
-        
+
         // Triggers the start of the players turn once all game-blocking animations have finished
         ActionQueue.QueueAction(OnPlayerTurnStart);
     }
@@ -112,9 +124,10 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void OnPlayerTurnStart()
     {
+        enemyManager.OnPlayerTurnStart();
         squareManager.OnPlayerTurnStart();
     }
-    
+
     /// <summary>
     /// This is a *very temporary* method for restarting the level player, to be replaced later
     /// </summary>

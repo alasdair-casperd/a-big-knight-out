@@ -4,12 +4,17 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class LevelBuilder: MonoBehaviour
+public class LevelBuilder : MonoBehaviour
 {
     /// <summary>
     /// Used to store and retrieve prefabs corresponding to each tileType 
     /// </summary>
     public TilePrefabManager tilePrefabManager;
+
+    /// <summary>
+    /// Used to store and retrieve prefabs corresponding to each entityType
+    /// </summary>
+    public EntityPrefabManager entityPrefabManager;
 
     /// <summary>
     /// The scriptable object containing most of the game's prefabs
@@ -19,7 +24,7 @@ public class LevelBuilder: MonoBehaviour
     /// <summary>
     /// Instantiates all the square prefabs for the specified level, and returns a list of these
     /// </summary>
-    public Dictionary<Vector2Int, Square> BuildLevel(Transform parent, Level level, float animationDuration = -1, bool ignoreErrors = false)
+    public Dictionary<Vector2Int, Square> BuildLevelSquares(Transform parent, Level level, float animationDuration = -1, bool ignoreErrors = false)
     {
         if (!level.IsValidLevel && !ignoreErrors)
         {
@@ -51,7 +56,7 @@ public class LevelBuilder: MonoBehaviour
             {
                 // Only animate insertion if the tile type has changed
                 animateInsertion = tile.Type != conflictingSquares[0].Type;
-                
+
                 foreach (var square in conflictingSquares)
                 {
                     existingSquares.Remove(square);
@@ -76,7 +81,7 @@ public class LevelBuilder: MonoBehaviour
 
             // Gets the square component from the prefab and adds it to the list of all squares
             currentSquare = currentSquareObject.GetComponent<Square>();
-            
+
             // Sets properties of the square
             currentSquare.Position = position;
             currentSquare.validMoveIndicator = Instantiate(prefabs.validMoveIndicator, currentSquareObject.transform);
@@ -112,7 +117,7 @@ public class LevelBuilder: MonoBehaviour
             LeanTween.scale(g, Vector3.zero, animationDuration / 2)
                 .setOnComplete(() => Destroy(g));
         }
-        
+
         // Create links and incoming charge placeholders
         foreach (var (position, tile) in level.Tiles)
         {
@@ -137,5 +142,104 @@ public class LevelBuilder: MonoBehaviour
 
         // Return
         return squares;
+    }
+
+
+    /// <summary>
+    /// Instantiates all theenemy prefabs for the specified level, and returns a list of these
+    /// </summary>
+    public Dictionary<Vector2Int, Enemy> BuildLevelEnemies(Transform parent, Level level, float animationDuration = -1, bool ignoreErrors = false)
+    {
+        if (!level.IsValidLevel && !ignoreErrors)
+        {
+            return null;
+        }
+
+        // Find existing Enemies on the parent transform
+        List<Enemy> existingEnemies = parent.GetComponentsInChildren<Enemy>().ToList();
+
+        // Create variables
+        GameObject prefab;
+        Vector2Int pos;
+        int initialState;
+        int graphicsVariant;
+        GameObject currentEnemyObject;
+        Enemy currentEnemy;
+        bool animateInsertion;
+
+        // Track enemies created
+        Dictionary<Vector2Int, Enemy> enemies = new();
+
+        // Loops over all the entities in the level object received
+        foreach (var (position, entity) in level.Entities)
+        {
+            // Remove any conflicting existing enemies and decide whether to animate the entity or not
+            animateInsertion = true;
+            List<Enemy> conflictingEnemies = existingEnemies.FindAll(s => s.Position == position);
+            if (conflictingEnemies.Count > 0)
+            {
+                // Only animate insertion if the entity type has changed
+                animateInsertion = entity.Type != conflictingEnemies[0].Type;
+
+                foreach (var enemy in conflictingEnemies)
+                {
+                    existingEnemies.Remove(enemy);
+                    Destroy(enemy.gameObject);
+                }
+            }
+
+            //Gets the prefab for the entity's type from the prefab manager
+            prefab = entityPrefabManager.GetPrefab(entity.Type);
+            pos = position;
+
+            //Reads the initial state and graphics variant for the tile
+            initialState = entity.InitialState;
+            graphicsVariant = entity.GraphicsVariant;
+
+            // Creates an instance of the prefab
+            currentEnemyObject = Instantiate(prefab, GridUtilities.GridToWorldPos(pos), Quaternion.identity);
+            currentEnemyObject.transform.parent = parent;
+
+            // Names the Enemy object
+            currentEnemyObject.gameObject.name = $"Enemy ({pos[0]}, {pos[1]})";
+
+            // Gets the enemy component from the prefab and adds it to the list of all enemies
+            currentEnemy = currentEnemyObject.GetComponent<Enemy>();
+
+            // Sets properties of the enemy
+            currentEnemy.Position = position;
+
+            // Sets up the enemies's initial state
+            if (currentEnemy.Type.IsMultiState)
+            {
+                currentEnemy.State = initialState;
+            }
+
+            // Sets up the enemies's graphics variant
+            currentEnemy.GraphicsVariant = graphicsVariant;
+
+            // Store the enemy in the list of created enemies
+            enemies.Add(pos, currentEnemy);
+
+            // Perform insertion animations
+            if (animateInsertion && animationDuration > 0)
+            {
+                Vector3 initialScale = currentEnemyObject.transform.localScale;
+                currentEnemyObject.transform.localScale = Vector3.zero;
+                LeanTween.scale(currentEnemyObject, initialScale, animationDuration).setEaseOutExpo();
+            }
+        }
+
+        // Remove any remaining existing enemies (i.e. squares that haven't been replaced with a new enemy))
+        foreach (var existingEnemy in existingEnemies)
+        {
+            var g = existingEnemy.gameObject;
+            Destroy(existingEnemy);
+            LeanTween.scale(g, Vector3.zero, animationDuration / 2)
+                .setOnComplete(() => Destroy(g));
+        }
+
+        // Return
+        return enemies;
     }
 }
