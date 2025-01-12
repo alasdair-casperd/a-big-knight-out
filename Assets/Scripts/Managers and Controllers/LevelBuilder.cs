@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -140,8 +141,44 @@ public class LevelBuilder : MonoBehaviour
             }
         }
 
+        // Figures out the adjacent tiles for the track tiles
+        foreach (var (position, square) in squares)
+        {
+            // Ignores the square if it's not a track
+            if(square.GetType() != typeof(TrackSquare)){continue;}
+
+            TrackSquare trackSquare = (TrackSquare)square;
+            trackSquare.AdjacentTracks = new Dictionary<Vector2Int, TrackSquare>();
+
+            // Goes through and checks all 4 directions, adding the square to adjacent tracks if it's a track
+            AddAdjacentTile(squares, trackSquare, Vector2Int.up);
+            AddAdjacentTile(squares, trackSquare, Vector2Int.down);
+            AddAdjacentTile(squares, trackSquare, Vector2Int.left);
+            AddAdjacentTile(squares, trackSquare, Vector2Int.right);
+            
+        }
         // Return
         return squares;
+    }
+
+
+    /// <summary>
+    /// Tests if the square in a given direction from a track square is a track square, and if so adds it to the list of adjacent tracks.
+    /// </summary>
+    /// <param name="squares">The list of all squares</param>
+    /// <param name="trackSquare">The tracksquare to add the adjacent tracks to</param>
+    /// <param name="direction">The direction to check for an adjacent track square</param>
+    public void AddAdjacentTile(Dictionary<Vector2Int, Square> squares, TrackSquare trackSquare, Vector2Int direction)
+    {
+        // Finds the position of the track square
+        Vector2Int position = trackSquare.Position;
+
+        // Checks if there is a square in the specified direction, and if it's a track square
+        if(squares.ContainsKey(position+direction) && squares[position+direction].GetType() == typeof(TrackSquare))
+        {
+            // If it is, then add it to the list of adjacent tracks.
+            trackSquare.AdjacentTracks.Add(direction,(TrackSquare)squares[position+direction]);
+        }
     }
 
 

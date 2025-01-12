@@ -67,7 +67,10 @@ public class EnemyManager : MonoBehaviour
     /// </summary>
     public void OnPlayerLand()
     {
-        enemies[player.position].OnPlayerLand();
+        if(enemies.ContainsKey(player.position))
+        {
+            enemies[player.position].OnPlayerLand();
+        }
     }
 
     /// <summary>

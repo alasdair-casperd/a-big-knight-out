@@ -236,6 +236,15 @@ public struct TileType
         isConductor: true
     );
 
+    public static TileType Track = new
+    (
+        id: 15,
+        displayName: "Track",
+        validStates: new() {0,1},
+        validLinkTargetIDs: new(),
+        isConductor: false
+    );
+
     // ^^ Please add IDs 6 and 7 (formerly spike up and spike down) before using 15, 16 etc. tysm
 
     // A list of all the tile types
@@ -253,7 +262,8 @@ public struct TileType
         Switch,
         AndGate,
         OrGate,
-        NotGate
+        NotGate,
+        Track
     };
 
     /*
