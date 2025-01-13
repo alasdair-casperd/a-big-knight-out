@@ -279,4 +279,27 @@ public class LevelBuilder : MonoBehaviour
         // Return
         return enemies;
     }
+
+    /// <summary>
+    /// Instantiates all the moving platforms
+    /// </summary>
+    /*
+    public Dictionary<Vector2Int, MovingPlatform> BuildLevelMovingPlatforms(Transform parent, Level level)
+    {
+        if (!level.IsValidLevel)
+        {
+            return null;
+        }
+
+        foreach (var (position, direction) in level.MovingPlatforms)
+        {
+            // Create the moving platform
+            MovingPlatform movingPlatformObject = Instantiate(prefabs.movingPlatform, GridUtilities.GridToWorldPos(position), Quaternion.identity);
+            movingPlatformObject.transform.parent = parent;
+
+            // Set the moving platform's direction
+            movingPlatform.Direction = direction;
+        }
+    }
+    */
 }

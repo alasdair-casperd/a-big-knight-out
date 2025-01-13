@@ -65,13 +65,21 @@ public static class LevelFileManager
             entities.Add(Vector2Int(e.Position), Entity(e));
         }
 
+        // Extract moving platforms
+        var movingPlatforms = new Dictionary<Vector2Int, int>();
+        foreach (var mp in l.MovingPlatforms)
+        {
+            movingPlatforms.Add(Vector2Int(mp.Position), mp.Direction);
+        }
+
         // Return the corresponding level
         return new Level
         (
             name: l.Name,
             startPosition: Vector2Int(l.StartPosition),
             tiles: tiles,
-            entities: entities
+            entities: entities,
+            movingPlatforms: movingPlatforms
         );
     }
 
@@ -121,6 +129,7 @@ public static class LevelFileManager
         public Serializing_Vector2Int StartPosition;
         public Serializing_Tile[] Tiles;
         public Serializing_Entity[] Entities;
+        public Serializing_MovingPlatform[] MovingPlatforms;
 
         public Serializing_Level(Level level)
         {
@@ -142,6 +151,14 @@ public static class LevelFileManager
                 entities_list.Add(new Serializing_Entity(entity, position));
             }
             Entities = entities_list.ToArray();
+
+            // Add moving platforms
+            var movingPlatforms_list = new List<Serializing_MovingPlatform>();
+            foreach (var (position, direction) in level.MovingPlatforms)
+            {
+                movingPlatforms_list.Add(new Serializing_MovingPlatform(position, direction));
+            }
+            MovingPlatforms = movingPlatforms_list.ToArray();
         }
     }
 
@@ -178,6 +195,19 @@ public static class LevelFileManager
             GraphicsVariant = entity.GraphicsVariant;
             InitialState = entity.InitialState;
             Position = new Serializing_Vector2Int(position);
+        }
+    }
+
+    [Serializable]
+    private struct Serializing_MovingPlatform
+    {
+        public Serializing_Vector2Int Position;
+        public int Direction;
+
+        public Serializing_MovingPlatform(Vector2Int position, int direction)
+        {
+            Position = new Serializing_Vector2Int(position);
+            Direction = direction;
         }
     }
     
