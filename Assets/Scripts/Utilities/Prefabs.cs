@@ -10,7 +10,7 @@ public class Prefabs: ScriptableObject
 {
 
     [Header("Gameplay")]
-    // Add gameplay prefabs here
+    public GameObject movingPlatform;
 
     [Header("UI")]
     public UI.ValidMoveIndicator validMoveIndicator;

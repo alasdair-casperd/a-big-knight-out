@@ -156,14 +156,6 @@ public struct TileType
         validLinkTargetIDs: new() { 0, 3, 5 }
     );
 
-    public static TileType MovingPlatform = new
-    (
-        id: 4,
-        displayName: "Moving Platform",
-        validStates: new() { 0, 1 },
-        validLinkTargetIDs: new() { 4 }
-    );
-
     public static TileType Spikes = new
     (
         id: 5,
@@ -171,6 +163,15 @@ public struct TileType
         validStates: ValidSpikeStates,
         validLinkTargetIDs: new() { 5 },
         isValidStartPosition: true
+    );
+
+    public static TileType Track = new
+    (
+        id: 6,
+        displayName: "Track",
+        validStates: new() {0,1},
+        validLinkTargetIDs: new(),
+        isConductor: false
     );
 
     public static TileType Finish = new
@@ -236,15 +237,6 @@ public struct TileType
         isConductor: true
     );
 
-    public static TileType Track = new
-    (
-        id: 15,
-        displayName: "Track",
-        validStates: new() {0,1},
-        validLinkTargetIDs: new(),
-        isConductor: false
-    );
-
     // ^^ Please add IDs 6 and 7 (formerly spike up and spike down) before using 15, 16 etc. tysm
 
     // A list of all the tile types
@@ -254,7 +246,6 @@ public struct TileType
         Wall,
         FallingFloor,
         Portal,
-        MovingPlatform,
         Spikes,
         ColourFlip,
         Finish,

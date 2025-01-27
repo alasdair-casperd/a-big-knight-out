@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UI;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -283,23 +284,34 @@ public class LevelBuilder : MonoBehaviour
     /// <summary>
     /// Instantiates all the moving platforms
     /// </summary>
-    /*
-    public Dictionary<Vector2Int, MovingPlatform> BuildLevelMovingPlatforms(Transform parent, Level level)
+    
+    public List<MovingPlatform> BuildLevelMovingPlatforms(Transform parent, Level level)
     {
         if (!level.IsValidLevel)
         {
             return null;
         }
 
+        // Creates the variables
+        GameObject movingPlatformObject;
+        MovingPlatform movingPlatform;
+        List<MovingPlatform> movingPlatforms = new();
+
         foreach (var (position, direction) in level.MovingPlatforms)
         {
             // Create the moving platform
-            MovingPlatform movingPlatformObject = Instantiate(prefabs.movingPlatform, GridUtilities.GridToWorldPos(position), Quaternion.identity);
+            movingPlatformObject = Instantiate(prefabs.movingPlatform, GridUtilities.GridToWorldPos(position), Quaternion.identity);
             movingPlatformObject.transform.parent = parent;
 
-            // Set the moving platform's direction
-            movingPlatform.Direction = direction;
+            // Finds the moving platform component
+            movingPlatform = movingPlatformObject.GetComponent<MovingPlatform>();
+
+            // Set the moving platform's direction and position
+            movingPlatform.Initialise(position,direction);
+            movingPlatforms.Add(movingPlatform);
         }
+
+        return movingPlatforms;
     }
-    */
+    
 }

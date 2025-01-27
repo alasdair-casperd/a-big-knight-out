@@ -18,17 +18,26 @@ public class TrackSquare : Square
     {
         get
         {
-            // Not uet implemented, will return true if a platform is on this track.
-            return true;
+            foreach(var platform in Platforms)
+            {
+                if(Position == platform.Position)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
+
         protected set
         {
-            Debug.LogWarning("Attempting to manually change whether a moving platform square is passable");
+            Debug.LogWarning("Trying to manually set wether a moving platform is passable or not!");
         }
     }
 
     // The track squares adjacent to this one, stores the relative position and the square
     public Dictionary<Vector2Int,TrackSquare> AdjacentTracks {get; set;}
+
+    public List<MovingPlatform> Platforms {get; set;}
 
     public List<Vector2Int> GetPath(Vector2Int direction)
     {

@@ -33,6 +33,8 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private Level level;
 
+    private List<MovingPlatform> movingPlatforms;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -63,8 +65,23 @@ public class GameManager : MonoBehaviour
 
         Dictionary<Vector2Int, Enemy> enemies = levelBuilder.BuildLevelEnemies(transform, level);
 
+        movingPlatforms  = levelBuilder.BuildLevelMovingPlatforms(transform, level);
+
         // Give the square manager its squares to manage, and initialize them
         squareManager.InitialiseSquares(squares);
+
+        // Figures out the adjacent tiles for the track tiles
+        foreach (var (position, square) in squares)
+        {
+            // Ignores the square if it's not a track
+            if(square.GetType() != typeof(TrackSquare)){continue;}
+
+            TrackSquare trackSquare = (TrackSquare)square;
+
+            // Tells the track square who all the platforms are (so it can check if there is a platform on top of it)
+            trackSquare.Platforms = movingPlatforms;     
+            
+        }
 
         // Initialise electricity
         squareManager.InitialiseElectricity();
@@ -114,6 +131,12 @@ public class GameManager : MonoBehaviour
     {
         enemyManager.OnLevelTurn();
         squareManager.OnLevelTurn();
+
+        foreach(var platform in movingPlatforms)
+        {
+            platform.MovePlatform(squareManager.squares,player);
+        }
+
 
         // Triggers the start of the players turn once all game-blocking animations have finished
         ActionQueue.QueueAction(OnPlayerTurnStart);

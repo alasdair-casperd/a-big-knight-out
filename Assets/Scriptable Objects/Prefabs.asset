@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42ac4d50fe9174268be8940930c5fa61, type: 3}
   m_Name: Prefabs
   m_EditorClassIdentifier: 
+  movingPlatform: {fileID: 5962543618662339616, guid: 81f3d19a10384d444be316d93c546920, type: 3}
   validMoveIndicator: {fileID: 557810200261857606, guid: 8231d56530f6f48e7a6a3453a231d20f, type: 3}
   linkIndicator: {fileID: 7501199027688756106, guid: 378b97c742e264ec3bd80877c2bde740, type: 3}
   stateIndicator: {fileID: 980959703344920209, guid: 3a7244f97194d4e25a10231794d0c8cd, type: 3}
