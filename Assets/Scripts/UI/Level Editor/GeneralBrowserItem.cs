@@ -5,6 +5,7 @@ using UnityEngine.UI;
 namespace UI
 {
     [RequireComponent(typeof(SpriteGenerator))]
+    [RequireComponent(typeof(Button))]
     public class GeneralBrowserItem: MonoBehaviour
     {   
         // The image to apply the generated sprite to

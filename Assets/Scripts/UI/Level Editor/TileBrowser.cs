@@ -18,6 +18,7 @@ namespace UI
             foreach (var tileType in TileType.All)
             {
                 var item = Instantiate(TileBrowserItemPrefab, transform);
+                item.GetComponent<Button>().onClick.AddListener(() => levelEditor.SelectTileType(tileType));
                 item.TileType = tileType;
             }
         }

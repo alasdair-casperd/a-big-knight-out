@@ -18,6 +18,7 @@ namespace UI
             foreach (var entityType in EntityType.All)
             {
                 var item = Instantiate(EntityBrowserItemPrefab, transform);
+                item.GetComponent<Button>().onClick.AddListener(() => levelEditor.SelectEntityType(entityType));
                 item.EntityType = entityType;
             }
         }
