@@ -86,9 +86,7 @@ public struct Tile
     // Increase the initial state by 1
     public void IncrementInitialState()
     {
-        Debug.Log(InitialState);
         IncrementInitialState(1);
-        Debug.Log(InitialState);
     }
 
     // Decrease the initial state by 1

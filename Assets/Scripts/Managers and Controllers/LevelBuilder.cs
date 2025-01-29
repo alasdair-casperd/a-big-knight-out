@@ -26,15 +26,12 @@ public class LevelBuilder : MonoBehaviour
     /// <summary>
     /// Instantiates all the square prefabs for the specified level, and returns a list of these
     /// </summary>
-    public Dictionary<Vector2Int, Square> BuildLevelSquares(Transform parent, Level level, float animationDuration = -1, bool ignoreErrors = false)
+    public Dictionary<Vector2Int, Square> BuildLevelSquares(Transform parent, Level level)
     {
-        if (!level.IsValidLevel && !ignoreErrors)
+        if (!level.IsValidLevel)
         {
             return null;
         }
-
-        // Find existing squares on the parent transform
-        List<Square> existingSquares = parent.GetComponentsInChildren<Square>().ToList();
 
         // Create variables
         GameObject prefab;
@@ -43,7 +40,6 @@ public class LevelBuilder : MonoBehaviour
         int graphicsVariant;
         GameObject currentSquareObject;
         Square currentSquare;
-        bool animateInsertion;
 
         // Track squares created
         Dictionary<Vector2Int, Square> squares = new();
@@ -51,26 +47,11 @@ public class LevelBuilder : MonoBehaviour
         // Loops over all the tiles in the level object received
         foreach (var (position, tile) in level.Tiles)
         {
-            // Remove any conflicting existing squares and decide whether to animate the tile or not
-            animateInsertion = true;
-            List<Square> conflictingSquares = existingSquares.FindAll(s => s.Position == position);
-            if (conflictingSquares.Count > 0)
-            {
-                // Only animate insertion if the tile type has changed
-                animateInsertion = tile.Type != conflictingSquares[0].Type;
-
-                foreach (var square in conflictingSquares)
-                {
-                    existingSquares.Remove(square);
-                    Destroy(square.gameObject);
-                }
-            }
-
-            //Gets the prefab for the tile's type from the prefab manager
+            // Gets the prefab for the tile's type from the prefab manager
             prefab = tilePrefabManager.GetPrefab(tile.Type);
             pos = position;
 
-            //Reads the initial state and graphics variant for the tile
+            // Reads the initial state and graphics variant for the tile
             initialState = tile.InitialState;
             graphicsVariant = tile.GraphicsVariant;
 
@@ -101,23 +82,6 @@ public class LevelBuilder : MonoBehaviour
 
             // Store the square in the list of created squares
             squares.Add(pos, currentSquare);
-
-            // Perform insertion animations
-            if (animateInsertion && animationDuration > 0)
-            {
-                Vector3 initialScale = currentSquareObject.transform.localScale;
-                currentSquareObject.transform.localScale = Vector3.zero;
-                LeanTween.scale(currentSquareObject, initialScale, animationDuration).setEaseOutExpo();
-            }
-        }
-
-        // Remove any remaining existing squares (i.e. squares that haven't been replaced with a new tile))
-        foreach (var existingSquare in existingSquares)
-        {
-            var g = existingSquare.gameObject;
-            Destroy(existingSquare);
-            LeanTween.scale(g, Vector3.zero, animationDuration / 2)
-                .setOnComplete(() => Destroy(g));
         }
 
         // Create links and incoming charge placeholders
@@ -184,17 +148,14 @@ public class LevelBuilder : MonoBehaviour
 
 
     /// <summary>
-    /// Instantiates all theenemy prefabs for the specified level, and returns a list of these
+    /// Instantiates all the enemy prefabs for the specified level, and returns a list of these
     /// </summary>
-    public Dictionary<Vector2Int, Enemy> BuildLevelEnemies(Transform parent, Level level, float animationDuration = -1, bool ignoreErrors = false)
+    public Dictionary<Vector2Int, Enemy> BuildLevelEnemies(Transform parent, Level level)
     {
-        if (!level.IsValidLevel && !ignoreErrors)
+        if (!level.IsValidLevel)
         {
             return null;
         }
-
-        // Find existing Enemies on the parent transform
-        List<Enemy> existingEnemies = parent.GetComponentsInChildren<Enemy>().ToList();
 
         // Create variables
         GameObject prefab;
@@ -203,7 +164,6 @@ public class LevelBuilder : MonoBehaviour
         int graphicsVariant;
         GameObject currentEnemyObject;
         Enemy currentEnemy;
-        bool animateInsertion;
 
         // Track enemies created
         Dictionary<Vector2Int, Enemy> enemies = new();
@@ -211,21 +171,6 @@ public class LevelBuilder : MonoBehaviour
         // Loops over all the entities in the level object received
         foreach (var (position, entity) in level.Entities)
         {
-            // Remove any conflicting existing enemies and decide whether to animate the entity or not
-            animateInsertion = true;
-            List<Enemy> conflictingEnemies = existingEnemies.FindAll(s => s.Position == position);
-            if (conflictingEnemies.Count > 0)
-            {
-                // Only animate insertion if the entity type has changed
-                animateInsertion = entity.Type != conflictingEnemies[0].Type;
-
-                foreach (var enemy in conflictingEnemies)
-                {
-                    existingEnemies.Remove(enemy);
-                    Destroy(enemy.gameObject);
-                }
-            }
-
             //Gets the prefab for the entity's type from the prefab manager
             prefab = entityPrefabManager.GetPrefab(entity.Type);
             pos = position;
@@ -258,23 +203,6 @@ public class LevelBuilder : MonoBehaviour
 
             // Store the enemy in the list of created enemies
             enemies.Add(pos, currentEnemy);
-
-            // Perform insertion animations
-            if (animateInsertion && animationDuration > 0)
-            {
-                Vector3 initialScale = currentEnemyObject.transform.localScale;
-                currentEnemyObject.transform.localScale = Vector3.zero;
-                LeanTween.scale(currentEnemyObject, initialScale, animationDuration).setEaseOutExpo();
-            }
-        }
-
-        // Remove any remaining existing enemies (i.e. squares that haven't been replaced with a new enemy))
-        foreach (var existingEnemy in existingEnemies)
-        {
-            var g = existingEnemy.gameObject;
-            Destroy(existingEnemy);
-            LeanTween.scale(g, Vector3.zero, animationDuration / 2)
-                .setOnComplete(() => Destroy(g));
         }
 
         // Return
