@@ -41,23 +41,12 @@ public class ColourFlipSquare : Square
 
         // Changes the state from black to white and 
         // vice versa.
-        if (State == 0)
-        {
-            _whiteTile.SetActive(false);
-            _blackTile.SetActive(true);
-            State = 1;
-        }
-        else if (State == 1)
-        {
-            _blackTile.SetActive(false);
-            _whiteTile.SetActive(true);
-            State = 0;
-        }
-
-
+        State = (State + 1) % 2;
+        UpdateGraphics();
     }
 
-    public override void OnLevelStart()
+    // Update visuals according to the state of the square
+    public override void UpdateGraphics()
     {
         if (State == 0)
         {
@@ -69,5 +58,10 @@ public class ColourFlipSquare : Square
             _blackTile.SetActive(true);
             _whiteTile.SetActive(false);
         }
+    }
+
+    public override void OnLevelStart()
+    {
+        UpdateGraphics();
     }
 }

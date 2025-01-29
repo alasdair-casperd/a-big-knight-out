@@ -61,7 +61,7 @@ public class SwitchSquare : Square
     }
 
     // Update visuals according to the state of the switch
-    private void UpdateGraphics()
+    public override void UpdateGraphics()
     {
         onGraphics.SetActive(IsOn);
         offGraphics.SetActive(!IsOn);

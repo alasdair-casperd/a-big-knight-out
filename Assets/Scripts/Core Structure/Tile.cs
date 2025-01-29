@@ -67,19 +67,28 @@ public struct Tile
         {
             var index = Type.ValidStates.IndexOf(InitialState);
 
-            // Shortcut to achieve proper modulo behaviour in C#
-            int x = index + step;
-            int r = Type.ValidStates.Count;
-            int i = (x % r + r) % r;
+            index += step;
 
-            InitialState = Type.ValidStates[i];
+            while(index < 0)
+            {
+               index += Type.ValidStates.Count;
+            }
+
+            while(index >= Type.ValidStates.Count)
+            {
+               index -= Type.ValidStates.Count;
+            }
+
+            InitialState = Type.ValidStates[index];
         }
     }
 
     // Increase the initial state by 1
     public void IncrementInitialState()
     {
+        Debug.Log(InitialState);
         IncrementInitialState(1);
+        Debug.Log(InitialState);
     }
 
     // Decrease the initial state by 1

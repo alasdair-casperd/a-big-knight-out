@@ -44,17 +44,17 @@ public class GameManager : MonoBehaviour
 
         // Override the selected level if transitioning directly from the level editor
         // This should be removed when we add proper level management
-        var receivedLevel = LevelEditor.LevelToPreview;
-        if (receivedLevel != null)
-        {
-            level = receivedLevel;
-        }
+        // var receivedLevel = LevelEditor.LevelToPreview;
+        // if (receivedLevel != null)
+        // {
+        //     level = receivedLevel;
+        // }
 
         // Generate the level from the JSON file provided
-        else
-        {
+        // else
+        // {
             level = LevelFileManager.ParseLevelFromJSON(levelFile.text);
-        }
+        // }
 
         // Position the player
         player.SetInitialPosition(level.StartPosition);
