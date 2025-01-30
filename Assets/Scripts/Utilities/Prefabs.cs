@@ -10,6 +10,7 @@ public class Prefabs: ScriptableObject
 {
 
     [Header("Gameplay")]
+    public PlayerController Player;
     public GameObject movingPlatform;
 
     [Header("UI")]

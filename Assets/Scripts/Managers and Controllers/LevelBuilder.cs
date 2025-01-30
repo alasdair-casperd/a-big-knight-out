@@ -23,6 +23,23 @@ public class LevelBuilder : MonoBehaviour
     /// </summary>
     public Prefabs prefabs;
 
+
+    public PlayerController BuildPlayer(Transform parent, Level level)
+    {
+        if (!level.IsValidLevel)
+        {
+            return null;
+        }
+
+        // Instantiate the player
+        PlayerController player = Instantiate(prefabs.Player, transform);
+        
+        // Position the player
+        player.SetInitialPosition(level.StartPosition);
+
+        return player;
+    }
+
     /// <summary>
     /// Instantiates all the square prefabs for the specified level, and returns a list of these
     /// </summary>

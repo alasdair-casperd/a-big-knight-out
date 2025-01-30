@@ -69,6 +69,8 @@ public class LevelEditor : MonoBehaviour
 
     private TileType? selectedTileType = null;
     private EntityType? selectedEntityType = null;
+    private bool playerSelected = false;
+    private bool movingPlatformsSelected = false;
 
     private void Start()
     {
@@ -333,23 +335,52 @@ public class LevelEditor : MonoBehaviour
     // }
 
     /*
-        Methods to be used as UnityEvents, assigned to LevelEditorTools via the inspector
-        These methods make use of the field 'targetPosition'
+        Browser selection functions
     */
+
+    private void DeselectBrowserItems()
+    {
+        selectedEntityType = null;
+        selectedTileType = null;
+        playerSelected = false;
+        movingPlatformsSelected = false;
+    }
 
     public void SelectTileType(TileType type)
     {
+        DeselectBrowserItems();
         selectedTileType = type;
     }
 
     public void SelectEntityType(EntityType type)
     {
+        DeselectBrowserItems();
         selectedEntityType = type;
     }
 
-    public void AddTile()
+    public void SelectPlayer()
+    {
+        DeselectBrowserItems();
+        playerSelected = true;
+    }
+
+    public void SelectMovingPlatforms()
+    {
+        DeselectBrowserItems();
+        movingPlatformsSelected = true;
+    }
+
+    public void TileToolAction()
     {
         if (selectedTileType is TileType type) LevelAnimator.AddTile(targetPosition, type);
+    }
+
+    public void EntityToolAction()
+    {
+        // TODO: Implement adding entities
+        // if (selectedEntityType is EntityType type) LevelAnimator.AddEntity(targetPosition, type);
+
+        if (playerSelected) LevelAnimator.PlacePlayer(targetPosition);
     }
 
     public void Edit()

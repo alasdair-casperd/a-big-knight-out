@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// The player object's player controller
     /// </summary>
+    [HideInInspector]
     public PlayerController player;
 
     SquareManager squareManager;
@@ -56,15 +57,10 @@ public class GameManager : MonoBehaviour
             level = LevelFileManager.ParseLevelFromJSON(levelFile.text);
         // }
 
-        // Position the player
-        player.SetInitialPosition(level.StartPosition);
-
-
         // Build the level
+        player = levelBuilder.BuildPlayer(transform, level);
         Dictionary<Vector2Int, Square> squares = levelBuilder.BuildLevelSquares(transform, level);
-
         Dictionary<Vector2Int, Enemy> enemies = levelBuilder.BuildLevelEnemies(transform, level);
-
         movingPlatforms  = levelBuilder.BuildLevelMovingPlatforms(transform, level);
 
         // Give the square manager its squares to manage, and initialize them

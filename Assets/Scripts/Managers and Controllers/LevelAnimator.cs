@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 [RequireComponent(typeof(LevelBuilder))]
 public class LevelAnimator : MonoBehaviour
@@ -33,6 +35,7 @@ public class LevelAnimator : MonoBehaviour
     {
         ClearLevel();
         LevelBuilder levelBuilder = GetComponent<LevelBuilder>();
+        player = levelBuilder.BuildPlayer(transform, level);
         squares = levelBuilder.BuildLevelSquares(transform, level);
         enemies = levelBuilder.BuildLevelEnemies(transform, level);
         movingPlatforms = levelBuilder.BuildLevelMovingPlatforms(transform, level);
@@ -71,6 +74,9 @@ public class LevelAnimator : MonoBehaviour
             if (!withReplacement) return;
         }
 
+        // Cancel if the player is at this position and the type is not a valid start position
+        if (level.StartPosition == position && !type.IsValidStartPosition) return;
+
         if (squares.ContainsKey(position))
         {
             // Animate away the existing square
@@ -99,7 +105,10 @@ public class LevelAnimator : MonoBehaviour
     public void DeleteTile(Vector2Int position)
     {
         // Cancel if there is no square to delete
-        if (!squares.ContainsKey(position)) return;
+        if (!level.Tiles.ContainsKey(position)) return;
+
+        // Cancel if the player is at this position
+        if (level.StartPosition == position) return;
 
         // Animate away the existing square
         Square existingSquare = squares[position];
@@ -140,7 +149,20 @@ public class LevelAnimator : MonoBehaviour
 
     public void PlacePlayer(Vector2Int position)
     {
-        throw new System.NotImplementedException();
+        // Update level
+        if (!level.Tiles.ContainsKey(position)) return;
+        if (!level.Tiles[position].Type.IsValidStartPosition) return;
+        level.StartPosition = position;
+
+        // Animate
+        if (player != null)
+        {
+            // Move player to new target position
+            LeanTween.value(ActionQueue.GameBlockingAnimationsContainer, player.transform.position, GridUtilities.GridToWorldPos(position), insertionDuration)
+                .setOnUpdate((Vector3 v) => player.transform.position = v).setEaseOutExpo();
+        }
+
+        ActionQueue.QueueAction(RegenerateLevel);
     }
 
     public void RotateEntity(Vector2Int position)
