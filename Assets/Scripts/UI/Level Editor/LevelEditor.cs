@@ -5,19 +5,16 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UI;
 using System;
+using Unity.VisualScripting;
+using System.Data.Common;
 
-[RequireComponent(typeof(LevelAnimator))]
+[RequireComponent(typeof(LevelHandler))]
 public class LevelEditor : MonoBehaviour
 {
-    private LevelAnimator LevelAnimator;
-    // public LevelBuilder LevelBuilder;
+    private LevelHandler LevelHandler;
 
     [SerializeField]
     private TextAsset startingLevelJSON;
-
-    // public static Level LevelToPreview;
-
-    // public Transform levelParent;
 
     [SerializeField]
     private Prefabs prefabs;
@@ -26,8 +23,6 @@ public class LevelEditor : MonoBehaviour
 
     public TileBrowser TileBrowser;
     public EntityBrowser EntityBrowser;
-
-    // private LevelEditorTool[] allTools;
 
     private Vector2Int targetPosition;
 
@@ -39,33 +34,16 @@ public class LevelEditor : MonoBehaviour
 
     private GameObject linksContainer;
 
-    // private GameObject stateContainer;
-
-    // private GameObject levelStartIndicator;
-
     private bool ShowingWiringLinks
     {
         set { if (linksContainer != null) linksContainer.SetActive(value); }
     }
-
-    // private bool ShowingState
-    // {
-    //     set { if (stateContainer != null) stateContainer.SetActive(value); }
-    // }
 
     private Vector2Int? linkStart;
 
     private LinkIndicator linkPreview;
 
     private List<LinkIndicator> linkIndicators = new();
-
-    // private List<StateIndicator> stateIndicators = new();
-
-    // public GameObject TileToolsContainer;
-    // public GameObject EntityToolsContainer;
-
-    // public LevelEditorTileTool TileToolPrefab;
-    // public LevelEditorEntityTool EntityToolPrefab;
 
     private TileType? selectedTileType = null;
     private EntityType? selectedEntityType = null;
@@ -74,19 +52,15 @@ public class LevelEditor : MonoBehaviour
 
     private void Start()
     {
-        LevelAnimator = GetComponent<LevelAnimator>();
+        LevelHandler = GetComponent<LevelHandler>();
+        LoadLevel();
+    }
 
-        // TODO: Remove:
-        selectedTileType = TileType.Button;
-
-        // allTools = FindObjectsByType<LevelEditorTool>(FindObjectsSortMode.InstanceID);
-
-        // if (LevelToPreview != null)
-        // {
-        //     level = LevelToPreview;
-        // }
-        // else
-        // {
+    /// <summary>
+    /// Parse and load the provided level file (if any)
+    /// </summary>
+    private void LoadLevel()
+    {
         Level levelToBuild;
         if (startingLevelJSON == null)
         {
@@ -104,214 +78,13 @@ public class LevelEditor : MonoBehaviour
                 levelToBuild = new Level(startPosition: Vector2Int.zero);
             }
         }
-        LevelAnimator.LoadLevel(levelToBuild);
-        // }
-
-        // LevelBuilder.BuildLevelSquares(levelParent, level, animationDuration: -1, ignoreErrors: true);
-        // LevelBuilder.BuildLevelEnemies(levelParent, level, animationDuration: -1, ignoreErrors: true);
-
-        // levelStartIndicator = Instantiate(prefabs.levelStartIndicator);
-        // PositionStartIndicator();
-
-        // GenerateLinkIndicators();
-        // GenerateStateIndicators();
-
-        // CreateDynamicTools();
-
-        // ShowingLinks = false;
-        // ShowingState = false;
-        // currentTool.Select();
+        LevelHandler.LoadLevel(levelToBuild);
     }
 
-    private void Update()
-    {
-        TriageMouseAction();
-    }
-
-    // private void CreateDynamicTools()
-    // {
-    //     foreach (var tileType in TileType.All)
-    //     {
-    //         var tool = Instantiate(TileToolPrefab, TileToolsContainer.transform);
-    //         tool.levelEditor = this;
-    //         tool.TileType = tileType;
-    //         tool.OnSquareClick = new UnityEngine.Events.UnityEvent();
-    //         tool.OnSquareClick.AddListener(AddTile);
-    //     }
-
-    //     foreach (var entityType in EntityType.All)
-    //     {
-    //         var tool = Instantiate(EntityToolPrefab, EntityToolsContainer.transform);
-    //         tool.levelEditor = this;
-    //         tool.EntityType = entityType;
-    //         tool.OnSquareClick = new UnityEngine.Events.UnityEvent();
-    //         tool.OnSquareClick.AddListener(AddEntity);
-    //     }
-    // }
-
-    private void TriageMouseAction()
-    {
-        if ((Input.GetMouseButton(0) || Input.GetMouseButtonUp(0)) && SidebarTool != null && !MouseUtilities.MouseOverUI)
-        {
-            // Read mouse position
-            Vector2Int mousePosition = GridUtilities.GetMouseGridPos();
-
-            if (Input.GetMouseButtonDown(0))
-            {
-                MouseDown(mousePosition);
-            }
-            else if (Input.GetMouseButtonUp(0))
-            {
-                if (!hasDragged)
-                {
-                    MouseClick(mousePosition);
-                }
-
-                MouseUp(mousePosition);
-            }
-            else
-            {
-                if (targetPosition != mousePosition)
-                {
-                    MouseDrag(mousePosition);
-                }
-
-                MouseHeld(mousePosition);
-            }
-        }
-
-        // var hoveredLink = HoveredLink();
-
-        // if (Input.GetMouseButtonDown(0) && hoveredLink != null)
-        // {
-        //     targetLink = hoveredLink;
-        //     currentTool.OnLinkMouseDown.Invoke();
-        // }
-    }
-
-    private void MouseDown(Vector2Int mousePosition)
-    {
-        targetPosition = mousePosition;
-        hasDragged = false;
-        SidebarTool.OnTileMouseDown.Invoke();
-    }
-
-    private void MouseClick(Vector2Int mousePosition)
-    {
-        targetPosition = mousePosition;
-        hasDragged = false;
-        SidebarTool.OnTileClick.Invoke();
-    }
-
-    private void MouseUp(Vector2Int mousePosition)
-    {
-        SidebarTool.OnTileMouseUp.Invoke();
-    }
-
-    private void MouseDrag(Vector2Int mousePosition)
-    {
-        targetPosition = mousePosition;
-        hasDragged = true;
-        SidebarTool.OnTileDrag.Invoke();
-    }
-
-    private void MouseHeld(Vector2Int mousePosition)
-    {
-        targetWorldPosition = MouseUtilities.GetMouseWorldPos();
-        targetWorldPosition.y = 0;
-        SidebarTool.OnTileMouseHeld.Invoke();
-    }
-
-    // private void RegenerateLevel()
-    // {
-    //     LevelBuilder.BuildLevelSquares(levelParent, level, animationDuration: 0.5f, ignoreErrors: true);
-    //     LevelBuilder.BuildLevelEnemies(levelParent, level, animationDuration: 0.5f, ignoreErrors: true);
-    //     GenerateLinkIndicators();
-    //     GenerateStateIndicators();
-    // }
-
-    // private void GenerateLinkIndicators()
-    // {
-    //     if (linksContainer == null)
-    //     {
-    //         linksContainer = new GameObject("Links");
-    //         linksContainer.transform.parent = transform;
-    //     }
-
-    //     foreach (var linkIndicator in linkIndicators)
-    //     {
-    //         Destroy(linkIndicator.gameObject);
-    //     }
-
-    //     linkIndicators = new();
-
-    //     foreach (var (position, tile) in LevelManager.level.Tiles)
-    //     {
-    //         foreach (var link in tile.Links)
-    //         {
-    //             var linkIndicator = Instantiate(prefabs.linkIndicator);
-    //             linkIndicator.transform.parent = linksContainer.transform;
-    //             linkIndicator.InitialiseAsInteractiveLink(position, link);
-    //             linkIndicators.Add(linkIndicator);
-    //         }
-    //     }
-    // }
-
-    // private void GenerateStateIndicators()
-    // {
-    //     if (stateContainer == null)
-    //     {
-    //         stateContainer = new GameObject("State Indicators");
-    //         stateContainer.transform.parent = transform;
-    //     }
-
-    //     foreach (var stateIndicator in stateIndicators)
-    //     {
-    //         Destroy(stateIndicator.gameObject);
-    //     }
-
-    //     stateIndicators = new();
-
-    //     foreach (var (position, tile) in level.Tiles)
-    //     {
-    //         if (tile.Type.IsMultiState)
-    //         {
-    //             var stateIndicator = Instantiate(prefabs.stateIndicator);
-    //             stateIndicator.transform.parent = stateContainer.transform;
-    //             stateIndicator.transform.position = GridUtilities.GridToWorldPos(position);
-    //             stateIndicator.Number = tile.InitialState;
-    //             stateIndicators.Add(stateIndicator);
-    //         }
-    //     }
-    // }
-
-    // private void AddTile(TileType type, Vector2Int position)
-    // {
-    //     if (!level.Tiles.ContainsKey(position))
-    //     {
-    //         AddTile();
-    //     }
-    //     else if (level.Tiles[position].Type != type)
-    //     {
-    //         // Check if the position is the level's start location
-    //         if (level.StartPosition == position)
-    //         {
-    //             // Abort if the new type is not a valid start location
-    //             if (!type.IsValidStartPosition) return;
-    //         }
-
-    //         RemoveLinksToPosition(position);
-    //         AddTile();
-    //     }
-
-    //     void AddTile()
-    //     {
-    //         level.Tiles.Remove(position);
-    //         level.Tiles.Add(position, new(type));
-    //         RegenerateLevel();
-    //     }
-    // }
-
+    /// <summary>
+    /// The link indicator that is being hovered, if any
+    /// </summary>
+    /// <returns></returns>
     private LinkIndicator HoveredLink()
     {
         foreach (var link in linkIndicators)
@@ -321,22 +94,141 @@ public class LevelEditor : MonoBehaviour
         return null;
     }
 
-    // private void RemoveLinksToPosition(Vector2Int position)
-    // {
-    //     foreach (var (_, tile) in level.Tiles)
-    //     {
-    //         tile.Links?.RemoveAll(link => link == position);
-    //     }
-    // }
+    private void Update()
+    {
+        TriageMouseAction();
+    }
 
-    // private void PositionStartIndicator()
-    // {
-    //     levelStartIndicator.transform.position = GridUtilities.GridToWorldPos(level.StartPosition);
-    // }
+    /// <summary>
+    /// Determine which mouse action was performed this frame, and call the associated method
+    /// </summary>
+    private void TriageMouseAction()
+    {
+        // Check mouse it not block by a UI element
+        if (MouseUtilities.MouseOverUI) return;
+        
+        // Check a sidebar tool is selected
+        if (SidebarTool == null) return;
 
+        // Determine tool type
+        if (SidebarTool.toolType == SidebarTool.ToolType.Tile)
+        {    
+            if (Input.GetMouseButton(0) || Input.GetMouseButtonUp(0))
+            {
+                // Read mouse position
+                Vector2Int mousePosition = GridUtilities.GetMouseGridPos();
+
+                if (Input.GetMouseButtonDown(0))
+                {
+                    TileMouseDown(mousePosition);
+                }
+                else if (Input.GetMouseButtonUp(0))
+                {
+                    if (!hasDragged)
+                    {
+                        TileMouseClick(mousePosition);
+                    }
+
+                    TileMouseUp(mousePosition);
+                }
+                else
+                {
+                    if (targetPosition != mousePosition)
+                    {
+                        TileMouseDrag(mousePosition);
+                    }
+
+                    TileMouseHeld(mousePosition);
+                }
+            }
+        }
+        else if (SidebarTool.toolType == SidebarTool.ToolType.Link)
+        {
+            if (!Input.GetMouseButton(0)) return;
+
+            var hoveredLink = HoveredLink();
+            if (hoveredLink != null) LinkTouch(hoveredLink);
+        }
+    }
+    
     /*
-        Browser selection functions
+        Mouse action functions
     */
+
+    private void TileMouseDown(Vector2Int mousePosition)
+    {
+        targetPosition = mousePosition;
+        hasDragged = false;
+        SidebarTool.OnTileMouseDown.Invoke();
+    }
+
+    private void TileMouseClick(Vector2Int mousePosition)
+    {
+        targetPosition = mousePosition;
+        hasDragged = false;
+        SidebarTool.OnTileClick.Invoke();
+    }
+
+    private void TileMouseUp(Vector2Int mousePosition)
+    {
+        SidebarTool.OnTileMouseUp.Invoke();
+    }
+
+    private void TileMouseDrag(Vector2Int mousePosition)
+    {
+        targetPosition = mousePosition;
+        hasDragged = true;
+        SidebarTool.OnTileDrag.Invoke();
+    }
+
+    private void TileMouseHeld(Vector2Int mousePosition)
+    {
+        targetWorldPosition = MouseUtilities.GetMouseWorldPos();
+        targetWorldPosition.y = 0;
+        SidebarTool.OnTileMouseHeld.Invoke();
+    }
+
+    private void LinkTouch(LinkIndicator link)
+    {
+        targetLink = link;
+        SidebarTool.OnLinkTouch.Invoke();
+    }
+    /*
+        Tool and browser action functions
+    */
+
+    // ====================
+    // Sidebar tool actions
+    // ====================
+
+    public void TileToolAction()
+    {
+        if (selectedTileType is TileType type) LevelHandler.AddTile(targetPosition, type);
+    }
+
+    public void EntityToolAction()
+    {
+        // TODO: Implement adding entities
+        // if (selectedEntityType is EntityType type) LevelHandler.AddEntity(targetPosition, type);
+
+        if (playerSelected) LevelHandler.PlacePlayer(targetPosition);
+    }
+
+    public void EditAction()
+    {
+        // TODO: Check two state
+        LevelHandler.IncrementState(targetPosition);
+    }
+
+    public void EraseAction()
+    {
+        // TODO: Erase entities as first, then tiles?
+        LevelHandler.DeleteTile(targetPosition);
+    }
+
+    // ===============
+    // Browser Actions
+    // ===============
 
     private void DeselectBrowserItems()
     {
@@ -370,44 +262,12 @@ public class LevelEditor : MonoBehaviour
         movingPlatformsSelected = true;
     }
 
-    public void TileToolAction()
-    {
-        if (selectedTileType is TileType type) LevelAnimator.AddTile(targetPosition, type);
-    }
-
-    public void EntityToolAction()
-    {
-        // TODO: Implement adding entities
-        // if (selectedEntityType is EntityType type) LevelAnimator.AddEntity(targetPosition, type);
-
-        if (playerSelected) LevelAnimator.PlacePlayer(targetPosition);
-    }
-
-    public void Edit()
-    {
-        // TODO: Check two state
-        IncrementState();
-    }
-
-    private void IncrementState()
-    {
-        LevelAnimator.IncrementState(targetPosition);
-    }
-
-    public void Erase()
-    {
-        // TODO: Erase entities as first, then tiles?
-        LevelAnimator.DeleteTile(targetPosition);
-    }
-
-
     public void SetTileBrowserVisibility(bool visible)
     {
         Slider slider = TileBrowser.GetComponent<Slider>();
         if (visible) slider.Show();
         else slider.Dismiss();
     }
-
 
     public void SetEntityBrowserVisibility(bool visible)
     {
@@ -416,49 +276,13 @@ public class LevelEditor : MonoBehaviour
         else slider.Dismiss();
     }
 
-    // ===========
-    // Eraser Tool
-    // ===========
-
-    // public void EraseTile()
-    // {
-    //     // Do not erase a tile that is used as the level's start position
-    //     if (level.StartPosition == targetPosition) return;
-
-    //     RemoveLinksToPosition(targetPosition);
-    //     level.Tiles.Remove(targetPosition);
-    //     RegenerateLevel();
-    // }
-
     // ============
-    // Tile Tools
+    // Link Actions
     // ============
-
-    // public void AddTile()
-    // {
-    //     if (currentTool is LevelEditorTileTool tileTool)
-    //     {
-    //         AddTile(tileTool.TileType, targetPosition);
-    //     }
-    // }
-
-    // ============
-    // Entity Tools
-    // ============
-    // public void AddEntity()
-    // {
-    //     if (currentTool is LevelEditorEntityTool entityTool)
-    //     {
-    //         Debug.Log("Entities not yet implemented in level editor");
-    //     }
-    // }
-
-    // ==========
-    // Link Tools
-    // ==========
 
     public void EnterWiringMode()
     {
+        GenerateLinkIndicators();
         ShowingWiringLinks = true;
     }
 
@@ -467,10 +291,10 @@ public class LevelEditor : MonoBehaviour
         ShowingWiringLinks = false;
     }
 
-    // public void StartDrawingLink()
-    // {
-    //     linkStart = LevelManager.level.Tiles.ContainsKey(targetPosition) ? targetPosition : null;
-    // }
+    public void StartDrawingLink()
+    {
+        linkStart = LevelHandler.level.Tiles.ContainsKey(targetPosition) ? targetPosition : null;
+    }
 
     public void CreateLinkPreview()
     {
@@ -491,102 +315,55 @@ public class LevelEditor : MonoBehaviour
         }
     }
 
-    // public void CreateLink()
-    // {
-    //     // Destroy the link preview
-    //     if (linkPreview != null) Destroy(linkPreview.gameObject);
+    private void GenerateLinkIndicators()
+    {
+        if (linksContainer == null)
+        {
+            linksContainer = new GameObject("Links");
+            linksContainer.transform.parent = transform;
+        }
 
-    //     // Check that link start was defined
-    //     if (linkStart is Vector2Int startPosition)
-    //     {
-    //         // Prevent self-links
-    //         if (targetPosition == startPosition) return;
+        foreach (var linkIndicator in linkIndicators)
+        {
+            Destroy(linkIndicator.gameObject);
+        }
 
-    //         // Check link starts at a tile
-    //         if (!LevelManager.level.Tiles.ContainsKey(startPosition)) return;
+        linkIndicators = new();
 
-    //         // Prevent links to non-existant tiles
-    //         if (!level.Tiles.ContainsKey(targetPosition)) return;
+        foreach (var (position, tile) in LevelHandler.level.Tiles)
+        {
+            foreach (var link in tile.Links)
+            {
+                var linkIndicator = Instantiate(prefabs.linkIndicator);
+                linkIndicator.transform.parent = linksContainer.transform;
+                linkIndicator.InitialiseAsInteractiveLink(position, link);
+                linkIndicators.Add(linkIndicator);
+            }
+        }
+    }
 
-    //         // Read start and target tiles
-    //         Tile startTile = level.Tiles[startPosition];
-    //         Tile targetTile = level.Tiles[targetPosition];
+    public void CreateLink()
+    {
+        // Destroy the link preview
+        if (linkPreview != null) Destroy(linkPreview.gameObject);
 
-    //         // Check that the tiles are compatible
-    //         if (!startTile.Type.ValidLinkTargets.Contains(targetTile.Type))
-    //         {
-    //             Debug.Log($"Attempting to create a link from a {startTile.Type.DisplayName} tile to a {targetTile.Type.DisplayName} tile.");
-    //             return;
-    //         }
+        // Create the link
+        if (linkStart is Vector2Int startPosition) LevelHandler.CreateLink(startPosition, targetPosition);
 
-    //         // Create the link
-    //         level.Tiles[startPosition].Links.Add(targetPosition);
-    //         GenerateLinkIndicators();
-    //     }
-    // }
+        GenerateLinkIndicators();
+    }
 
     // public void DeleteLink()
     // {
     //     if (targetLink != null)
     //     {
-    //         if (level.Tiles.ContainsKey(targetLink.Start))
+    //         if (LevelHandler.level.Tiles.ContainsKey(targetLink.Start))
     //         {
-    //             level.Tiles[targetLink.Start].Links.Remove(targetLink.End);
+    //             LevelHandler.level.Tiles[targetLink.Start].Links.Remove(targetLink.End);
     //         }
     //     }
 
     //     GenerateLinkIndicators();
-    // }
-
-    // ===========
-    // State Tools
-    // ===========
-
-    // public void EnterStateEditingMode()
-    // {
-    //     ShowingState = true;
-    // }
-
-    // public void ExitStateEditingMode()
-    // {
-    //     ShowingState = false;
-    // }
-
-    // public void IncrementState()
-    // {
-    //     if (level.Tiles.ContainsKey(targetPosition))
-    //     {
-    //         var targetTile = level.Tiles[targetPosition];
-    //         targetTile.IncrementInitialState();
-    //         level.Tiles[targetPosition] = targetTile;
-    //     }
-
-    //     GenerateStateIndicators();
-    // }
-
-    // public void DecrementState()
-    // {
-    //     if (level.Tiles.ContainsKey(targetPosition))
-    //     {
-    //         var targetTile = level.Tiles[targetPosition];
-    //         targetTile.DecrementInitialState();
-    //         level.Tiles[targetPosition] = targetTile;
-    //     }
-
-    //     GenerateStateIndicators();
-    // }
-
-    // ===========
-    // Level Start
-    // ===========
-
-    // public void SetLevelStart()
-    // {
-    //     if (level.Tiles.ContainsKey(targetPosition) && level.Tiles[targetPosition].Type.IsValidStartPosition)
-    //     {
-    //         level.StartPosition = targetPosition;
-    //         PositionStartIndicator();
-    //     }
     // }
 
     // =======

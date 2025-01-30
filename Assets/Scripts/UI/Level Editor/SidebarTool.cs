@@ -8,9 +8,16 @@ namespace UI
     [RequireComponent(typeof(SidebarToolSelector))]
     public class SidebarTool : MonoBehaviour
     {
-
+        public enum ToolType
+        {
+            Tile, Link
+        }
+        
         [Header("References")]
         public LevelEditor levelEditor;
+
+        [Header("Properties")]
+        public ToolType toolType = ToolType.Tile;
 
         [Header("Selection Events")]
         public UnityEvent OnSelect = new();
@@ -29,5 +36,8 @@ namespace UI
         public UnityEvent OnEntityMouseUp = new();
         public UnityEvent OnEntityDrag = new();
         public UnityEvent OnEntityMouseHeld = new();
+
+        [Header("Link Events")]
+        public UnityEvent OnLinkTouch = new();
     }
 }
