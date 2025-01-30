@@ -122,6 +122,13 @@ public class LevelBuilder : MonoBehaviour
             AddAdjacentTile(squares, trackSquare, Vector2Int.right);
             
         }
+
+        // Initialise square graphics
+        foreach (var (_, square) in squares)
+        {
+            square.UpdateGraphics();
+        }
+
         // Return
         return squares;
     }

@@ -6,10 +6,10 @@ using UnityEngine.SceneManagement;
 using UI;
 using System;
 
-[RequireComponent(typeof(LevelManager))]
+[RequireComponent(typeof(LevelAnimator))]
 public class LevelEditor : MonoBehaviour
 {
-    private LevelManager LevelManager;
+    private LevelAnimator LevelAnimator;
     // public LevelBuilder LevelBuilder;
 
     [SerializeField]
@@ -19,8 +19,8 @@ public class LevelEditor : MonoBehaviour
 
     // public Transform levelParent;
 
-    // [SerializeField]
-    // private Prefabs prefabs;
+    [SerializeField]
+    private Prefabs prefabs;
 
     public SidebarTool SidebarTool = null;
 
@@ -33,31 +33,31 @@ public class LevelEditor : MonoBehaviour
 
     private Vector3 targetWorldPosition;
 
-    // private LinkIndicator targetLink;
+    private LinkIndicator targetLink;
 
     private bool hasDragged;
 
-    // private GameObject linksContainer;
+    private GameObject linksContainer;
 
     // private GameObject stateContainer;
 
     // private GameObject levelStartIndicator;
 
-    // private bool ShowingLinks
-    // {
-    //     set { if (linksContainer != null) linksContainer.SetActive(value); }
-    // }
+    private bool ShowingWiringLinks
+    {
+        set { if (linksContainer != null) linksContainer.SetActive(value); }
+    }
 
     // private bool ShowingState
     // {
     //     set { if (stateContainer != null) stateContainer.SetActive(value); }
     // }
 
-    // private Vector2Int? linkStart;
+    private Vector2Int? linkStart;
 
-    // private LinkIndicator linkPreview;
+    private LinkIndicator linkPreview;
 
-    // private List<LinkIndicator> linkIndicators = new();
+    private List<LinkIndicator> linkIndicators = new();
 
     // private List<StateIndicator> stateIndicators = new();
 
@@ -72,7 +72,7 @@ public class LevelEditor : MonoBehaviour
 
     private void Start()
     {
-        LevelManager = GetComponent<LevelManager>();
+        LevelAnimator = GetComponent<LevelAnimator>();
 
         // TODO: Remove:
         selectedTileType = TileType.Button;
@@ -102,7 +102,7 @@ public class LevelEditor : MonoBehaviour
                 levelToBuild = new Level(startPosition: Vector2Int.zero);
             }
         }
-        LevelManager.LoadLevel(levelToBuild);
+        LevelAnimator.LoadLevel(levelToBuild);
         // }
 
         // LevelBuilder.BuildLevelSquares(levelParent, level, animationDuration: -1, ignoreErrors: true);
@@ -243,7 +243,7 @@ public class LevelEditor : MonoBehaviour
 
     //     linkIndicators = new();
 
-    //     foreach (var (position, tile) in level.Tiles)
+    //     foreach (var (position, tile) in LevelManager.level.Tiles)
     //     {
     //         foreach (var link in tile.Links)
     //         {
@@ -310,14 +310,14 @@ public class LevelEditor : MonoBehaviour
     //     }
     // }
 
-    // private LinkIndicator HoveredLink()
-    // {
-    //     foreach (var link in linkIndicators)
-    //     {
-    //         if (link.MouseOver) return link;
-    //     }
-    //     return null;
-    // }
+    private LinkIndicator HoveredLink()
+    {
+        foreach (var link in linkIndicators)
+        {
+            if (link.MouseOver) return link;
+        }
+        return null;
+    }
 
     // private void RemoveLinksToPosition(Vector2Int position)
     // {
@@ -349,7 +349,7 @@ public class LevelEditor : MonoBehaviour
 
     public void AddTile()
     {
-        if (selectedTileType is TileType type) LevelManager.AddTile(targetPosition, type);
+        if (selectedTileType is TileType type) LevelAnimator.AddTile(targetPosition, type);
     }
 
     public void Edit()
@@ -360,13 +360,13 @@ public class LevelEditor : MonoBehaviour
 
     private void IncrementState()
     {
-        LevelManager.IncrementState(targetPosition);
+        LevelAnimator.IncrementState(targetPosition);
     }
 
     public void Erase()
     {
         // TODO: Erase entities as first, then tiles?
-        LevelManager.DeleteTile(targetPosition);
+        LevelAnimator.DeleteTile(targetPosition);
     }
 
 
@@ -426,39 +426,39 @@ public class LevelEditor : MonoBehaviour
     // Link Tools
     // ==========
 
-    // public void EnterLinkEditingMode()
-    // {
-    //     ShowingLinks = true;
-    // }
+    public void EnterWiringMode()
+    {
+        ShowingWiringLinks = true;
+    }
 
-    // public void ExitLinkEditingMode()
-    // {
-    //     ShowingLinks = false;
-    // }
+    public void ExitWiringMode()
+    {
+        ShowingWiringLinks = false;
+    }
 
     // public void StartDrawingLink()
     // {
-    //     linkStart = level.Tiles.ContainsKey(targetPosition) ? targetPosition : null;
+    //     linkStart = LevelManager.level.Tiles.ContainsKey(targetPosition) ? targetPosition : null;
     // }
 
-    // public void CreateLinkPreview()
-    // {
-    //     if (linkStart is Vector2Int startPosition)
-    //     {
-    //         var start = GridUtilities.GridToWorldPos(startPosition);
-    //         var end = targetWorldPosition;
+    public void CreateLinkPreview()
+    {
+        if (linkStart is Vector2Int startPosition)
+        {
+            var start = GridUtilities.GridToWorldPos(startPosition);
+            var end = targetWorldPosition;
 
-    //         if (linkPreview == null)
-    //         {
-    //             linkPreview = Instantiate(prefabs.linkIndicator, Vector3.zero, Quaternion.identity);
-    //             linkPreview.InitialiseAsPreview(start, end);
-    //         }
-    //         else
-    //         {
-    //             linkPreview.SetPositions(start, end);
-    //         }
-    //     }
-    // }
+            if (linkPreview == null)
+            {
+                linkPreview = Instantiate(prefabs.linkIndicator, Vector3.zero, Quaternion.identity);
+                linkPreview.InitialiseAsPreview(start, end);
+            }
+            else
+            {
+                linkPreview.SetPositions(start, end);
+            }
+        }
+    }
 
     // public void CreateLink()
     // {
@@ -472,7 +472,7 @@ public class LevelEditor : MonoBehaviour
     //         if (targetPosition == startPosition) return;
 
     //         // Check link starts at a tile
-    //         if (!level.Tiles.ContainsKey(startPosition)) return;
+    //         if (!LevelManager.level.Tiles.ContainsKey(startPosition)) return;
 
     //         // Prevent links to non-existant tiles
     //         if (!level.Tiles.ContainsKey(targetPosition)) return;

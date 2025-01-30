@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(LevelBuilder))]
-public class LevelManager : MonoBehaviour
+public class LevelAnimator : MonoBehaviour
 {
     // Inspector references
     public TilePrefabManager TilePrefabManager;
@@ -13,7 +13,7 @@ public class LevelManager : MonoBehaviour
     public float deletionDuration = 0.5f;
 
     // ---
-    private Level level;
+    public Level level { get; private set; }
 
     private PlayerController player;
     private Dictionary<Vector2Int, Square> squares = new();
@@ -23,30 +23,31 @@ public class LevelManager : MonoBehaviour
     public void LoadLevel(Level level)
     {
         this.level = level;
-        RebuildLevel();
+        RegenerateLevel();
     }
 
     /// <summary>
     /// Rebuild the level from scratch
     /// </summary>
-    private void RebuildLevel()
+    private void RegenerateLevel()
     {
         ClearLevel();
         LevelBuilder levelBuilder = GetComponent<LevelBuilder>();
         squares = levelBuilder.BuildLevelSquares(transform, level);
         enemies = levelBuilder.BuildLevelEnemies(transform, level);
+        movingPlatforms = levelBuilder.BuildLevelMovingPlatforms(transform, level);
     }
 
     /// <summary>
-    /// Destroy all created gameObjects related to teh level
+    /// Destroy all created gameObjects related to the level
     /// </summary>
     private void ClearLevel()
     {
         // Destroy the gameObjects
         if (player != null) Destroy(player.gameObject);
-        foreach (var (_, enemy) in enemies) Destroy(enemy.gameObject);
-        foreach (var (_, square) in squares) Destroy(square.gameObject);
-        foreach (var movingPlatform in movingPlatforms) Destroy(movingPlatform);
+        foreach (var (_, enemy) in enemies) if (enemy != null) Destroy(enemy.gameObject);
+        foreach (var (_, square) in squares) if (square != null) Destroy(square.gameObject);
+        foreach (var movingPlatform in movingPlatforms) if (movingPlatform != null) Destroy(movingPlatform);
 
         // Clear references
         player = null;
@@ -61,45 +62,50 @@ public class LevelManager : MonoBehaviour
     /// <param name="withReplacement">Should any existing tile at the specified location be overridden?</param>
     public void AddTile(Vector2Int position, TileType type, bool withReplacement = true)
     {
-        if (squares.ContainsKey(position))
+        if (level.Tiles.ContainsKey(position))
         {
+            // Cancel if tile type is already correct
+            if (level.Tiles[position].Type == type) return;
+            
             // Cancel if not replacing tiles
             if (!withReplacement) return;
-
-            // Delete existing square
-            Destroy(squares[position].gameObject);
-            squares.Remove(position);
         }
 
+        if (squares.ContainsKey(position))
+        {
+            // Animate away the existing square
+            Square existingSquare = squares[position];
+            Vector3 initialScale = existingSquare.transform.localScale;
+            LeanTween.value(ActionQueue.GameBlockingAnimationsContainer, 0, 1, insertionDuration)
+                .setOnUpdate((t) => existingSquare.transform.localScale = Vector3.Lerp(initialScale, Vector3.zero, t)).setEaseOutExpo();
+        }
+
+        
         // Create new square
         Square newSquare = Instantiate(TilePrefabManager.GetPrefab(type)).GetComponent<Square>();
+        squares[position] = newSquare;
         newSquare.transform.position = GridUtilities.GridToWorldPos(position);
-        if (type.IsMultiState) newSquare.State = type.ValidStates[0];
-        newSquare.IncomingCharges = new Dictionary<Square, bool?>();
-        newSquare.UpdateGraphics();
-        squares.Add(position, newSquare);
+
+        // Animate (scale in)
+        Vector3 targetScale = newSquare.transform.localScale;
+        LeanTween.value(ActionQueue.GameBlockingAnimationsContainer, 0, 1, insertionDuration)
+            .setOnUpdate((t) => newSquare.transform.localScale = Vector3.Lerp(Vector3.zero, targetScale, t)).setEaseOutExpo();
 
         // Update the level
         level.Tiles[position] = new Tile(type);
-
-        // Animate
-        Vector3 initialScale = newSquare.transform.localScale;
-        newSquare.transform.localScale = Vector3.zero;
-        LeanTween.scale(newSquare.gameObject, initialScale, insertionDuration).setEaseOutExpo();
+        ActionQueue.QueueAction(RegenerateLevel);
     }
     
     public void DeleteTile(Vector2Int position)
     {
-        if (squares.ContainsKey(position))
-        {
-            // Animate removal of the square
-            Square targetSquare = squares[position];
-            LeanTween.scale(targetSquare.gameObject, Vector3.zero, deletionDuration).setEaseOutExpo()
-            .setOnComplete(() => {
-                squares.Remove(position);
-                Destroy(squares[position].gameObject);
-            });
-        }
+        // Cancel if there is no square to delete
+        if (!squares.ContainsKey(position)) return;
+
+        // Animate away the existing square
+        Square existingSquare = squares[position];
+        Vector3 initialScale = existingSquare.transform.localScale;
+        LeanTween.value(ActionQueue.GameBlockingAnimationsContainer, 0, 1, insertionDuration)
+            .setOnUpdate((t) => existingSquare.transform.localScale = Vector3.Lerp(initialScale, Vector3.zero, t)).setEaseOutExpo();
 
         // Update the level
         if (level.Tiles.ContainsKey(position))
@@ -107,6 +113,8 @@ public class LevelManager : MonoBehaviour
             // Remove the tile
             level.Tiles.Remove(position);
         }
+
+        ActionQueue.QueueAction(RegenerateLevel);
     }
 
     public void IncrementState(Vector2Int position)
@@ -117,11 +125,7 @@ public class LevelManager : MonoBehaviour
         if (!targetTile.Type.IsMultiState) return;
         targetTile.IncrementInitialState();
         level.Tiles[position] = targetTile;
-        
-        // Update square
-        Square targetSquare = squares[position];
-        targetSquare.State = targetTile.InitialState;
-        targetSquare.UpdateGraphics();
+        RegenerateLevel();
     }
 
     public void MoveTile(Vector2Int position, Vector2Int to)
@@ -142,5 +146,10 @@ public class LevelManager : MonoBehaviour
     public void RotateEntity(Vector2Int position)
     {
         throw new System.NotImplementedException();
+    }
+
+    private void Update()
+    {
+        ActionQueue.Update();
     }
 }
