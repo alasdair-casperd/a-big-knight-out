@@ -22,6 +22,10 @@ public class LevelAnimator : MonoBehaviour
     private Dictionary<Vector2Int, Enemy> enemies = new();
     private List<MovingPlatform> movingPlatforms = new();
 
+    private List<Square> temporarySquares = new();
+    private List<Enemy> temporaryEnemies = new();
+    private List<MovingPlatform> temporaryMovingPlatforms = new();
+
     public void LoadLevel(Level level)
     {
         this.level = level;
@@ -48,9 +52,14 @@ public class LevelAnimator : MonoBehaviour
     {
         // Destroy the gameObjects
         if (player != null) Destroy(player.gameObject);
+
         foreach (var (_, enemy) in enemies) if (enemy != null) Destroy(enemy.gameObject);
         foreach (var (_, square) in squares) if (square != null) Destroy(square.gameObject);
         foreach (var movingPlatform in movingPlatforms) if (movingPlatform != null) Destroy(movingPlatform);
+
+        foreach (var square in temporarySquares) if (square != null) Destroy(square.gameObject);
+        foreach (var enemy in temporaryEnemies) if (enemy != null) Destroy(enemy.gameObject);
+        foreach (var movingPlatform in temporaryMovingPlatforms) if (movingPlatform != null) Destroy(movingPlatform);
 
         // Clear references
         player = null;
@@ -77,29 +86,31 @@ public class LevelAnimator : MonoBehaviour
         // Cancel if the player is at this position and the type is not a valid start position
         if (level.StartPosition == position && !type.IsValidStartPosition) return;
 
+        // Update the level
+        level.Tiles[position] = new Tile(type);
+
+        // Animate away any existing square
         if (squares.ContainsKey(position))
         {
-            // Animate away the existing square
             Square existingSquare = squares[position];
             Vector3 initialScale = existingSquare.transform.localScale;
             LeanTween.value(ActionQueue.GameBlockingAnimationsContainer, 0, 1, insertionDuration)
                 .setOnUpdate((t) => existingSquare.transform.localScale = Vector3.Lerp(initialScale, Vector3.zero, t)).setEaseOutExpo();
         }
-
         
         // Create new square
         Square newSquare = Instantiate(TilePrefabManager.GetPrefab(type)).GetComponent<Square>();
-        squares[position] = newSquare;
+        temporarySquares.Add(newSquare);
         newSquare.transform.position = GridUtilities.GridToWorldPos(position);
 
         // Animate (scale in)
         Vector3 targetScale = newSquare.transform.localScale;
         LeanTween.value(ActionQueue.GameBlockingAnimationsContainer, 0, 1, insertionDuration)
-            .setOnUpdate((t) => newSquare.transform.localScale = Vector3.Lerp(Vector3.zero, targetScale, t)).setEaseOutExpo();
+            .setOnUpdate((t) => newSquare.transform.localScale = Vector3.Lerp(Vector3.zero, targetScale, t))
+            .setEaseOutExpo();
 
-        // Update the level
-        level.Tiles[position] = new Tile(type);
         ActionQueue.QueueAction(RegenerateLevel);
+
     }
     
     public void DeleteTile(Vector2Int position)
@@ -110,17 +121,23 @@ public class LevelAnimator : MonoBehaviour
         // Cancel if the player is at this position
         if (level.StartPosition == position) return;
 
-        // Animate away the existing square
-        Square existingSquare = squares[position];
-        Vector3 initialScale = existingSquare.transform.localScale;
-        LeanTween.value(ActionQueue.GameBlockingAnimationsContainer, 0, 1, insertionDuration)
-            .setOnUpdate((t) => existingSquare.transform.localScale = Vector3.Lerp(initialScale, Vector3.zero, t)).setEaseOutExpo();
-
         // Update the level
         if (level.Tiles.ContainsKey(position))
         {
             // Remove the tile
             level.Tiles.Remove(position);
+        }
+
+        // Animate away the existing square
+        if (squares.ContainsKey(position))
+        {
+            Square existingSquare = squares[position];
+            squares.Remove(position);
+            temporarySquares.Add(existingSquare);
+
+            Vector3 initialScale = existingSquare.transform.localScale;
+            LeanTween.value(ActionQueue.GameBlockingAnimationsContainer, 0, 1, insertionDuration)
+                .setOnUpdate((t) => existingSquare.transform.localScale = Vector3.Lerp(initialScale, Vector3.zero, t)).setEaseOutExpo();
         }
 
         ActionQueue.QueueAction(RegenerateLevel);
