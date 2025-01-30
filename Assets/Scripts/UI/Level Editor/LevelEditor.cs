@@ -25,7 +25,7 @@ public class LevelEditor : MonoBehaviour
     public SidebarTool SidebarTool = null;
 
     public TileBrowser TileBrowser;
-    public FeatureBrowser FeatureBrowser;
+    public EntityBrowser EntityBrowser;
 
     // private LevelEditorTool[] allTools;
 
@@ -378,9 +378,9 @@ public class LevelEditor : MonoBehaviour
     }
 
 
-    public void SetFeatureBrowserVisibility(bool visible)
+    public void SetEntityBrowserVisibility(bool visible)
     {
-        Slider slider = FeatureBrowser.GetComponent<Slider>();
+        Slider slider = EntityBrowser.GetComponent<Slider>();
         if (visible) slider.Show();
         else slider.Dismiss();
     }

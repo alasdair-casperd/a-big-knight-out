@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,9 +16,12 @@ namespace UI
 
         private void Start()
         {
-            foreach (var tileType in TileType.All)
+            // Dynamically create browser items for each tile type
+            // These are added in reverse order as an easy way of placing them before the moving platform selector
+            foreach (var tileType in TileType.All.Reverse())
             {
                 var item = Instantiate(TileBrowserItemPrefab, transform);
+                item.transform.SetAsFirstSibling();
                 item.GetComponent<Button>().onClick.AddListener(() => levelEditor.SelectTileType(tileType));
                 item.TileType = tileType;
             }

@@ -9,22 +9,16 @@ namespace UI
     public class SidebarToolSelector: Selector
     {
         public Image icon;
-        public GameObject selectionHighlight;
+        public Image selectionHighlight;
 
         private SidebarTool sidebarTool;
 
         protected override void UpdateVisuals()
         {
-            if (Selected)
-            {
-                selectionHighlight.SetActive(true);
-                icon.color = Color.white;
-            }
-            else
-            {
-                selectionHighlight.SetActive(false);
-                icon.color = Color.gray;
-            }
+            selectionHighlight.gameObject.SetActive(Selected || Hovered);
+            icon.color = Selected ? Color.white : Color.gray;
+            
+            if (Hovered) selectionHighlight.color = Selected ? Color.white : new Color(1, 1, 1, 0.03f);
         }
 
         protected override void OnSelect()
