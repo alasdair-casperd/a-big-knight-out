@@ -48,7 +48,7 @@ public class LevelHandler : MonoBehaviour
     /// <summary>
     /// Rebuild the level from scratch
     /// </summary>
-    private void RegenerateLevel()
+    public void RegenerateLevel()
     {
         ClearLevel();
         LevelBuilder levelBuilder = GetComponent<LevelBuilder>();

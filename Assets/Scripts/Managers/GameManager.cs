@@ -60,11 +60,6 @@ public class GameManager : MonoBehaviour
         squareManager = GetComponent<SquareManager>();
         enemyManager = GetComponent<EnemyManager>();
 
-        // Build the level
-        Debug.Log(levelBuilder);
-        Debug.Log(levelContainer);
-        Debug.Log(player);
-
         player = levelBuilder.BuildPlayer(levelContainer, level);
         Dictionary<Vector2Int, Square> squares = levelBuilder.BuildLevelSquares(levelContainer, level);
         Dictionary<Vector2Int, Enemy> enemies = levelBuilder.BuildLevelEnemies(levelContainer, level);

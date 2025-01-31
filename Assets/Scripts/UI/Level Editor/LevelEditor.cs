@@ -29,6 +29,12 @@ public class LevelEditor : MonoBehaviour
     // The currently selected sidebar tool
     public SidebarTool SidebarTool = null;
 
+    // The sidebar tool selected before previewing the level, if any
+    private SidebarTool previousSidebarTool = null;
+
+    // Sidebars
+    public Slider toolsSidebar;
+
     // Browsers
     public TileBrowser TileBrowser;
     public EntityBrowser EntityBrowser;
@@ -41,6 +47,9 @@ public class LevelEditor : MonoBehaviour
 
     // Is the user performing a drag action?
     private bool hasDragged;
+    
+    // Is the level currently being previewed?
+    private bool previewingLevel;
 
     /*
         Link editing properties
@@ -499,9 +508,9 @@ public class LevelEditor : MonoBehaviour
         }
     }
 
-    // =======
-    // Actions
-    // =======
+    // ======
+    // Export
+    // ======
 
     public void ExportLevel()
     {
@@ -512,9 +521,38 @@ public class LevelEditor : MonoBehaviour
         }
     }
 
-    public void PreviewLevel()
+    // =======
+    // Preview
+    // =======
+
+    public void StartLevelPreview()
     {
+        if (previewingLevel) return;
+        previewingLevel = true;
+
+        previousSidebarTool = SidebarTool;
+
+        if (SidebarTool != null)
+        {
+            SidebarTool.GetComponent<Selector>().Deselect();
+            SidebarTool = null;
+        }
+
+        toolsSidebar.Dismiss();
         LevelHandler.ClearLevel();
         GetComponent<GameManager>().Initialise(LevelHandler.level);
+    }
+
+    public void EndLevelPreview()
+    {
+        if (!previewingLevel) return;
+        previewingLevel = false;
+
+        SidebarTool = previousSidebarTool;
+        SidebarTool.GetComponent<Selector>().Select();
+
+        GetComponent<GameManager>().Clear();
+        LevelHandler.RegenerateLevel();
+        toolsSidebar.Show();
     }
 }
