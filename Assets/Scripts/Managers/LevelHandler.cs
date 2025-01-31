@@ -4,6 +4,10 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
+/// <summary>
+/// A class to perform updates to a level with animations.
+/// When an update is performed: (1) The level is immediately updated; (2) existing gameObjects are animated appropriately; (3) the level is fully regenerated via the usual LevelBuilder.
+/// </summary>
 [RequireComponent(typeof(LevelBuilder))]
 public class LevelHandler : MonoBehaviour
 {
@@ -12,22 +16,29 @@ public class LevelHandler : MonoBehaviour
     public EntityPrefabManager EntityPrefabManager;
     public Prefabs Prefabs;
 
-    [Header("Animation")]
+    [Header("Animation Durations")]
     public float insertionDuration = 0.5f;
     public float deletionDuration = 0.5f;
 
-    // ---
+    // The current level being edited
     public Level level { get; private set; }
 
+    // References to current instantiated gameObjects
     private PlayerController player;
     private Dictionary<Vector2Int, Square> squares = new();
     private Dictionary<Vector2Int, Enemy> enemies = new();
     private List<MovingPlatform> movingPlatforms = new();
 
+    // References to current instantiated gameObjects which should be deleted
+    // when the level is next rebuilt
     private List<Square> temporarySquares = new();
     private List<Enemy> temporaryEnemies = new();
     private List<MovingPlatform> temporaryMovingPlatforms = new();
 
+    /// <summary>
+    /// Load a level into the level handler
+    /// </summary>
+    /// <param name="level"></param>
     public void LoadLevel(Level level)
     {
         this.level = level;
@@ -150,6 +161,10 @@ public class LevelHandler : MonoBehaviour
         ActionQueue.QueueAction(RegenerateLevel);
     }
     
+    /// <summary>
+    /// Delete a tile from the level
+    /// </summary>
+    /// <param name="position"></param>
     public void DeleteTile(Vector2Int position)
     {
         // Cancel if there is no square to delete
@@ -192,6 +207,10 @@ public class LevelHandler : MonoBehaviour
         ActionQueue.QueueAction(RegenerateLevel);
     }
 
+    /// <summary>
+    /// Increment the state of a multi-state tile
+    /// </summary>
+    /// <param name="position"></param>
     public void IncrementState(Vector2Int position)
     {
         // Update level
@@ -216,11 +235,19 @@ public class LevelHandler : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Move a tile to a new position
+    /// </summary>
     public void MoveTile(Vector2Int position, Vector2Int to)
     {
         throw new System.NotImplementedException();
     }
 
+    /// <summary>
+    /// Place an entity in the level
+    /// </summary>
+    /// <param name="position"></param>
+    /// <param name="type"></param>
     public void PlaceEntity(Vector2Int position, EntityType type)
     {
         // Update level
@@ -254,6 +281,10 @@ public class LevelHandler : MonoBehaviour
         ActionQueue.QueueAction(RegenerateLevel);
     }
 
+    /// <summary>
+    /// Delete an entity from the level
+    /// </summary>
+    /// <param name="position"></param>
     public void DeleteEntity(Vector2Int position)
     {
         // Update level
@@ -277,6 +308,10 @@ public class LevelHandler : MonoBehaviour
         ActionQueue.QueueAction(RegenerateLevel);
     }
 
+    /// <summary>
+    /// Rotate an entity
+    /// </summary>
+    /// <param name="position"></param>
     public void RotateEntity(Vector2Int position)
     {
         if (!level.Entities.ContainsKey(position)) return;
@@ -285,6 +320,11 @@ public class LevelHandler : MonoBehaviour
         level.Entities[position] = targetEntity;
     }
 
+    /// <summary>
+    /// Place a moving platform in the level
+    /// </summary>
+    /// <param name="position"></param>
+    /// <param name="direction"></param>
     public void PlaceMovingPlatform(Vector2Int position, int direction)
     {
         // Update level
@@ -307,6 +347,10 @@ public class LevelHandler : MonoBehaviour
         ActionQueue.QueueAction(RegenerateLevel);
     }
 
+    /// <summary>
+    /// Delete a moving platform from the level
+    /// </summary>
+    /// <param name="position"></param>
     public void DeleteMovingPlatform(Vector2Int position)
     {
         // Update level
@@ -329,12 +373,20 @@ public class LevelHandler : MonoBehaviour
         ActionQueue.QueueAction(RegenerateLevel);
     }
 
+    /// <summary>
+    /// Rotate a moving platform
+    /// </summary>
+    /// <param name="position"></param>
     public void RotateMovingPlatform(Vector2Int position)
     {
         if (!level.MovingPlatforms.ContainsKey(position)) return;
         level.MovingPlatforms[position] = (level.MovingPlatforms[position] + 1) % 4;
     }
 
+    /// <summary>
+    /// Place the player at a given position
+    /// </summary>
+    /// <param name="position"></param>
     public void PlacePlayer(Vector2Int position)
     {
         // Update level
@@ -365,6 +417,11 @@ public class LevelHandler : MonoBehaviour
         ActionQueue.QueueAction(RegenerateLevel);
     }
 
+    /// <summary>
+    /// Create a link between two tiles
+    /// </summary>
+    /// <param name="start"></param>
+    /// <param name="end"></param>
     public void CreateLink(Vector2Int start, Vector2Int end)
     {
         // Prevent self-links

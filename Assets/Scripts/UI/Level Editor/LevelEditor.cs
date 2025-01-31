@@ -8,58 +8,98 @@ using System;
 using Unity.VisualScripting;
 using System.Data.Common;
 
+/// <summary>
+/// A class to manage the user input involved in editing a level
+/// </summary>
 [RequireComponent(typeof(LevelHandler))]
 public class LevelEditor : MonoBehaviour
 {
-    // TO REMOVE
-    public static Level LevelToPreview;
-
+    // The level handler
     private LevelHandler LevelHandler;
 
+    // Level json file to load on start
     [SerializeField]
     private TextAsset startingLevelJSON;
 
+    // Prefabs
     [SerializeField]
     private Prefabs prefabs;
 
+    // The currently selected sidebar tool
     public SidebarTool SidebarTool = null;
 
+    // Browsers
     public TileBrowser TileBrowser;
     public EntityBrowser EntityBrowser;
 
+    // The grid position currently targeted (usually where the mouse is hovered)
     private Vector2Int targetPosition;
-
+    
+    // The world position currently targeted (usually where the mouse is hovered)
     private Vector3 targetWorldPosition;
 
-
+    // Is the user performing a drag action?
     private bool hasDragged;
 
+    // A means of storing a level when transitioning to the level player
+    // (To Remove)
+    public static Level LevelToPreview;
 
+    /*
+        Link editing properties
+    */
 
-    private Vector2Int? linkStart;
-
-    // Link indicators
+    // Are link indicators being displayed?
     private bool ShowingLinks
     {
         set { if (linksContainer != null) linksContainer.SetActive(value); }
     }
+
+    // The location at which the user started drawing a link, if any
+    private Vector2Int? linkStart;
+
+    // A gameObject to contain all link indicators
     private GameObject linksContainer;
+
+    // The current link preview being created, if any
     private LinkIndicator linkPreview;
+
+    // The link indicator that is being hovered, if any
     private LinkIndicator targetLink;
+
+    // A list of all link indicators
     private List<LinkIndicator> linkIndicators = new();
 
-    // Rotation indicators
+    /*
+        Rotation editing properties
+    */
+
+    // Are rotation indicators being displayed?
     private bool ShowingRotations
     {
         set { if (rotationsContainer != null) rotationsContainer.SetActive(value); }
     }
+
+    // A gameObject to contain all rotation indicators
     private GameObject rotationsContainer;
+
+    // A dictionary of all rotation indicators
     private Dictionary<Vector2Int, RotationIndicator> rotationIndicators = new();
 
-    // Tile browser selection statuses
+    /*
+        Browser properties
+    */
+
+    // The currently selected tile type, if any
     private TileType? selectedTileType = null;
+
+    // The currently selected entity type, if any
     private EntityType? selectedEntityType = null;
+
+    // Is the player browser item selected?
     private bool playerSelected = false;
+
+    // Is the moving platforms browser item selected?
     private bool movingPlatformsSelected = false;
 
     private void Start()
