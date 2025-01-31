@@ -216,9 +216,7 @@ public class LevelEditor : MonoBehaviour
 
     public void EntityToolAction()
     {
-        // TODO: Implement adding entities
-        // if (selectedEntityType is EntityType type) LevelHandler.AddEntity(targetPosition, type);
-
+        if (selectedEntityType is EntityType type) LevelHandler.PlaceEntity(targetPosition, type);
         if (playerSelected) LevelHandler.PlacePlayer(targetPosition);
     }
 
