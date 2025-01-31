@@ -219,6 +219,11 @@ public class LevelHandler : MonoBehaviour
         throw new System.NotImplementedException();
     }
 
+    public void RotateEntity(Vector2Int position)
+    {
+        throw new System.NotImplementedException();
+    }
+
     public void PlaceMovingPlatform(Vector2Int position, int direction)
     {
         // Update level
@@ -265,6 +270,11 @@ public class LevelHandler : MonoBehaviour
         
     }
 
+    public void RotateMovingPlatform(Vector2Int position)
+    {
+        throw new System.NotImplementedException();
+    }
+
     public void PlacePlayer(Vector2Int position)
     {
         // Update level
@@ -303,11 +313,6 @@ public class LevelHandler : MonoBehaviour
 
         // Create the link
         level.Tiles[start].Links.Add(end);
-    }
-
-    public void RotateEntity(Vector2Int position)
-    {
-        throw new System.NotImplementedException();
     }
 
     private void Update()

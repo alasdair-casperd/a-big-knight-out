@@ -76,7 +76,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dedbeb368f4494556aad8bb591699275, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  previewCameraPrefab: {fileID: 2209736184678766891, guid: 3f625716a1ac44dd7aeac7f0fb2cc3c5, type: 3}
+  previewCameraPrefab: {fileID: 2209736184678766891, guid: 59387822083bf4804bcd6886057124f5, type: 3}
 --- !u!114 &4363604064014688410
 MonoBehaviour:
   m_ObjectHideFlags: 0

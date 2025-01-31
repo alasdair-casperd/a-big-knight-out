@@ -244,6 +244,19 @@ public class LevelEditor : MonoBehaviour
         }
     }
 
+    public void RotateAction()
+    {
+        if (LevelHandler.level.Entities.ContainsKey(targetPosition))
+        {
+            LevelHandler.RotateEntity(targetPosition);
+        }
+        else if (LevelHandler.level.MovingPlatforms.ContainsKey(targetPosition))
+        {
+            LevelHandler.RotateMovingPlatform(targetPosition);
+        }
+
+    }
+
     // ===============
     // Browser Actions
     // ===============

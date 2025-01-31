@@ -161,7 +161,7 @@ public struct TileType
         id: 5,
         displayName: "Spikes",
         validStates: ValidSpikeStates,
-        validLinkTargetIDs: new() { 5 },
+        validLinkTargetIDs: new(),
         isValidStartPosition: true
     );
 
