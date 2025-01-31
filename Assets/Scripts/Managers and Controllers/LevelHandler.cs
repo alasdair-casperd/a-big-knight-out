@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -9,6 +10,7 @@ public class LevelHandler : MonoBehaviour
     // Inspector references
     public TilePrefabManager TilePrefabManager;
     public EntityPrefabManager EntityPrefabManager;
+    public Prefabs Prefabs;
 
     [Header("Animation")]
     public float insertionDuration = 0.5f;
@@ -55,11 +57,11 @@ public class LevelHandler : MonoBehaviour
 
         foreach (var (_, enemy) in enemies) if (enemy != null) Destroy(enemy.gameObject);
         foreach (var (_, square) in squares) if (square != null) Destroy(square.gameObject);
-        foreach (var movingPlatform in movingPlatforms) if (movingPlatform != null) Destroy(movingPlatform);
+        foreach (var movingPlatform in movingPlatforms) if (movingPlatform != null) Destroy(movingPlatform.gameObject);
 
         foreach (var square in temporarySquares) if (square != null) Destroy(square.gameObject);
         foreach (var enemy in temporaryEnemies) if (enemy != null) Destroy(enemy.gameObject);
-        foreach (var movingPlatform in temporaryMovingPlatforms) if (movingPlatform != null) Destroy(movingPlatform);
+        foreach (var movingPlatform in temporaryMovingPlatforms) if (movingPlatform != null) Destroy(movingPlatform.gameObject);
 
         // Clear references
         player = null;
@@ -100,6 +102,7 @@ public class LevelHandler : MonoBehaviour
 
         // Update the level
         level.Tiles[position] = new Tile(type);
+        if (level.MovingPlatforms.ContainsKey(position)) level.MovingPlatforms.Remove(position);
 
         // Animate away any existing square
         if (squares.ContainsKey(position))
@@ -108,6 +111,17 @@ public class LevelHandler : MonoBehaviour
             Vector3 initialScale = existingSquare.transform.localScale;
             LeanTween.value(ActionQueue.GameBlockingAnimationsContainer, 0, 1, insertionDuration)
                 .setOnUpdate((t) => existingSquare.transform.localScale = Vector3.Lerp(initialScale, Vector3.zero, t)).setEaseOutExpo();
+        }
+
+        // Animate away any existing moving platform
+        if (movingPlatforms.FirstOrDefault((x) => x.Position == position) is MovingPlatform existingMovingPlatform)
+        {
+            movingPlatforms.Remove(existingMovingPlatform);
+            temporaryMovingPlatforms.Add(existingMovingPlatform);
+
+            Vector3 initialScale = existingMovingPlatform.transform.localScale;
+            LeanTween.value(ActionQueue.GameBlockingAnimationsContainer, 0, 1, insertionDuration)
+                .setOnUpdate((t) => existingMovingPlatform.transform.localScale = Vector3.Lerp(initialScale, Vector3.zero, t)).setEaseOutExpo();
         }
         
         // Create new square
@@ -122,7 +136,6 @@ public class LevelHandler : MonoBehaviour
             .setEaseOutExpo();
 
         ActionQueue.QueueAction(RegenerateLevel);
-
     }
     
     public void DeleteTile(Vector2Int position)
@@ -139,6 +152,7 @@ public class LevelHandler : MonoBehaviour
         // Update the level
         RemoveLinksToPosition(position);
         level.Tiles.Remove(position);
+        if (level.MovingPlatforms.ContainsKey(position)) level.MovingPlatforms.Remove(position);
 
         // Animate away the existing square
         if (squares.ContainsKey(position))
@@ -152,6 +166,17 @@ public class LevelHandler : MonoBehaviour
                 .setOnUpdate((t) => existingSquare.transform.localScale = Vector3.Lerp(initialScale, Vector3.zero, t)).setEaseOutExpo();
         }
 
+        // Animate away any existing moving platform
+        if (movingPlatforms.FirstOrDefault((x) => x.Position == position) is MovingPlatform existingMovingPlatform)
+        {
+            movingPlatforms.Remove(existingMovingPlatform);
+            temporaryMovingPlatforms.Add(existingMovingPlatform);
+
+            Vector3 initialScale = existingMovingPlatform.transform.localScale;
+            LeanTween.value(ActionQueue.GameBlockingAnimationsContainer, 0, 1, insertionDuration)
+                .setOnUpdate((t) => existingMovingPlatform.transform.localScale = Vector3.Lerp(initialScale, Vector3.zero, t)).setEaseOutExpo();
+        }
+
         ActionQueue.QueueAction(RegenerateLevel);
     }
 
@@ -163,7 +188,20 @@ public class LevelHandler : MonoBehaviour
         if (!targetTile.Type.IsMultiState) return;
         targetTile.IncrementInitialState();
         level.Tiles[position] = targetTile;
-        RegenerateLevel();
+        
+        // Animate away any existing moving platform
+        if (movingPlatforms.FirstOrDefault((x) => x.Position == position) is MovingPlatform existingMovingPlatform)
+        {
+            movingPlatforms.Remove(existingMovingPlatform);
+            temporaryMovingPlatforms.Add(existingMovingPlatform);
+
+            Vector3 initialScale = existingMovingPlatform.transform.localScale;
+            LeanTween.value(ActionQueue.GameBlockingAnimationsContainer, 0, 1, insertionDuration)
+                .setOnUpdate((t) => existingMovingPlatform.transform.localScale = Vector3.Lerp(initialScale, Vector3.zero, t)).setEaseOutExpo();
+        }
+
+        ActionQueue.QueueAction(RegenerateLevel);
+
     }
 
     public void MoveTile(Vector2Int position, Vector2Int to)
@@ -174,6 +212,57 @@ public class LevelHandler : MonoBehaviour
     public void PlaceEntity(Vector2Int position, EntityType type)
     {
         throw new System.NotImplementedException();
+    }
+
+    public void DeleteEntity(Vector2Int position)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void PlaceMovingPlatform(Vector2Int position, int direction)
+    {
+        // Update level
+        if (level.MovingPlatforms.ContainsKey(position)) return;
+        if (!level.Tiles.ContainsKey(position)) return;
+        if (level.Tiles[position].Type != TileType.Track) return;
+        level.MovingPlatforms[position] = direction;
+
+        // Animate
+        MovingPlatform movingPlatform = Instantiate(Prefabs.movingPlatform).GetComponent<MovingPlatform>();
+        temporaryMovingPlatforms.Add(movingPlatform);
+        Vector3 targetScale = movingPlatform.transform.localScale;
+        LeanTween.value(ActionQueue.GameBlockingAnimationsContainer, 0, 1, insertionDuration)
+            .setOnUpdate((t) =>
+            {
+                movingPlatform.transform.localScale = Vector3.Lerp(Vector3.zero, targetScale, t);
+                movingPlatform.transform.position = GridUtilities.GridToWorldPos(position) + Vector3.up * (1-t);
+            }).setEaseOutExpo();
+
+        ActionQueue.QueueAction(RegenerateLevel);
+        
+    }
+
+    public void DeleteMovingPlatform(Vector2Int position)
+    {
+        // Update level
+        if (!level.MovingPlatforms.ContainsKey(position)) return;
+        level.MovingPlatforms.Remove(position);
+
+        // Animate
+        MovingPlatform movingPlatform = movingPlatforms.FirstOrDefault((x) => x.Position == position);
+        if (movingPlatform == null) return;
+        temporaryMovingPlatforms.Add(movingPlatform);
+        movingPlatforms.Remove(movingPlatform);
+        Vector3 initialScale = movingPlatform.transform.localScale;
+        LeanTween.value(ActionQueue.GameBlockingAnimationsContainer, 0, 1, insertionDuration)
+            .setOnUpdate((t) =>
+            {
+                movingPlatform.transform.localScale = Vector3.Lerp(initialScale, Vector3.zero, t);
+                movingPlatform.transform.position = GridUtilities.GridToWorldPos(position) + Vector3.up * (t);
+            }).setEaseOutExpo();
+
+        ActionQueue.QueueAction(RegenerateLevel);
+        
     }
 
     public void PlacePlayer(Vector2Int position)

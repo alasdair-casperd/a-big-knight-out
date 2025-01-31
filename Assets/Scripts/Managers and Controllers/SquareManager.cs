@@ -17,9 +17,9 @@ public class SquareManager : MonoBehaviour
     /// </summary>
     public Dictionary<Vector2Int, Square> squares;
 
-    bool isPlayerTurn;
+    private bool isPlayerTurn;
 
-    PlayerController player;
+    private PlayerController player;
 
     GameManager gameManager;
 
@@ -39,9 +39,10 @@ public class SquareManager : MonoBehaviour
     };
 
 
-    public void InitialiseSquares(Dictionary<Vector2Int, Square> inputSquares)
+    public void Initialise(Dictionary<Vector2Int, Square> inputSquares, PlayerController player)
     {
         squares = inputSquares;
+        this.player = player;
 
         // Initialise the squares
         foreach (Square square in squares.Values)
@@ -54,7 +55,6 @@ public class SquareManager : MonoBehaviour
     void Start()
     {
         gameManager = GetComponent<GameManager>();
-        player = gameManager.player;
     }
 
     void Update()

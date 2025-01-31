@@ -11,6 +11,9 @@ using System.Data.Common;
 [RequireComponent(typeof(LevelHandler))]
 public class LevelEditor : MonoBehaviour
 {
+    // TO REMOVE
+    public static Level LevelToPreview;
+
     private LevelHandler LevelHandler;
 
     [SerializeField]
@@ -62,7 +65,11 @@ public class LevelEditor : MonoBehaviour
     private void LoadLevel()
     {
         Level levelToBuild;
-        if (startingLevelJSON == null)
+        if (LevelToPreview != null)
+        {
+            levelToBuild = LevelToPreview;
+        }
+        else if (startingLevelJSON == null)
         {
             levelToBuild = new Level(startPosition: Vector2Int.zero);
         }
@@ -204,6 +211,7 @@ public class LevelEditor : MonoBehaviour
     public void TileToolAction()
     {
         if (selectedTileType is TileType type) LevelHandler.AddTile(targetPosition, type);
+        else if (movingPlatformsSelected) LevelHandler.PlaceMovingPlatform(targetPosition, direction: 0);
     }
 
     public void EntityToolAction()
@@ -222,8 +230,18 @@ public class LevelEditor : MonoBehaviour
 
     public void EraseAction()
     {
-        // TODO: Erase entities as first, then tiles?
-        LevelHandler.DeleteTile(targetPosition);
+        if (LevelHandler.level.MovingPlatforms.ContainsKey(targetPosition))
+        {
+            LevelHandler.DeleteMovingPlatform(targetPosition);
+        }
+        else if (LevelHandler.level.Entities.ContainsKey(targetPosition))
+        {
+            LevelHandler.DeleteEntity(targetPosition);
+        }
+        else if (LevelHandler.level.Tiles.ContainsKey(targetPosition))
+        {
+            LevelHandler.DeleteTile(targetPosition);
+        }
     }
 
     // ===============
@@ -370,17 +388,18 @@ public class LevelEditor : MonoBehaviour
     // Actions
     // =======
 
-    // public void SaveLevel()
-    // {
-    //     if (level.IsValidLevel)
-    //     {
-    //         LevelFileManager.ExportLevelAsJson(level, "ExportedLevel");
-    //     }
-    // }
+    public void ExportLevel()
+    {
+        Level level = LevelHandler.level;
+        if (level.IsValidLevel)
+        {
+            LevelFileManager.ExportLevelAsJson(level, "ExportedLevel");
+        }
+    }
 
-    // public void PreviewLevel()
-    // {
-    //     LevelToPreview = level;
-    //     SceneManager.LoadScene("LevelPlayer");
-    // }
+    public void PreviewLevel()
+    {
+        LevelToPreview = LevelHandler.level;
+        SceneManager.LoadScene("LevelPlayer");
+    }
 }

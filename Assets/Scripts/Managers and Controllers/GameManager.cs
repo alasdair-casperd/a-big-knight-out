@@ -45,17 +45,17 @@ public class GameManager : MonoBehaviour
 
         // Override the selected level if transitioning directly from the level editor
         // This should be removed when we add proper level management
-        // var receivedLevel = LevelEditor.LevelToPreview;
-        // if (receivedLevel != null)
-        // {
-        //     level = receivedLevel;
-        // }
+        var receivedLevel = LevelEditor.LevelToPreview;
+        if (receivedLevel != null)
+        {
+            level = receivedLevel;
+        }
 
-        // Generate the level from the JSON file provided
-        // else
-        // {
+        //Generate the level from the JSON file provided
+        else
+        {
             level = LevelFileManager.ParseLevelFromJSON(levelFile.text);
-        // }
+        }
 
         // Build the level
         player = levelBuilder.BuildPlayer(transform, level);
@@ -64,7 +64,7 @@ public class GameManager : MonoBehaviour
         movingPlatforms  = levelBuilder.BuildLevelMovingPlatforms(transform, level);
 
         // Give the square manager its squares to manage, and initialize them
-        squareManager.InitialiseSquares(squares);
+        squareManager.Initialise(squares, player);
 
         // Figures out the adjacent tiles for the track tiles
         foreach (var (position, square) in squares)
