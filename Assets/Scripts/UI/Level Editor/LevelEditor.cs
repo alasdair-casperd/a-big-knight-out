@@ -521,6 +521,16 @@ public class LevelEditor : MonoBehaviour
         }
     }
 
+    // =====
+    // Reset
+    // =====
+
+    public void ResetLevel()
+    {
+        LevelHandler.ClearLevel();
+        LevelHandler.LoadLevel(new Level(startPosition: Vector2Int.zero));
+    }
+
     // =======
     // Preview
     // =======
