@@ -28,6 +28,11 @@ public class Level
     /// </summary>
     public Dictionary<Vector2Int, Entity> Entities;
 
+    /// <summary>
+    /// A dictionary containing the positions and directions of all of the level's moving platforms
+    /// </summary>
+    public Dictionary<Vector2Int, int> MovingPlatforms;
+
     /*
         Initialisers
     */
@@ -39,6 +44,7 @@ public class Level
         StartPosition = Vector2Int.zero;
         Tiles = new();
         Entities = new();
+        MovingPlatforms = new();
     }
 
     // Create a level with a single starting square (used in the level editor when making a new level)
@@ -51,15 +57,17 @@ public class Level
             { startPosition, new Tile(TileType.Floor) }
         };
         Entities = new();
+        MovingPlatforms = new();
     }
 
     // Full initialiser
-    public Level(string name, Vector2Int startPosition, Dictionary<Vector2Int, Tile> tiles, Dictionary<Vector2Int, Entity> entities)
+    public Level(string name, Vector2Int startPosition, Dictionary<Vector2Int, Tile> tiles, Dictionary<Vector2Int, Entity> entities, Dictionary<Vector2Int, int> movingPlatforms)
     {
         Name = name;
         StartPosition = startPosition;
         Tiles = tiles;
         Entities = entities;
+        MovingPlatforms = movingPlatforms;
     }
 
     /*
@@ -99,6 +107,31 @@ public class Level
                 if (!Tiles[position].Type.IsValidStartPosition)
                 {
                     Debug.LogWarning($"Entity '{entity.Type.DisplayName}' is placed on a tile that is not a valid start position");
+                    return false;
+                }
+            }
+
+            // Check that moving platforms are on stopping points track squares
+            foreach (var (position, direction) in MovingPlatforms)
+            {
+                // Check the moving platform is on a tile
+                if (!Tiles.ContainsKey(position))
+                {
+                    Debug.LogWarning($"Moving platform not placed on a tile at position '({position.x},{position.y})'");
+                    return false;
+                }
+
+                // Check the the tile is a track tile
+                if (Tiles[position].Type != TileType.Track)
+                {
+                    Debug.LogWarning($"Moving platform is not placed on a track tile at position '({position.x},{position.y})'");
+                    return false;
+                }
+
+                // Check the track tile is a stopping point
+                if (Tiles[position].Type != TileType.Track)
+                {
+                    Debug.LogWarning($"Moving platform is not placed on a track tile at position '({position.x},{position.y})'");
                     return false;
                 }
             }

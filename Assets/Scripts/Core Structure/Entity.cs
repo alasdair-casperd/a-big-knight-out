@@ -8,7 +8,7 @@ public struct Entity
 {
     /*
        Entity Properties
-   */
+    */
 
     /// <summary>
     /// The entity's entityType, e.g. Pawn, Rook or Knight
@@ -26,7 +26,10 @@ public struct Entity
     /// </summary>
     public int GraphicsVariant;
 
-
+    /// <summary>
+    /// The direction the entity is facing
+    /// </summary>
+    public int Direction;
 
     /*
         Initialisers
@@ -38,13 +41,15 @@ public struct Entity
         this.Type = type;
         this.InitialState = 0;
         this.GraphicsVariant = 0;
+        this.Direction = 0;
     }
 
     // Full Initialiser
-    public Entity(EntityType type, int initialState, int graphicsVariant)
+    public Entity(EntityType type, int initialState, int graphicsVariant, int direction)
     {
         this.Type = type;
         this.InitialState = initialState;
         this.GraphicsVariant = graphicsVariant;
+        this.Direction = direction;
     }
 }

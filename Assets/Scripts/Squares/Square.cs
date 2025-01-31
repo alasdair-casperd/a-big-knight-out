@@ -15,7 +15,7 @@ public abstract class Square : MonoBehaviour
     public abstract TileType Type { get; }
 
     /// <summary>
-    /// Lets the tile know where it is.
+    /// Lets the square know where it is.
     /// </summary>
     public Vector2Int Position { get; set; }
 
@@ -81,6 +81,14 @@ public abstract class Square : MonoBehaviour
     {
         if (isValid) validMoveIndicator.Show();
         else validMoveIndicator.Hide();
+    }
+
+    /// <summary>
+    /// Update the graphics of the square to match the current state
+    /// </summary>
+    public virtual void UpdateGraphics()
+    {
+        return;
     }
 
     /*

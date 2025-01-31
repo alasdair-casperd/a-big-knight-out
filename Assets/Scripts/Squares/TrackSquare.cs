@@ -10,6 +10,9 @@ public class TrackSquare : Square
 {
     public override TileType Type =>  TileType.Track;
 
+    [SerializeField]
+    public GameObject stoppingPointIndicator;
+
     // Sets up the property for graphics variant
     public override int GraphicsVariant { get; set; }
 
@@ -18,17 +21,26 @@ public class TrackSquare : Square
     {
         get
         {
-            // Not uet implemented, will return true if a platform is on this track.
-            return true;
+            foreach(var platform in Platforms)
+            {
+                if(Position == platform.Position)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
+
         protected set
         {
-            Debug.LogWarning("Attempting to manually change whether a moving platform square is passable");
+            Debug.LogWarning("Trying to manually set whether a track square is passable or not!");
         }
     }
 
     // The track squares adjacent to this one, stores the relative position and the square
     public Dictionary<Vector2Int,TrackSquare> AdjacentTracks {get; set;}
+
+    public List<MovingPlatform> Platforms {get; set;}
 
     public List<Vector2Int> GetPath(Vector2Int direction)
     {
@@ -42,7 +54,7 @@ public class TrackSquare : Square
         Vector2Int perp1 = Vector2Int.RoundToInt(new Vector2(direction.x,direction.y).Perpendicular1());
         Vector2Int perp2 = Vector2Int.RoundToInt(new Vector2(direction.x,direction.y).Perpendicular2()); 
 
-        // Runs throuhg the different options for where to go next
+        // Runs through the different options for where to go next
         if(AdjacentTracks.ContainsKey(direction))
         {
             nextTrack = AdjacentTracks[direction];
@@ -59,7 +71,7 @@ public class TrackSquare : Square
             nextTrack = AdjacentTracks[perp2];
             nextDirection = perp2;
         }
-        // if it can't go forwards, or go left or right, then bounce backwards (if possible)
+        // If it can't go forwards, or go left or right, then bounce backwards (if possible)
         else if (AdjacentTracks.ContainsKey(-direction))
         {
             nextTrack = AdjacentTracks[-direction];
@@ -92,5 +104,10 @@ public class TrackSquare : Square
         }
 
         return path;
+    }
+
+    public override void UpdateGraphics()
+    {
+        stoppingPointIndicator.SetActive(State == 0);
     }
 }

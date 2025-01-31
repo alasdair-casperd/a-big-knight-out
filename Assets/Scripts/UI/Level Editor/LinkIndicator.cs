@@ -1,10 +1,17 @@
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace UI
 {
     public class LinkIndicator : MonoBehaviour
     {
+        [SerializeField]
+        private GameObject arrowHead;
+
         [SerializeField]
         private LineRenderer lineRenderer;
 
@@ -19,11 +26,9 @@ namespace UI
         public Vector2Int End { get; protected set; }
 
         public bool MouseOver { get; protected set; }
-        
         public void InitialiseAsPreview(Vector3 startPosition, Vector3 endPosition)
         {
             transform.position = Vector3.zero;
-
             SetPositions(startPosition, endPosition);
         }
 
@@ -46,13 +51,33 @@ namespace UI
             meshCollider.sharedMesh = mesh;
         }
 
+        /// <summary>
+        /// Dynamically generate line renderer points following a parabolic curve
+        /// </summary>
+        /// <param name="startPosition"></param>
+        /// <param name="endPosition"></param>
         public void SetPositions(Vector3 startPosition, Vector3 endPosition)
         {
-            // Calculate center handle position
-            Vector3 middlePosition = (startPosition + endPosition) / 2 + 0.2f * (Quaternion.Euler(0, -90, 0) * (endPosition - startPosition));
+            Vector3 perpendicular = Quaternion.Euler(0, -90, 0) * (endPosition - startPosition);
+            List<Vector3> positions = new();
 
-            // Configure line renderer points
-            lineRenderer.SetPositions(new Vector3[] { startPosition + offset, middlePosition + offset, endPosition + offset });
+            float Curve(float t) => 4 * t * (1 - t);
+
+            // Add curved positions
+            int n = lineRenderer.positionCount - 1;
+            for (int i = 0; i <= n; i++)
+            {
+                float t = ((float) i) / ((float) n);
+                positions.Add(Vector3.Lerp(startPosition, endPosition, t) + offset + 0.05f * Curve(t) * perpendicular);
+            }
+
+            lineRenderer.SetPositions(positions.ToArray());
+            
+            // Add arrow head
+            arrowHead.transform.position = endPosition + offset;
+            Vector3 arrowHeadDirection = endPosition - positions[n - 1];
+            arrowHeadDirection.y = 0;
+            arrowHead.transform.rotation = Quaternion.LookRotation(arrowHeadDirection);
         }
 
         private void OnMouseEnter()

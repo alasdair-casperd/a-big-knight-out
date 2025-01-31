@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42ac4d50fe9174268be8940930c5fa61, type: 3}
   m_Name: Prefabs
   m_EditorClassIdentifier: 
+  Player: {fileID: 3753410208610706301, guid: b42b44154778b4f8f96311017205e470, type: 3}
+  movingPlatform: {fileID: 5962543618662339616, guid: 81f3d19a10384d444be316d93c546920, type: 3}
   validMoveIndicator: {fileID: 557810200261857606, guid: 8231d56530f6f48e7a6a3453a231d20f, type: 3}
   linkIndicator: {fileID: 7501199027688756106, guid: 378b97c742e264ec3bd80877c2bde740, type: 3}
+  rotationIndicator: {fileID: 4922656245636207538, guid: 6ec5706e908c546da8180fff869b95a9, type: 3}
   stateIndicator: {fileID: 980959703344920209, guid: 3a7244f97194d4e25a10231794d0c8cd, type: 3}
   levelStartIndicator: {fileID: 7988565180567869324, guid: 987f415930d4f44749bf4a392cf7d138, type: 3}

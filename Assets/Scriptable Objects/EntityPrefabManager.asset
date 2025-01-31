@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: EntityPrefabManager
   m_EditorClassIdentifier: 
   prefabs:
-  - {fileID: 8572889996173220175, guid: c89c12454e5c9544daeba9d4d80d9fa4, type: 3}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 2249845723954608404, guid: c29e854a03b694f168744b58140b2d05, type: 3}
+  - {fileID: 2249845723954608404, guid: 63cb5850505a3417d9c7530479f9ddc5, type: 3}
+  - {fileID: 2249845723954608404, guid: 785a89816411b42cd9c75285a7e0fc3a, type: 3}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
