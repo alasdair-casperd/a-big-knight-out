@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: EntityPrefabManager
   m_EditorClassIdentifier: 
   prefabs:
-  - {fileID: 0}
+  - {fileID: 8572889996173220175, guid: c89c12454e5c9544daeba9d4d80d9fa4, type: 3}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}

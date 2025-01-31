@@ -368,7 +368,26 @@ public class LevelEditor : MonoBehaviour
     {
         if (currentTool is LevelEditorEntityTool entityTool)
         {
-            Debug.Log("Entities not yet implemented in level editor");
+            AddEntity(entityTool.EntityType, targetPosition);
+        }
+    }
+
+    private void AddEntity(EntityType type, Vector2Int position)
+    {
+        if (!level.Entities.ContainsKey(position))
+        {
+            AddEntity();
+        }
+        else if (level.Entities[position].Type != type)
+        {
+            AddEntity();
+        }
+
+        void AddEntity()
+        {
+            level.Entities.Remove(position);
+            level.Entities.Add(position, new(type));
+            RegenerateLevel();
         }
     }
 
