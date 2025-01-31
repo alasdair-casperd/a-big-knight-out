@@ -38,15 +38,11 @@ public class EnemyManager : MonoBehaviour
         }
     }
 
-    void Start()
+    public void Initialise(PlayerController player)
     {
         gameManager = GetComponent<GameManager>();
-        player = gameManager.player;
+        this.player = player;
         squareManager = GetComponent<SquareManager>();
-    }
-
-    void Update()
-    {
     }
 
     /// <summary>

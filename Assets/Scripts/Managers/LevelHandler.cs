@@ -61,7 +61,7 @@ public class LevelHandler : MonoBehaviour
     /// <summary>
     /// Destroy all created gameObjects related to the level
     /// </summary>
-    private void ClearLevel()
+    public void ClearLevel()
     {
         // Destroy the gameObjects
         if (player != null) Destroy(player.gameObject);

@@ -12,6 +12,7 @@ using System.Data.Common;
 /// A class to manage the user input involved in editing a level
 /// </summary>
 [RequireComponent(typeof(LevelHandler))]
+[RequireComponent(typeof(GameManager))]
 public class LevelEditor : MonoBehaviour
 {
     // The level handler
@@ -40,10 +41,6 @@ public class LevelEditor : MonoBehaviour
 
     // Is the user performing a drag action?
     private bool hasDragged;
-
-    // A means of storing a level when transitioning to the level player
-    // (To Remove)
-    public static Level LevelToPreview;
 
     /*
         Link editing properties
@@ -114,11 +111,8 @@ public class LevelEditor : MonoBehaviour
     private void LoadLevel()
     {
         Level levelToBuild;
-        if (LevelToPreview != null)
-        {
-            levelToBuild = LevelToPreview;
-        }
-        else if (startingLevelJSON == null)
+        
+        if (startingLevelJSON == null)
         {
             levelToBuild = new Level(startPosition: Vector2Int.zero);
         }
@@ -520,7 +514,7 @@ public class LevelEditor : MonoBehaviour
 
     public void PreviewLevel()
     {
-        LevelToPreview = LevelHandler.level;
-        SceneManager.LoadScene("LevelPlayer");
+        LevelHandler.ClearLevel();
+        GetComponent<GameManager>().Initialise(LevelHandler.level);
     }
 }

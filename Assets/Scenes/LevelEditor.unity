@@ -3511,6 +3511,10 @@ GameObject:
   - component: {fileID: 1408143801}
   - component: {fileID: 1408143802}
   - component: {fileID: 1408143804}
+  - component: {fileID: 1408143807}
+  - component: {fileID: 1408143806}
+  - component: {fileID: 1408143805}
+  - component: {fileID: 1408143808}
   m_Layer: 0
   m_Name: LevelEditor
   m_TagString: Untagged
@@ -3582,6 +3586,63 @@ MonoBehaviour:
   Prefabs: {fileID: 11400000, guid: 27cc6ead7fb8f47748eb1582f6ec1a96, type: 2}
   insertionDuration: 0.5
   deletionDuration: 0.5
+--- !u!114 &1408143805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1408143799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a57e7ab99327c1544aa3487fc8da1465, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  levelFile: {fileID: 0}
+  player: {fileID: 0}
+  autoStart: 0
+  levelContainer: {fileID: 0}
+--- !u!114 &1408143806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1408143799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c150052569fd19f4695c0ef2042c55e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1408143807
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1408143799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e501a8bcd3e42949a73d814bdb5596d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1408143808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1408143799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c576b7daa96f743ee9877577d38260c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundEffects: {fileID: 11400000, guid: f37a8adc32a0c44038bd7f1a4b3453b1, type: 2}
+  maximumConcurrentSoundEffects: 30
+  backgroundSounds: {fileID: 11400000, guid: 536b918db474643a9a84c8f6fe55ee8c, type: 2}
+  maximumConcurrentBackgroundSounds: 10
+  loopMusic: 1
 --- !u!1 &1427570437
 GameObject:
   m_ObjectHideFlags: 0

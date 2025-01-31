@@ -23,7 +23,6 @@ public class LevelBuilder : MonoBehaviour
     /// </summary>
     public Prefabs prefabs;
 
-
     public PlayerController BuildPlayer(Transform parent, Level level)
     {
         if (!level.IsValidLevel)
@@ -32,7 +31,7 @@ public class LevelBuilder : MonoBehaviour
         }
 
         // Instantiate the player
-        PlayerController player = Instantiate(prefabs.Player, transform);
+        PlayerController player = Instantiate(prefabs.Player, parent);
         
         // Position the player
         player.SetInitialPosition(level.StartPosition);

@@ -19,15 +19,15 @@ public class GameManager : MonoBehaviour
     [HideInInspector]
     public PlayerController player;
 
-    SquareManager squareManager;
-    LevelBuilder levelBuilder;
-
-    EnemyManager enemyManager;
-
     /// <summary>
-    /// A levelBuilder instance used to create the squares
+    /// Should the game run automatically?
     /// </summary>
-    private LevelBuilder LevelBuilder;
+    [SerializeField]
+    private bool autoStart = true;
+
+    LevelBuilder levelBuilder;
+    SquareManager squareManager;
+    EnemyManager enemyManager;
 
     /// <summary>
     /// The level object to build and manage.
@@ -36,41 +36,49 @@ public class GameManager : MonoBehaviour
 
     private List<MovingPlatform> movingPlatforms;
 
+    // An empty gameObject on which to store the instantiated level objects (including the player)
+    public Transform levelContainer;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        squareManager = GetComponent<SquareManager>();
-        enemyManager = GetComponent<EnemyManager>();
-        levelBuilder = GetComponent<LevelBuilder>();
-
-        // Override the selected level if transitioning directly from the level editor
-        // This should be removed when we add proper level management
-        var receivedLevel = LevelEditor.LevelToPreview;
-        if (receivedLevel != null)
-        {
-            level = receivedLevel;
-        }
-
-        //Generate the level from the JSON file provided
-        else
+        if (autoStart)
         {
             level = LevelFileManager.ParseLevelFromJSON(levelFile.text);
+            Initialise();
         }
+    }
+
+    /// <summary>
+    /// Start the game
+    /// </summary>
+    public void Initialise(Level providedLevel = null)
+    {   
+        if (providedLevel != null) level = providedLevel;
+
+        levelBuilder = GetComponent<LevelBuilder>();
+        squareManager = GetComponent<SquareManager>();
+        enemyManager = GetComponent<EnemyManager>();
 
         // Build the level
-        player = levelBuilder.BuildPlayer(transform, level);
-        Dictionary<Vector2Int, Square> squares = levelBuilder.BuildLevelSquares(transform, level);
-        Dictionary<Vector2Int, Enemy> enemies = levelBuilder.BuildLevelEnemies(transform, level);
-        movingPlatforms  = levelBuilder.BuildLevelMovingPlatforms(transform, level);
+        Debug.Log(levelBuilder);
+        Debug.Log(levelContainer);
+        Debug.Log(player);
+
+        player = levelBuilder.BuildPlayer(levelContainer, level);
+        Dictionary<Vector2Int, Square> squares = levelBuilder.BuildLevelSquares(levelContainer, level);
+        Dictionary<Vector2Int, Enemy> enemies = levelBuilder.BuildLevelEnemies(levelContainer, level);
+        movingPlatforms  = levelBuilder.BuildLevelMovingPlatforms(levelContainer, level);
 
         // Give the square manager its squares to manage, and initialize them
         squareManager.Initialise(squares, player);
+        enemyManager.Initialise(player);
 
         // Figures out the adjacent tiles for the track tiles
         foreach (var (position, square) in squares)
         {
             // Ignores the square if it's not a track
-            if(square.GetType() != typeof(TrackSquare)){continue;}
+            if(square.GetType() != typeof(TrackSquare)){ continue; }
 
             TrackSquare trackSquare = (TrackSquare)square;
 
@@ -94,6 +102,25 @@ public class GameManager : MonoBehaviour
         ActionQueue.Update();
     }
 
+    /// <summary>
+    /// Restart the current level
+    /// </summary>
+    public void Restart()
+    {
+        Clear();
+        Initialise();
+    }
+
+    /// <summary>
+    /// Destroy all gameObjects associated with the level (including the player)
+    /// </summary>
+    public void Clear()
+    {
+        foreach (Transform child in levelContainer)
+        {
+            Destroy(child.gameObject);
+        }
+    }
 
     // The following sequences the various actions in a turn
 
@@ -145,13 +172,5 @@ public class GameManager : MonoBehaviour
     {
         enemyManager.OnPlayerTurnStart();
         squareManager.OnPlayerTurnStart();
-    }
-
-    /// <summary>
-    /// This is a *very temporary* method for restarting the level player, to be replaced later
-    /// </summary>
-    public void ReloadScene()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

@@ -8,7 +8,7 @@ public struct Entity
 {
     /*
        Entity Properties
-   */
+    */
 
     /// <summary>
     /// The entity's entityType, e.g. Pawn, Rook or Knight
