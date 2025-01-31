@@ -31,23 +31,32 @@ public class LevelEditor : MonoBehaviour
 
     private Vector3 targetWorldPosition;
 
-    private LinkIndicator targetLink;
 
     private bool hasDragged;
 
-    private GameObject linksContainer;
 
-    private bool ShowingWiringLinks
-    {
-        set { if (linksContainer != null) linksContainer.SetActive(value); }
-    }
 
     private Vector2Int? linkStart;
 
+    // Link indicators
+    private bool ShowingLinks
+    {
+        set { if (linksContainer != null) linksContainer.SetActive(value); }
+    }
+    private GameObject linksContainer;
     private LinkIndicator linkPreview;
-
+    private LinkIndicator targetLink;
     private List<LinkIndicator> linkIndicators = new();
 
+    // Rotation indicators
+    private bool ShowingRotations
+    {
+        set { if (rotationsContainer != null) rotationsContainer.SetActive(value); }
+    }
+    private GameObject rotationsContainer;
+    private Dictionary<Vector2Int, RotationIndicator> rotationIndicators = new();
+
+    // Tile browser selection statuses
     private TileType? selectedTileType = null;
     private EntityType? selectedEntityType = null;
     private bool playerSelected = false;
@@ -200,6 +209,7 @@ public class LevelEditor : MonoBehaviour
         targetLink = link;
         SidebarTool.OnLinkTouch.Invoke();
     }
+    
     /*
         Tool and browser action functions
     */
@@ -251,6 +261,19 @@ public class LevelEditor : MonoBehaviour
         else if (LevelHandler.level.MovingPlatforms.ContainsKey(targetPosition))
         {
             LevelHandler.RotateMovingPlatform(targetPosition);
+        }
+        else
+        {
+            return;
+        }
+
+        if (rotationIndicators[targetPosition] != null)
+        {
+            RotationIndicator targetIndicator = rotationIndicators[targetPosition];
+            Quaternion currentRotation = targetIndicator.transform.rotation;
+            Quaternion targetRotation = currentRotation * Quaternion.Euler(0, 90, 0);
+            LeanTween.rotate(rotationIndicators[targetPosition].gameObject, targetRotation.eulerAngles, 0.05f)
+                .setOnComplete(GenerateRotationIndicators);
         }
 
     }
@@ -309,15 +332,15 @@ public class LevelEditor : MonoBehaviour
     // Link Actions
     // ============
 
-    public void EnterWiringMode()
+    public void EnterLinksMode()
     {
         GenerateLinkIndicators();
-        ShowingWiringLinks = true;
+        ShowingLinks = true;
     }
 
-    public void ExitWiringMode()
+    public void ExitLinksMode()
     {
-        ShowingWiringLinks = false;
+        ShowingLinks = false;
     }
 
     public void StartDrawingLink()
@@ -394,6 +417,53 @@ public class LevelEditor : MonoBehaviour
 
     //     GenerateLinkIndicators();
     // }
+
+    // ================
+    // Rotation Actions
+    // ================
+
+    public void EnterRotationMode()
+    {
+        GenerateRotationIndicators();
+        ShowingRotations = true;
+    }
+
+    public void ExitRotationMode()
+    {
+        ShowingRotations = false;
+    }
+
+    private void GenerateRotationIndicators()
+    {
+        if (rotationsContainer == null)
+        {
+            rotationsContainer = new GameObject("Rotations");
+            rotationsContainer.transform.parent = transform;
+        }
+
+        foreach (var (_, rotationIndicator) in rotationIndicators)
+        {
+            Destroy(rotationIndicator.gameObject);
+        }
+
+        rotationIndicators = new();
+
+        foreach (var (position, entity) in LevelHandler.level.Entities)
+        {
+            var rotationIndicator = Instantiate(prefabs.rotationIndicator.gameObject).GetComponent<RotationIndicator>();
+            rotationIndicator.transform.parent = rotationsContainer.transform;
+            rotationIndicator.Configure(position, entity.Direction, entity.Type, animateRotation: false);
+            rotationIndicators.Add(position, rotationIndicator);
+        }
+        
+        foreach (var (position, direction) in LevelHandler.level.MovingPlatforms)
+        {
+            var rotationIndicator = Instantiate(prefabs.rotationIndicator.gameObject).GetComponent<RotationIndicator>();
+            rotationIndicator.transform.parent = rotationsContainer.transform;
+            rotationIndicator.Configure(position, direction, entityType: null, animateRotation: false);
+            rotationIndicators.Add(position, rotationIndicator);
+        }
+    }
 
     // =======
     // Actions

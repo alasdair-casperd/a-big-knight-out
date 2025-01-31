@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MovingPlatform : MonoBehaviour
 {
-    Vector2Int[] directions = {Vector2Int.up,Vector2Int.down,Vector2Int.left,Vector2Int.right};
+    Vector2Int[] directions = { Vector2Int.up, Vector2Int.right, Vector2Int.down, Vector2Int.left };
     
     public Vector2Int Position {get; set; }
 
@@ -43,7 +43,7 @@ public class MovingPlatform : MonoBehaviour
         Direction = path.Last();
         // Gets the path from the square at its current position
         // Moves it along this path
-        // updates its direcrtion
+        // updates its direction
         // Do some validation to make sure two platforms haven't crashed???
     }
 

@@ -279,7 +279,10 @@ public class LevelHandler : MonoBehaviour
 
     public void RotateEntity(Vector2Int position)
     {
-        throw new System.NotImplementedException();
+        if (!level.Entities.ContainsKey(position)) return;
+        Entity targetEntity = level.Entities[position];
+        targetEntity.Direction = (targetEntity.Direction + 1) % 4;
+        level.Entities[position] = targetEntity;
     }
 
     public void PlaceMovingPlatform(Vector2Int position, int direction)
@@ -302,7 +305,6 @@ public class LevelHandler : MonoBehaviour
             }).setEaseOutExpo();
 
         ActionQueue.QueueAction(RegenerateLevel);
-        
     }
 
     public void DeleteMovingPlatform(Vector2Int position)
@@ -329,7 +331,8 @@ public class LevelHandler : MonoBehaviour
 
     public void RotateMovingPlatform(Vector2Int position)
     {
-        throw new System.NotImplementedException();
+        if (!level.MovingPlatforms.ContainsKey(position)) return;
+        level.MovingPlatforms[position] = (level.MovingPlatforms[position] + 1) % 4;
     }
 
     public void PlacePlayer(Vector2Int position)
@@ -339,7 +342,7 @@ public class LevelHandler : MonoBehaviour
         if (!level.Tiles[position].Type.IsValidStartPosition) return;
         level.StartPosition = position;
         if (level.Entities.ContainsKey(position)) level.Entities.Remove(position);
-        
+
         // Animate away any existing enemy
         if (enemies.ContainsKey(position))
         {

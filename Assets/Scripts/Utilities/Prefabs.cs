@@ -16,6 +16,7 @@ public class Prefabs: ScriptableObject
     [Header("UI")]
     public UI.ValidMoveIndicator validMoveIndicator;
     public UI.LinkIndicator linkIndicator;
+    public UI.RotationIndicator rotationIndicator;
     public UI.StateIndicator stateIndicator;
     public GameObject levelStartIndicator;
 }
