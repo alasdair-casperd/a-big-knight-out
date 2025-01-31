@@ -161,7 +161,7 @@ public struct TileType
         id: 5,
         displayName: "Spikes",
         validStates: ValidSpikeStates,
-        validLinkTargetIDs: new() { 5 },
+        validLinkTargetIDs: new(),
         isValidStartPosition: true
     );
 
@@ -240,7 +240,7 @@ public struct TileType
     // ^^ Please add IDs 6 and 7 (formerly spike up and spike down) before using 15, 16 etc. tysm
 
     // A list of all the tile types
-    public static TileType[] All =
+    public static readonly TileType[] All =
     {
         Floor,
         Wall,

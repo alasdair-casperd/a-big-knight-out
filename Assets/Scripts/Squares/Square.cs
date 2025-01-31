@@ -83,6 +83,14 @@ public abstract class Square : MonoBehaviour
         else validMoveIndicator.Hide();
     }
 
+    /// <summary>
+    /// Update the graphics of the square to match the current state
+    /// </summary>
+    public virtual void UpdateGraphics()
+    {
+        return;
+    }
+
     /*
         Electricity Functions and Properties
     */

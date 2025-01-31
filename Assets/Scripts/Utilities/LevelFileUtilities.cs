@@ -45,7 +45,7 @@ public static class LevelFileManager
         Entity Entity(Serializing_Entity e)
         {
             EntityType entityType = EntityType.All.Where(type => type.ID == e.EntityTypeID).First();
-            return new Entity(entityType, e.InitialState, e.GraphicsVariant);
+            return new Entity(entityType, e.InitialState, e.GraphicsVariant, e.Direction);
         }
         
         // Deserialize json into a Serializing_Level object
@@ -187,6 +187,7 @@ public static class LevelFileManager
         public int EntityTypeID;
         public int GraphicsVariant;
         public int InitialState;
+        public int Direction;
         public Serializing_Vector2Int Position;
 
         public Serializing_Entity(Entity entity, Vector2Int position)
@@ -194,6 +195,7 @@ public static class LevelFileManager
             EntityTypeID = entity.Type.ID;
             GraphicsVariant = entity.GraphicsVariant;
             InitialState = entity.InitialState;
+            Direction = entity.Direction;
             Position = new Serializing_Vector2Int(position);
         }
     }

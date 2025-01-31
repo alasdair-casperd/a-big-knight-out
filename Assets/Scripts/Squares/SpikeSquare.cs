@@ -141,7 +141,11 @@ public class SpikeSquare : Square
             spikesRetracted = !spikesRetracted;
         }
         
-        // Apply graphics updates
+        UpdateGraphics();
+    }
+
+    public override void UpdateGraphics()
+    {
         if (graphicsRetracted != spikesRetracted)
         {
             graphicsRetracted = spikesRetracted;
