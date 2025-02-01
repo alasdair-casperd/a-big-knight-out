@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -72,7 +73,7 @@ namespace UI
             Initialise();
         }
 
-        public void Show(float duration = -1)
+        public void Show(float duration = -1, bool forceEntrance = false)
         {
             if (duration < 0) duration = showDuration;
             if (!initialised) Initialise();
@@ -82,7 +83,7 @@ namespace UI
 
             RectTransform item = GetComponent<RectTransform>();
 
-            if (!gameObject.activeInHierarchy)
+            if (!gameObject.activeInHierarchy || forceEntrance)
             {           
                 startingPosition = offPosition;
                 startingPivot = offPivot; 
@@ -97,13 +98,16 @@ namespace UI
             LeanTween.cancel(gameObject);
             LeanTween.value(gameObject, 0, 1, duration).setOnUpdate((float t) =>
             {
-                item.pivot = startingPivot + t * (onPivot - startingPivot);
+                Vector2 anchor = startingPivot + t * (onPivot - startingPivot);
+                item.pivot = anchor;
+                item.anchorMin = anchor;
+                item.anchorMax = anchor;
                 item.anchoredPosition = startingPosition + t * (onPosition - startingPosition);
             })
             .setEase(showEasing);
         }
 
-        public void Dismiss(float duration = -1)
+        public void Dismiss(float duration = -1, Action onComplete = null)
         {        
             if (duration < 0)
             {
@@ -119,11 +123,17 @@ namespace UI
             LeanTween.cancel(gameObject);
             LeanTween.value(gameObject, 1, 0, duration).setOnUpdate((float t) =>
             {
-                item.pivot = offPivot + t * (startingPivot - offPivot);
+                Vector2 anchor = offPivot + t * (startingPivot - offPivot);
+                item.pivot = anchor;
+                item.anchorMin = anchor;
+                item.anchorMax = anchor;
                 item.anchoredPosition = offPosition + t * (startingPosition - offPosition);
             })
             .setEase(dismissEasing)
-            .setOnComplete(() => gameObject.SetActive(false));
+            .setOnComplete(() => {
+                gameObject.SetActive(false);
+                onComplete?.Invoke();
+            });
         }
     }
 }

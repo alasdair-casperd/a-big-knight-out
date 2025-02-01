@@ -49,7 +49,10 @@ public class LevelEditor : MonoBehaviour
     private bool hasDragged;
     
     // Is the level currently being previewed?
-    private bool previewingLevel;
+    public bool previewingLevel;
+
+    // The dialogue manager used to display dialogues
+    public DialogueManager DialogueManager;
 
     /*
         Link editing properties
@@ -514,11 +517,26 @@ public class LevelEditor : MonoBehaviour
 
     public void ExportLevel()
     {
-        Level level = LevelHandler.level;
-        if (level.IsValidLevel)
+        Dialogue.HeaderData headerData = new()
         {
-            LevelFileManager.ExportLevelAsJson(level, "ExportedLevel");
-        }
+            title = "Export Level?",
+            body = "Your level will be saved as ExportedLevel.json in /Levels."
+        };
+
+        Dialogue.ButtonData primary = new()
+        {
+            text = "Export",
+            action = () => {
+                
+                Level level = LevelHandler.level;
+                if (level.IsValidLevel)
+                {
+                    LevelFileManager.ExportLevelAsJson(level, "ExportedLevel");
+                }
+            }
+        };
+
+        DialogueManager.Create(headerData, primary);
     }
 
     // =====
@@ -527,8 +545,22 @@ public class LevelEditor : MonoBehaviour
 
     public void ResetLevel()
     {
-        LevelHandler.ClearLevel();
-        LevelHandler.LoadLevel(new Level(startPosition: Vector2Int.zero));
+        Dialogue.HeaderData headerData = new()
+        {
+            title = "Reset Level?",
+            body = "You will lose any unsaved changes."
+        };
+
+        Dialogue.ButtonData primary = new()
+        {
+            text = "Reset",
+            action = () => {
+                LevelHandler.ClearLevel();
+                LevelHandler.LoadLevel(new Level(startPosition: Vector2Int.zero));
+            }
+        };
+
+        DialogueManager.Create(headerData, primary);
     }
 
     // =======
@@ -559,10 +591,25 @@ public class LevelEditor : MonoBehaviour
         previewingLevel = false;
 
         SidebarTool = previousSidebarTool;
-        SidebarTool.GetComponent<Selector>().Select();
+        if (SidebarTool != null) SidebarTool.GetComponent<Selector>().Select();
 
         GetComponent<GameManager>().Clear();
         LevelHandler.RegenerateLevel();
         toolsSidebar.Show();
+    }
+
+    // ===============
+    // Not implemented
+    // ===============
+
+    public void NotImplementedDialogue()
+    {
+        Dialogue.HeaderData headerData = new()
+        {
+            title = "Work in Progress",
+            body = "This level editor feature has not been implemented yet."
+        };
+
+        DialogueManager.Create(headerData);
     }
 }
