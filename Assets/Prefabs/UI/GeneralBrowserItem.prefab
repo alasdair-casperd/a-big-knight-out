@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1502222397373293849}
   - component: {fileID: 3984962719718927078}
   - component: {fileID: 1557161403913364521}
+  - component: {fileID: 4999063250235591312}
   m_Layer: 5
   m_Name: GeneralBrowserItem
   m_TagString: Untagged
@@ -135,6 +136,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &4999063250235591312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1538107598787244078}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b0bf4463fd7f4ece9d4d1a14cd80fe5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  content: Item
+  position: 0
+  tooltipPrefab: {fileID: 2967609695792680844, guid: 114865f6b8e4448d89a85f525e0e0046, type: 3}
 --- !u!1 &3040608526389391331
 GameObject:
   m_ObjectHideFlags: 0

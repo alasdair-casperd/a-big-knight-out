@@ -23,6 +23,7 @@ namespace UI
                 var item = Instantiate(TileBrowserItemPrefab, transform);
                 item.transform.SetAsFirstSibling();
                 item.GetComponent<Button>().onClick.AddListener(() => levelEditor.SelectTileType(tileType));
+                item.GetComponent<TooltipItem>().content = tileType.DisplayName;
                 item.TileType = tileType;
             }
         }
