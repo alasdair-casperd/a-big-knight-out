@@ -557,6 +557,8 @@ public class LevelEditor : MonoBehaviour
             action = () => {
                 LevelHandler.ClearLevel();
                 LevelHandler.LoadLevel(new Level(startPosition: Vector2Int.zero));
+                GenerateLinkIndicators();
+                GenerateRotationIndicators();
             }
         };
 

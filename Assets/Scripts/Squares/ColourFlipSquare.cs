@@ -43,6 +43,7 @@ public class ColourFlipSquare : Square
         // vice versa.
         State = (State + 1) % 2;
         UpdateGraphics();
+        UpdateOutgoingCharge();
     }
 
     // Update visuals according to the state of the square
@@ -60,8 +61,15 @@ public class ColourFlipSquare : Square
         }
     }
 
+    // A charge is emitted when the square is black
+    public override bool CalculateCharge()
+    {
+        return State == 1;
+    }
+
     public override void OnLevelStart()
     {
         UpdateGraphics();
+        UpdateOutgoingCharge();
     }
 }
