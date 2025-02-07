@@ -7,7 +7,7 @@ using System.Collections.Generic;
 public class FallingFloorSquare : Square
 {
 
-    public override TileType Type =>  TileType.FallingFloor;
+    public override TileType Type => TileType.FallingFloor;
 
     // Is only passable before it is landed on.
     public override bool IsPassable
@@ -56,7 +56,8 @@ public class FallingFloorSquare : Square
         Vector3 initialPosition = transform.position;
         Vector3 initialScale = transform.localScale;
         LeanTween.value(Graphics, 0, 1, FallDuration)
-            .setOnUpdate(t => {
+            .setOnUpdate(t =>
+            {
                 transform.position = initialPosition - Vector3.up * FallHeight * t;
                 transform.localScale = initialScale * (1 - t);
             })
@@ -66,4 +67,26 @@ public class FallingFloorSquare : Square
         AudioManager.Play(AudioManager.SoundEffects.fallingPlatform);
     }
 
+    /// <summary>
+    /// On the enemy leave, the square will fall away and will no longer be passable.
+    /// </summary>
+    public override void OnEnemyLeave()
+    {
+        // Sets the state ready to fall when the player leaves.
+        hasFallen = true;
+
+        // Fall away
+        Vector3 initialPosition = transform.position;
+        Vector3 initialScale = transform.localScale;
+        LeanTween.value(Graphics, 0, 1, FallDuration)
+            .setOnUpdate(t =>
+            {
+                transform.position = initialPosition - Vector3.up * FallHeight * t;
+                transform.localScale = initialScale * (1 - t);
+            })
+            .setOnComplete(() => Destroy(Graphics));
+
+        // Play a sound effect
+        AudioManager.Play(AudioManager.SoundEffects.fallingPlatform);
+    }
 }

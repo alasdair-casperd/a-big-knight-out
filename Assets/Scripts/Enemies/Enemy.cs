@@ -106,6 +106,11 @@ public abstract class Enemy : MonoBehaviour
     public virtual void OnPlayerLand() { }
 
     /// <summary>
+    /// The actions to be perfored during the enemy turn.
+    /// </summary>
+    public virtual void OnEnemyTurn() { }
+
+    /// <summary>
     /// The actions to be performed at the start of the Level's turn
     /// </summary>
     public virtual void OnLevelTurn() { }

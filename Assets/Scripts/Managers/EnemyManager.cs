@@ -13,9 +13,9 @@ using UnityEngine.UIElements;
 public class EnemyManager : MonoBehaviour
 {
     /// <summary>
-    /// A dictionary to find the square object at any given position
+    /// A list to find the enemy object at any given position
     /// </summary>
-    public Dictionary<Vector2Int, Enemy> enemies;
+    public List<Enemy> enemies;
 
     bool isPlayerTurn;
 
@@ -26,12 +26,12 @@ public class EnemyManager : MonoBehaviour
     SquareManager squareManager;
 
 
-    public void InitialiseEnemies(Dictionary<Vector2Int, Enemy> inputEnemies)
+    public void InitialiseEnemies(List<Enemy> inputEnemies)
     {
         enemies = inputEnemies;
 
         // Initialise the enemies
-        foreach (Enemy enemy in enemies.Values)
+        foreach (Enemy enemy in enemies)
         {
             enemy.PlayerController = player;
             enemy.OnLevelStart();
@@ -52,20 +52,39 @@ public class EnemyManager : MonoBehaviour
     {
 
         isPlayerTurn = false;
-        foreach (Enemy enemy in enemies.Values)
+        foreach (Enemy enemy in enemies)
         {
             enemy.OnPlayerMove();
         }
     }
 
     /// <summary>
-    /// The actions to be performed once the player lands on its new tile.
+    /// The actions to be performed once the player lands on an enemy.
     /// </summary>
     public void OnPlayerLand()
     {
-        if(enemies.ContainsKey(player.position))
+        Debug.Log(player.position);
+        // Does all of the enemies's turns.
+        foreach (Enemy enemy in enemies)
         {
-            enemies[player.position].OnPlayerLand();
+            if (enemy.Position == player.position)
+            {
+                Destroy(enemy.gameObject);
+                enemies.Remove(enemy);
+            }
+        }
+    }
+
+    public void OnEnemyTurn()
+    {
+        // Does all of the enemies's turns.
+        foreach (Enemy enemy in enemies)
+        {
+            enemy.OnEnemyTurn();
+            if (enemy.Position + PawnMove != player.position)
+            {
+                enemy.MoveTo(enemy.Position + PawnMove, AnimationController.MovementType.Slide);
+            }
         }
     }
 
@@ -74,11 +93,6 @@ public class EnemyManager : MonoBehaviour
     /// </summary>
     public void OnLevelTurn()
     {
-        // Does all of the square's turns.
-        foreach (Enemy enemy in enemies.Values)
-        {
-            enemy.OnLevelTurn();
-        }
     }
 
     /// <summary>
@@ -87,12 +101,16 @@ public class EnemyManager : MonoBehaviour
     public void OnPlayerTurnStart()
     {
         isPlayerTurn = true;
-
-        foreach (Enemy enemy in enemies.Values)
+        foreach (Enemy enemy in enemies)
         {
             enemy.OnPlayerTurnStart();
         }
-
     }
+
+    /// <summary>
+    /// The valid moves a pawn can make
+    /// </summary>
+    Vector2Int PawnMove = new Vector2Int(0, -1);
+
 
 }

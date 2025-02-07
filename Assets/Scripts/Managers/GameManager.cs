@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour
     /// Start the game
     /// </summary>
     public void Initialise(Level providedLevel = null)
-    {   
+    {
         if (providedLevel != null) level = providedLevel;
 
         levelBuilder = GetComponent<LevelBuilder>();
@@ -62,24 +62,24 @@ public class GameManager : MonoBehaviour
 
         player = levelBuilder.BuildPlayer(levelContainer, level);
         Dictionary<Vector2Int, Square> squares = levelBuilder.BuildLevelSquares(levelContainer, level);
-        Dictionary<Vector2Int, Enemy> enemies = levelBuilder.BuildLevelEnemies(levelContainer, level);
-        movingPlatforms  = levelBuilder.BuildLevelMovingPlatforms(levelContainer, level);
+        List<Enemy> enemies = levelBuilder.BuildLevelEnemies(levelContainer, level);
+        movingPlatforms = levelBuilder.BuildLevelMovingPlatforms(levelContainer, level);
 
         // Give the square manager its squares to manage, and initialize them
-        squareManager.Initialise(squares, player);
         enemyManager.Initialise(player);
+        squareManager.Initialise(squares, player, enemyManager);
 
         // Figures out the adjacent tiles for the track tiles
         foreach (var (position, square) in squares)
         {
             // Ignores the square if it's not a track
-            if(square.GetType() != typeof(TrackSquare)){ continue; }
+            if (square.GetType() != typeof(TrackSquare)) { continue; }
 
             TrackSquare trackSquare = (TrackSquare)square;
 
             // Tells the track square who all the platforms are (so it can check if there is a platform on top of it)
-            trackSquare.Platforms = movingPlatforms;     
-            
+            trackSquare.Platforms = movingPlatforms;
+
         }
 
         // Initialise electricity
@@ -139,6 +139,14 @@ public class GameManager : MonoBehaviour
         squareManager.OnPlayerLand();
 
         // Once the horse has landed and game-blocking animations have finished, initiate the level's turn.
+        ActionQueue.QueueAction(OnEnemyTurn);
+    }
+
+    public void OnEnemyTurn()
+    {
+        Debug.Log("here");
+        squareManager.OnEnemyLeave();
+        enemyManager.OnEnemyTurn();
         ActionQueue.QueueAction(OnLevelTurn);
     }
 
@@ -150,15 +158,16 @@ public class GameManager : MonoBehaviour
         enemyManager.OnLevelTurn();
         squareManager.OnLevelTurn();
 
-        foreach(var platform in movingPlatforms)
+        foreach (var platform in movingPlatforms)
         {
-            platform.MovePlatform(squareManager.squares,player);
+            platform.MovePlatform(squareManager.squares, player);
         }
 
 
         // Triggers the start of the players turn once all game-blocking animations have finished
         ActionQueue.QueueAction(OnPlayerTurnStart);
     }
+
 
     /// <summary>
     /// The actions to be performed at the start of the player's turn.

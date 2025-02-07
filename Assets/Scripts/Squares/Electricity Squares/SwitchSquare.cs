@@ -12,7 +12,7 @@ public class SwitchSquare : Square
     public GameObject onGraphics;
     public GameObject offGraphics;
 
-    public override TileType Type =>  TileType.Switch;
+    public override TileType Type => TileType.Switch;
 
     // Will always report as passable, if you try to change that you get a warning.
     public override bool IsPassable
@@ -29,7 +29,7 @@ public class SwitchSquare : Square
 
     // Sets up the property for graphics variant
     public override int GraphicsVariant { get; set; }
-    
+
     // Is the switch currently on?
     public bool IsOn
     {
@@ -52,6 +52,16 @@ public class SwitchSquare : Square
 
     // Toggle the switch on player land
     public override void OnPlayerLand()
+    {
+        IsOn = !IsOn;
+        UpdateGraphics();
+
+        // Play a click sound effect
+        AudioManager.Play(AudioManager.SoundEffects.click);
+    }
+
+    // Toggle the switch on player land
+    public override void OnEnemyLand()
     {
         IsOn = !IsOn;
         UpdateGraphics();

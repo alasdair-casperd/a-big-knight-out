@@ -21,6 +21,8 @@ public class SquareManager : MonoBehaviour
 
     private PlayerController player;
 
+    private EnemyManager enemyManager;
+
     GameManager gameManager;
 
     /// <summary>
@@ -39,10 +41,11 @@ public class SquareManager : MonoBehaviour
     };
 
 
-    public void Initialise(Dictionary<Vector2Int, Square> inputSquares, PlayerController player)
+    public void Initialise(Dictionary<Vector2Int, Square> inputSquares, PlayerController player, EnemyManager enemyManager)
     {
         squares = inputSquares;
         this.player = player;
+        this.enemyManager = enemyManager;
 
         // Initialise the squares
         foreach (Square square in squares.Values)
@@ -103,11 +106,29 @@ public class SquareManager : MonoBehaviour
         squares[player.position].OnPlayerLand();
     }
 
+
+
+    /// <summary>
+    /// The actions to be performed once the enemy leaves the tile.
+    /// </summary>
+    public void OnEnemyLeave()
+    {
+        foreach (Enemy enemy in enemyManager.enemies)
+        {
+            squares[enemy.Position].OnEnemyLeave();
+        }
+    }
+
     /// <summary>
     /// The actions to be performed on the level's turn.
     /// </summary>
     public void OnLevelTurn()
     {
+
+        foreach (Enemy enemy in enemyManager.enemies)
+        {
+            squares[enemy.Position].OnEnemyLand();
+        }
         // Does all of the square's turns.
         foreach (Square square in squares.Values)
         {
@@ -158,7 +179,7 @@ public class SquareManager : MonoBehaviour
             square.IndicateMoveValidity(coordinatesToHighlight.Contains(coordinate));
         }
     }
-    
+
     /// <summary>
     /// Sets initial charge states for all conductive squares
     /// </summary>

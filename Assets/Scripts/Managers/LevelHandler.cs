@@ -26,7 +26,7 @@ public class LevelHandler : MonoBehaviour
     // References to current instantiated gameObjects
     private PlayerController player;
     private Dictionary<Vector2Int, Square> squares = new();
-    private Dictionary<Vector2Int, Enemy> enemies = new();
+    private List<Enemy> enemies = new();
     private List<MovingPlatform> movingPlatforms = new();
 
     // References to current instantiated gameObjects which should be deleted
@@ -66,7 +66,7 @@ public class LevelHandler : MonoBehaviour
         // Destroy the gameObjects
         if (player != null) Destroy(player.gameObject);
 
-        foreach (var (_, enemy) in enemies) if (enemy != null) Destroy(enemy.gameObject);
+        foreach (var enemy in enemies) if (enemy != null) Destroy(enemy.gameObject);
         foreach (var (_, square) in squares) if (square != null) Destroy(square.gameObject);
         foreach (var movingPlatform in movingPlatforms) if (movingPlatform != null) Destroy(movingPlatform.gameObject);
 
@@ -103,7 +103,7 @@ public class LevelHandler : MonoBehaviour
         {
             // Cancel if tile type is already correct
             if (level.Tiles[position].Type == type) return;
-            
+
             // Cancel if not replacing tiles
             if (!withReplacement) return;
         }
@@ -125,15 +125,18 @@ public class LevelHandler : MonoBehaviour
                 .setOnUpdate((t) => existingSquare.transform.localScale = Vector3.Lerp(initialScale, Vector3.zero, t)).setEaseOutExpo();
         }
 
-        // Animate away any existing enemy
-        if (enemies.ContainsKey(position))
+        foreach (Enemy enemy in enemies)
         {
-            Enemy existingEnemy = enemies[position];
-            temporaryEnemies.Add(existingEnemy);
-            enemies.Remove(position);
-            Vector3 initialScale = existingEnemy.transform.localScale;
-            LeanTween.value(ActionQueue.GameBlockingAnimationsContainer, 0, 1, insertionDuration)
-                .setOnUpdate((t) => existingEnemy.transform.localScale = Vector3.Lerp(initialScale, Vector3.zero, t)).setEaseOutExpo();
+            // Animate away any existing enemy
+            if (enemy.Position == position)
+            {
+                Enemy existingEnemy = enemy;
+                temporaryEnemies.Add(existingEnemy);
+                enemies.Remove(enemy);
+                Vector3 initialScale = existingEnemy.transform.localScale;
+                LeanTween.value(ActionQueue.GameBlockingAnimationsContainer, 0, 1, insertionDuration)
+                    .setOnUpdate((t) => existingEnemy.transform.localScale = Vector3.Lerp(initialScale, Vector3.zero, t)).setEaseOutExpo();
+            }
         }
 
         // Animate away any existing moving platform
@@ -146,7 +149,7 @@ public class LevelHandler : MonoBehaviour
             LeanTween.value(ActionQueue.GameBlockingAnimationsContainer, 0, 1, insertionDuration)
                 .setOnUpdate((t) => existingMovingPlatform.transform.localScale = Vector3.Lerp(initialScale, Vector3.zero, t)).setEaseOutExpo();
         }
-        
+
         // Create new square
         Square newSquare = Instantiate(TilePrefabManager.GetPrefab(type)).GetComponent<Square>();
         temporarySquares.Add(newSquare);
@@ -160,7 +163,7 @@ public class LevelHandler : MonoBehaviour
 
         ActionQueue.QueueAction(RegenerateLevel);
     }
-    
+
     /// <summary>
     /// Delete a tile from the level
     /// </summary>
@@ -175,7 +178,7 @@ public class LevelHandler : MonoBehaviour
 
         // Cancel if there is no tile to delete
         if (!level.Tiles.ContainsKey(position)) return;
-        
+
         // Update the level
         RemoveLinksToPosition(position);
         level.Tiles.Remove(position);
@@ -219,7 +222,7 @@ public class LevelHandler : MonoBehaviour
         if (!targetTile.Type.IsMultiState) return;
         targetTile.IncrementInitialState();
         level.Tiles[position] = targetTile;
-        
+
         // Animate away any existing moving platform
         if (movingPlatforms.FirstOrDefault((x) => x.Position == position) is MovingPlatform existingMovingPlatform)
         {
@@ -256,15 +259,18 @@ public class LevelHandler : MonoBehaviour
         if (!level.Tiles[position].Type.IsValidStartPosition) return;
         level.Entities[position] = new Entity(type);
 
-        // Animate away any existing enemy
-        if (enemies.ContainsKey(position))
+        foreach (Enemy potentialEnemy in enemies)
         {
-            Enemy existingEnemy = enemies[position];
-            temporaryEnemies.Add(existingEnemy);
-            enemies.Remove(position);
-            Vector3 initialScale = existingEnemy.transform.localScale;
-            LeanTween.value(ActionQueue.GameBlockingAnimationsContainer, 0, 1, insertionDuration)
-                .setOnUpdate((t) => existingEnemy.transform.localScale = Vector3.Lerp(initialScale, Vector3.zero, t)).setEaseOutExpo();
+            // Animate away any existing enemy
+            if (potentialEnemy.Position == position)
+            {
+                Enemy existingEnemy = potentialEnemy;
+                temporaryEnemies.Add(existingEnemy);
+                enemies.Remove(potentialEnemy);
+                Vector3 initialScale = existingEnemy.transform.localScale;
+                LeanTween.value(ActionQueue.GameBlockingAnimationsContainer, 0, 1, insertionDuration)
+                    .setOnUpdate((t) => existingEnemy.transform.localScale = Vector3.Lerp(initialScale, Vector3.zero, t)).setEaseOutExpo();
+            }
         }
 
         // Animate
@@ -275,7 +281,7 @@ public class LevelHandler : MonoBehaviour
             .setOnUpdate((t) =>
             {
                 enemy.transform.localScale = Vector3.Lerp(Vector3.zero, targetScale, t);
-                enemy.transform.position = GridUtilities.GridToWorldPos(position) + Vector3.up * (1-t);
+                enemy.transform.position = GridUtilities.GridToWorldPos(position) + Vector3.up * (1 - t);
             }).setEaseOutExpo();
 
         ActionQueue.QueueAction(RegenerateLevel);
@@ -291,19 +297,25 @@ public class LevelHandler : MonoBehaviour
         if (!level.Entities.ContainsKey(position)) return;
         level.Entities.Remove(position);
 
-        // Animate
-        if (!enemies.ContainsKey(position)) return;
-        Enemy enemy = enemies[position];
-        temporaryEnemies.Add(enemy);
-        enemies.Remove(position);
-
-        Vector3 initialScale = enemy.transform.localScale;
-        LeanTween.value(ActionQueue.GameBlockingAnimationsContainer, 0, 1, insertionDuration)
-            .setOnUpdate((t) =>
+        foreach (Enemy potEnemy in enemies)
+        {
+            if (potEnemy.Position == position)
             {
-                enemy.transform.localScale = Vector3.Lerp(initialScale, Vector3.zero, t);
-                enemy.transform.position = GridUtilities.GridToWorldPos(position) + Vector3.up * (t);
-            }).setEaseOutExpo();
+
+                temporaryEnemies.Add(potEnemy);
+                enemies.Remove(potEnemy);
+
+                Vector3 initialScale = potEnemy.transform.localScale;
+                LeanTween.value(ActionQueue.GameBlockingAnimationsContainer, 0, 1, insertionDuration)
+                    .setOnUpdate((t) =>
+                    {
+                        potEnemy.transform.localScale = Vector3.Lerp(initialScale, Vector3.zero, t);
+                        potEnemy.transform.position = GridUtilities.GridToWorldPos(position) + Vector3.up * (t);
+                    }).setEaseOutExpo();
+                break;
+            }
+        }
+
 
         ActionQueue.QueueAction(RegenerateLevel);
     }
@@ -341,7 +353,7 @@ public class LevelHandler : MonoBehaviour
             .setOnUpdate((t) =>
             {
                 movingPlatform.transform.localScale = Vector3.Lerp(Vector3.zero, targetScale, t);
-                movingPlatform.transform.position = GridUtilities.GridToWorldPos(position) + Vector3.up * (1-t);
+                movingPlatform.transform.position = GridUtilities.GridToWorldPos(position) + Vector3.up * (1 - t);
             }).setEaseOutExpo();
 
         ActionQueue.QueueAction(RegenerateLevel);
@@ -395,15 +407,18 @@ public class LevelHandler : MonoBehaviour
         level.StartPosition = position;
         if (level.Entities.ContainsKey(position)) level.Entities.Remove(position);
 
-        // Animate away any existing enemy
-        if (enemies.ContainsKey(position))
+        foreach (Enemy potentialEnemy in enemies)
         {
-            Enemy existingEnemy = enemies[position];
-            temporaryEnemies.Add(existingEnemy);
-            enemies.Remove(position);
-            Vector3 initialScale = existingEnemy.transform.localScale;
-            LeanTween.value(ActionQueue.GameBlockingAnimationsContainer, 0, 1, insertionDuration)
-                .setOnUpdate((t) => existingEnemy.transform.localScale = Vector3.Lerp(initialScale, Vector3.zero, t)).setEaseOutExpo();
+            // Animate away any existing enemy
+            if (potentialEnemy.Position == position)
+            {
+                Enemy existingEnemy = potentialEnemy;
+                temporaryEnemies.Add(existingEnemy);
+                enemies.Remove(potentialEnemy);
+                Vector3 initialScale = existingEnemy.transform.localScale;
+                LeanTween.value(ActionQueue.GameBlockingAnimationsContainer, 0, 1, insertionDuration)
+                    .setOnUpdate((t) => existingEnemy.transform.localScale = Vector3.Lerp(initialScale, Vector3.zero, t)).setEaseOutExpo();
+            }
         }
 
         // Animate

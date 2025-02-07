@@ -7,7 +7,7 @@ using System.Collections.Generic;
 /// </summary>
 public class ColourFlipSquare : Square
 {
-    public override TileType Type =>  TileType.ColourFlip;
+    public override TileType Type => TileType.ColourFlip;
 
     // Will always report as passable, if you try to change that you get a warning.
     public override bool IsPassable
@@ -35,6 +35,20 @@ public class ColourFlipSquare : Square
     /// Swaps the graphics for a tile.
     /// </summary>
     public override void OnPlayerLand()
+    {
+        // Plays portal sound effect
+        AudioManager.Play(AudioManager.SoundEffects.thud);
+
+        // Changes the state from black to white and 
+        // vice versa.
+        State = (State + 1) % 2;
+        UpdateGraphics();
+    }
+
+    /// <summary>
+    /// Swaps the graphics for a tile.
+    /// </summary>
+    public override void OnEnemyLand()
     {
         // Plays portal sound effect
         AudioManager.Play(AudioManager.SoundEffects.thud);

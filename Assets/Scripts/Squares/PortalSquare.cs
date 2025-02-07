@@ -6,7 +6,7 @@ using System.Collections.Generic;
 /// </summary>
 public class PortalSquare : Square
 {
-    public override TileType Type =>  TileType.Portal;
+    public override TileType Type => TileType.Portal;
 
     // Will always report as passable, if you try to change that you get a warning.
     public override bool IsPassable
@@ -31,6 +31,18 @@ public class PortalSquare : Square
     {
         // Attempt to move knight.
         PlayerController.MoveTo(Links[0].Position, AnimationController.MovementType.Teleport);
+
+        // Plays portal sound effect
+        AudioManager.Play(AudioManager.SoundEffects.portal);
+    }
+
+    /// <summary>
+    /// Moves the player when they land on the tile.
+    /// </summary>
+    public override void OnEnemyLand(Enemy enemy)
+    {
+        // Attempt to move knight.
+        enemy.MoveTo(Links[0].Position, AnimationController.MovementType.Teleport);
 
         // Plays portal sound effect
         AudioManager.Play(AudioManager.SoundEffects.portal);

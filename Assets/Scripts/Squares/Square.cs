@@ -22,7 +22,8 @@ public abstract class Square : MonoBehaviour
     /// <summary>
     /// The list of all of the squares that this square is linked to
     /// </summary>
-    public List<Square> Links {
+    public List<Square> Links
+    {
         get
         {
             return _links;
@@ -117,7 +118,7 @@ public abstract class Square : MonoBehaviour
     protected bool IsReceivingCharge => IncomingCharges.Values.Any(charge => charge ?? false);
 
     // A function called whenever the charge of this square has been updated
-    public virtual void OnChargeChanged() {}
+    public virtual void OnChargeChanged() { }
 
     // A function called by other squares when their charge is updated
     private void UpdateIncomingCharge(bool newCharge, Square sender)
@@ -126,7 +127,7 @@ public abstract class Square : MonoBehaviour
         {
             Debug.LogWarning($"Conductive links incorrectly set up for square of type {Type.DisplayName}");
         }
-        
+
         if (IncomingCharges[sender] != newCharge)
         {
             IncomingCharges[sender] = newCharge;
@@ -157,30 +158,45 @@ public abstract class Square : MonoBehaviour
     /// <summary>
     /// The actions to be performed at the start of the level.
     /// </summary>
-    public virtual void OnLevelStart() {}
+    public virtual void OnLevelStart() { }
 
     /// <summary>
     /// The actions to be performed at the start of the player's turn
     /// </summary>
-    public virtual void OnPlayerTurnStart() {}
+    public virtual void OnPlayerTurnStart() { }
 
     /// <summary>
     /// The actions to be performed once the player has input their move
     /// </summary>
-    public virtual void OnPlayerMove() {}
+    public virtual void OnPlayerMove() { }
 
     /// <summary>
     /// The actions to be performed immediately when the player lands on this tile
     /// </summary>
-    public virtual void OnPlayerLand() {}
+    public virtual void OnPlayerLand() { }
 
     /// <summary>
     /// The actions to be performed immediately when the player leaves the tile
     /// </summary>
-    public virtual void OnPlayerLeave() {}
+    public virtual void OnPlayerLeave() { }
 
     /// <summary>
     /// The actions to be performed at the start of the Level's turn
     /// </summary>
-    public virtual void OnLevelTurn() {}
+    public virtual void OnLevelTurn() { }
+
+    /// <summary>
+    /// The actions to be performed when an enemy lands on a tile.
+    /// </summary>
+    public virtual void OnEnemyLand() { }
+
+    /// <summary>
+    /// The actions to be performed when an enemy lands on a tile.
+    /// </summary>
+    public virtual void OnEnemyLand(Enemy enemy) { }
+
+    /// <summary>
+    /// The actions to be performed when an enemy leaves a tile.
+    /// </summary>
+    public virtual void OnEnemyLeave() { }
 }

@@ -7,7 +7,7 @@ using System.Linq;
 /// </summary>
 public class SpikeSquare : Square
 {
-    public override TileType Type =>  TileType.Spikes;
+    public override TileType Type => TileType.Spikes;
 
     /// <summary>
     /// The animator on the graphics gameObject representing the retracting spikes for this tile
@@ -39,7 +39,7 @@ public class SpikeSquare : Square
     private bool[] retractionPattern
     {
         get
-        {   
+        {
             // Parse the initial state integer as a retraction pattern
             string stateString = State.ToString();
             if (stateString.All(c => c == '1' || c == '2'))
@@ -111,11 +111,31 @@ public class SpikeSquare : Square
 
     }
 
+    /// <summary>
+    /// Just to check whether the player has landed on a spike
+    /// tile and deserves to die.
+    /// </summary>
+    public override void OnEnemyLand()
+    {
+
+        // Check for death
+        if (spikesRetracted)
+        {
+            Debug.Log("Enemy lives");
+        }
+        else
+        {
+            Debug.Log("Enemy dies");
+            AudioManager.Play(AudioManager.SoundEffects.ouch);
+        }
+
+    }
+
     public override void OnLevelTurn()
     {
         UpdateSpikes();
     }
-    
+
     /// <summary>
     /// Setting up the platforms for the start of the level.
     /// </summary>
@@ -134,13 +154,13 @@ public class SpikeSquare : Square
     {
         // Read the current state of the spikes from the retraction pattern
         spikesRetracted = !retractionPattern[turnCounter % retractionPattern.Length];
-        
+
         // If the spikes are receiving charge, invert the retraction pattern
         if (IsReceivingCharge)
         {
             spikesRetracted = !spikesRetracted;
         }
-        
+
         UpdateGraphics();
     }
 

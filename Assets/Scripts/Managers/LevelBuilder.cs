@@ -32,7 +32,7 @@ public class LevelBuilder : MonoBehaviour
 
         // Instantiate the player
         PlayerController player = Instantiate(prefabs.Player, parent);
-        
+
         // Position the player
         player.SetInitialPosition(level.StartPosition);
 
@@ -126,7 +126,7 @@ public class LevelBuilder : MonoBehaviour
         foreach (var (position, square) in squares)
         {
             // Ignores the square if it's not a track
-            if(square.GetType() != typeof(TrackSquare)){continue;}
+            if (square.GetType() != typeof(TrackSquare)) { continue; }
 
             TrackSquare trackSquare = (TrackSquare)square;
             trackSquare.AdjacentTracks = new Dictionary<Vector2Int, TrackSquare>();
@@ -136,7 +136,7 @@ public class LevelBuilder : MonoBehaviour
             AddAdjacentTile(squares, trackSquare, Vector2Int.down);
             AddAdjacentTile(squares, trackSquare, Vector2Int.left);
             AddAdjacentTile(squares, trackSquare, Vector2Int.right);
-            
+
         }
 
         // Initialise square graphics
@@ -162,10 +162,10 @@ public class LevelBuilder : MonoBehaviour
         Vector2Int position = trackSquare.Position;
 
         // Checks if there is a square in the specified direction, and if it's a track square
-        if(squares.ContainsKey(position+direction) && squares[position+direction].GetType() == typeof(TrackSquare))
+        if (squares.ContainsKey(position + direction) && squares[position + direction].GetType() == typeof(TrackSquare))
         {
             // If it is, then add it to the list of adjacent tracks.
-            trackSquare.AdjacentTracks.Add(direction,(TrackSquare)squares[position+direction]);
+            trackSquare.AdjacentTracks.Add(direction, (TrackSquare)squares[position + direction]);
         }
     }
 
@@ -173,7 +173,7 @@ public class LevelBuilder : MonoBehaviour
     /// <summary>
     /// Instantiates all the enemy prefabs for the specified level, and returns a list of these
     /// </summary>
-    public Dictionary<Vector2Int, Enemy> BuildLevelEnemies(Transform parent, Level level)
+    public List<Enemy> BuildLevelEnemies(Transform parent, Level level)
     {
         if (!level.IsValidLevel)
         {
@@ -189,7 +189,7 @@ public class LevelBuilder : MonoBehaviour
         Enemy currentEnemy;
 
         // Track enemies created
-        Dictionary<Vector2Int, Enemy> enemies = new();
+        List<Enemy> enemies = new();
 
         // Loops over all the entities in the level object received
         foreach (var (position, entity) in level.Entities)
@@ -225,7 +225,7 @@ public class LevelBuilder : MonoBehaviour
             currentEnemy.GraphicsVariant = graphicsVariant;
 
             // Store the enemy in the list of created enemies
-            enemies.Add(pos, currentEnemy);
+            enemies.Add(currentEnemy);
         }
 
         // Return
@@ -235,7 +235,7 @@ public class LevelBuilder : MonoBehaviour
     /// <summary>
     /// Instantiates all the moving platforms
     /// </summary>
-    
+
     public List<MovingPlatform> BuildLevelMovingPlatforms(Transform parent, Level level)
     {
         if (!level.IsValidLevel)
@@ -258,11 +258,11 @@ public class LevelBuilder : MonoBehaviour
             movingPlatform = movingPlatformObject.GetComponent<MovingPlatform>();
 
             // Set the moving platform's direction and position
-            movingPlatform.Initialise(position,direction);
+            movingPlatform.Initialise(position, direction);
             movingPlatforms.Add(movingPlatform);
         }
 
         return movingPlatforms;
     }
-    
+
 }
