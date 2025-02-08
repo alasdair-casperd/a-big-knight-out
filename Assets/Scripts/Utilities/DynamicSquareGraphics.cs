@@ -50,14 +50,14 @@ public class DynamicSquareGraphics : MonoBehaviour
             var (matches, rotation) = item.CompareAdjacencies(adjacencies);
             if (matches)
             {
-                currentGraphics = Instantiate(item.Prefab, transform.position,  Quaternion.Euler(0, 90 * (rotation + item.RotationOffset), 0) * item.Prefab.transform.rotation, transform);
+                currentGraphics = Instantiate(item.Prefab, transform.position, Quaternion.Euler(0, 90 * (rotation + item.RotationOffset), 0) * item.Prefab.transform.rotation, transform);
                 graphicsCreated = true;
             }
         }
 
         if (!graphicsCreated)
         {
-            currentGraphics = Instantiate(defaultGraphics, transform.position, Quaternion.identity, transform);
+            currentGraphics = Instantiate(defaultGraphics, transform.position, defaultGraphics.transform.rotation, transform);
         }
     }
 }
