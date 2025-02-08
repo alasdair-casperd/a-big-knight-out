@@ -1,4 +1,5 @@
 
+using UI;
 using UnityEngine;
 
 /// <summary>
@@ -8,15 +9,15 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Prefabs", menuName = "Scriptable Objects/Prefabs")]
 public class Prefabs: ScriptableObject
 {
-
     [Header("Gameplay")]
     public PlayerController Player;
     public GameObject movingPlatform;
 
     [Header("UI")]
-    public UI.ValidMoveIndicator validMoveIndicator;
-    public UI.LinkIndicator linkIndicator;
-    public UI.RotationIndicator rotationIndicator;
-    public UI.StateIndicator stateIndicator;
+    public ValidMoveIndicator validMoveIndicator;
+    public LinkIndicator linkIndicator;
+    public RotationIndicator rotationIndicator;
+    public StateIndicator stateIndicator;
     public GameObject levelStartIndicator;
+    public Dialogue dialogue;
 }

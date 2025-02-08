@@ -187,9 +187,10 @@ public struct TileType
     (
         id: 9,
         displayName: "Colour Flip Tile",
-        validStates: new() { 0, 1 },
-        validLinkTargetIDs: new(),
-        isValidStartPosition: true
+        validStates: new() { 0, 1},
+        validLinkTargetIDs: new() { 5, 11, 12, 13, 14},
+        isValidStartPosition: true,
+        isConductor: true
     );
 
     public static TileType Button = new

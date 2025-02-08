@@ -19,6 +19,7 @@ namespace UI
             {
                 var item = Instantiate(EntityBrowserItemPrefab, transform);
                 item.GetComponent<Button>().onClick.AddListener(() => levelEditor.SelectEntityType(entityType));
+                item.GetComponent<TooltipItem>().content = entityType.DisplayName;
                 item.EntityType = entityType;
             }
         }

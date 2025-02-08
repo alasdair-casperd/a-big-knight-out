@@ -93,6 +93,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelEditor: {fileID: 0}
+  toolType: 0
   OnSelect:
     m_PersistentCalls:
       m_Calls: []
@@ -127,6 +128,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   OnEntityMouseHeld:
+    m_PersistentCalls:
+      m_Calls: []
+  OnLinkTouch:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &4029325160058415579
