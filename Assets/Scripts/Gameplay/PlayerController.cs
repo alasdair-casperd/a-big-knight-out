@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -31,7 +32,7 @@ public class PlayerController : MonoBehaviour
     /// <param name="endPosition"> The world position to move the player to </param>
     public void MoveTo(Vector2Int to, AnimationController.MovementType movementType, float duration = -1)
     {
-        // Update the square manager
+        // Update the player controller position
         position = to;
 
         // Convert grid position to world position
@@ -50,5 +51,14 @@ public class PlayerController : MonoBehaviour
                 AnimationController.TeleportTo(endPosition, duration);
                 break;
         }
+    }
+
+    public void MoveAlongPath(Vector2Int[] path, float duration = -1)
+    {
+        // Update the player controller position
+        if (path.Length > 0) position = path.Last();
+
+        // Animate
+        AnimationController.MoveAlongPath(path, duration);
     }
 }

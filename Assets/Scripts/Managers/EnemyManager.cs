@@ -60,7 +60,6 @@ public class EnemyManager : MonoBehaviour
     /// </summary>
     public void OnPlayerLand()
     {
-        Debug.Log(player.position);
         // Does all of the enemies's turns.
         foreach (Enemy enemy in enemies.ToList())
         {
