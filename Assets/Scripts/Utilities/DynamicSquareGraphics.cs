@@ -4,9 +4,19 @@ using System.Collections.Generic;
 
 public class DynamicSquareGraphics : MonoBehaviour
 {
+    /// <summary>
+    /// The graphics items that can be displayed by this square.
+    /// </summary>
     public DynamicSquareGraphicsItem[] GraphicsItems;
+
+    /// <summary>
+    /// The default graphics if no matches are found in GraphicsItems.
+    /// </summary>
     public GameObject defaultGraphics;
 
+    /// <summary>
+    /// The current graphics object.
+    /// </summary>
     public GameObject currentGraphics;
 
     public void UpdateGraphics<T>(Dictionary<Vector2Int, T> adjacencies)
@@ -21,6 +31,11 @@ public class DynamicSquareGraphics : MonoBehaviour
         UpdateGraphics(adjacencyArray);
     }
 
+    /// <summary>
+    /// Searches for an item with a matching set of adjacencies and updates the graphics accordingly.
+    /// If no match is found, the default graphics are used.
+    /// </summary>
+    /// <param name="adjacencies"></param>
     public void UpdateGraphics(bool[] adjacencies)
     {
         if (currentGraphics != null)

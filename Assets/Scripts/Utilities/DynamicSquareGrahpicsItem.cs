@@ -25,6 +25,11 @@ public class DynamicSquareGraphicsItem
     /// </summary>
     public bool[] Adjacencies;
 
+    /// <summary>
+    /// Compares the adjacencies of this item to the adjacencies provided.
+    /// </summary>
+    /// <param name="adjacencies"></param>
+    /// <returns></returns>
     public (bool matches, int rotation) CompareAdjacencies(bool[] adjacencies)
     {
         // Check if the adjacencies match in any rotation
