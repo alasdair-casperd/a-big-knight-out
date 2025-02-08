@@ -17,8 +17,6 @@ public class EnemyManager : MonoBehaviour
     /// </summary>
     public List<Enemy> enemies;
 
-    bool isPlayerTurn;
-
     PlayerController player;
 
     GameManager gameManager;
@@ -51,7 +49,6 @@ public class EnemyManager : MonoBehaviour
     public void OnPlayerMove()
     {
 
-        isPlayerTurn = false;
         foreach (Enemy enemy in enemies)
         {
             enemy.OnPlayerMove();
@@ -65,7 +62,7 @@ public class EnemyManager : MonoBehaviour
     {
         Debug.Log(player.position);
         // Does all of the enemies's turns.
-        foreach (Enemy enemy in enemies)
+        foreach (Enemy enemy in enemies.ToList())
         {
             if (enemy.Position == player.position)
             {
@@ -81,7 +78,7 @@ public class EnemyManager : MonoBehaviour
         foreach (Enemy enemy in enemies)
         {
             enemy.OnEnemyTurn();
-            if (enemy.Position + PawnMove != player.position)
+            if (enemy.Position + PawnMove != player.position && squareManager.squares.ContainsKey(enemy.Position + PawnMove) && squareManager.squares[enemy.Position + PawnMove].IsPassable)
             {
                 enemy.MoveTo(enemy.Position + PawnMove, AnimationController.MovementType.Slide);
             }
@@ -100,7 +97,6 @@ public class EnemyManager : MonoBehaviour
     /// </summary>
     public void OnPlayerTurnStart()
     {
-        isPlayerTurn = true;
         foreach (Enemy enemy in enemies)
         {
             enemy.OnPlayerTurnStart();

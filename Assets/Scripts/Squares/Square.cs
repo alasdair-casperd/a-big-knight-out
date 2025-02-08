@@ -19,6 +19,7 @@ public abstract class Square : MonoBehaviour
     /// </summary>
     public Vector2Int Position { get; set; }
 
+
     /// <summary>
     /// The list of all of the squares that this square is linked to
     /// </summary>
@@ -67,6 +68,11 @@ public abstract class Square : MonoBehaviour
     /// Allows access to the player controller script.
     /// </summary>
     public PlayerController PlayerController { get; set; }
+
+    /// <summary>
+    /// Allows access to the list of enemies if required.
+    /// </summary>
+    public EnemyManager enemyManager { get; set; }
 
     /// <summary>
     /// Am attached indicator used to show where the player can move

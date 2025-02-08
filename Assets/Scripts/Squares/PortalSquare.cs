@@ -41,7 +41,7 @@ public class PortalSquare : Square
     /// </summary>
     public override void OnEnemyLand(Enemy enemy)
     {
-        // Attempt to move knight.
+        // Attempt to move Enemy
         enemy.MoveTo(Links[0].Position, AnimationController.MovementType.Teleport);
 
         // Plays portal sound effect

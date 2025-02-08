@@ -51,6 +51,7 @@ public class SquareManager : MonoBehaviour
         foreach (Square square in squares.Values)
         {
             square.PlayerController = player;
+            square.enemyManager = enemyManager;
             square.OnLevelStart();
         }
     }
@@ -124,10 +125,12 @@ public class SquareManager : MonoBehaviour
     /// </summary>
     public void OnLevelTurn()
     {
-
-        foreach (Enemy enemy in enemyManager.enemies)
+        foreach (Enemy enemy in enemyManager.enemies.ToList())
         {
+            Debug.Log(enemy.Position);
+            Debug.Log(squares[enemy.Position]);
             squares[enemy.Position].OnEnemyLand();
+            squares[enemy.Position].OnEnemyLand(enemy);
         }
         // Does all of the square's turns.
         foreach (Square square in squares.Values)

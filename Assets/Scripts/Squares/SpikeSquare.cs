@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Linq;
+using Unity.VisualScripting;
 
 /// <summary>
 /// A Spike square that is deadly to the player when active, controlled by an retraction
@@ -115,7 +116,7 @@ public class SpikeSquare : Square
     /// Just to check whether the player has landed on a spike
     /// tile and deserves to die.
     /// </summary>
-    public override void OnEnemyLand()
+    public override void OnEnemyLand(Enemy enemy)
     {
 
         // Check for death
@@ -127,8 +128,9 @@ public class SpikeSquare : Square
         {
             Debug.Log("Enemy dies");
             AudioManager.Play(AudioManager.SoundEffects.ouch);
+            enemyManager.enemies.Remove(enemy);
+            Destroy(enemy.gameObject);
         }
-
     }
 
     public override void OnLevelTurn()

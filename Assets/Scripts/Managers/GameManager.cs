@@ -144,7 +144,6 @@ public class GameManager : MonoBehaviour
 
     public void OnEnemyTurn()
     {
-        Debug.Log("here");
         squareManager.OnEnemyLeave();
         enemyManager.OnEnemyTurn();
         ActionQueue.QueueAction(OnLevelTurn);
