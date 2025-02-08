@@ -37,7 +37,13 @@ public class SquareManager : MonoBehaviour
         new Vector2Int(-1,2),
         new Vector2Int(-2,1),
         new Vector2Int(-1,-2),
-        new Vector2Int(-2,-1)
+        new Vector2Int(-2,-1),
+
+        // Enable for a fun time
+        // new Vector2Int(0, 1),
+        // new Vector2Int(0, -1),
+        // new Vector2Int(1, 0),
+        // new Vector2Int(-1, 0),
     };
 
 
