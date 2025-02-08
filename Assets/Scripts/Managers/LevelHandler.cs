@@ -111,6 +111,8 @@ public class LevelHandler : MonoBehaviour
         // Cancel if the player is at this position and the type is not a valid start position
         if (level.StartPosition == position && !type.IsValidStartPosition) return;
 
+        RemoveLinksToPosition(position);
+        
         // Update the level
         level.Tiles[position] = new Tile(type);
         if (level.MovingPlatforms.ContainsKey(position)) level.MovingPlatforms.Remove(position);
