@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Moving Platform
+  m_Name: Moving Platform Panels
   m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
   m_Parent: {fileID: 2100000, guid: 91a62e116c59d4590a0767c1ba622314, type: 2}
   m_ModifiedSerializedProperties: 0
@@ -28,8 +28,8 @@ Material:
     m_Ints: []
     m_Floats: []
     m_Colors:
-    - _BaseColor: {r: 0.7924528, g: 0.38646138, b: 0.22054112, a: 1}
-    - _Color: {r: 0.7924528, g: 0.38646135, b: 0.22054109, a: 1}
+    - _BaseColor: {r: 0.46226418, g: 0.32688248, b: 0.26820046, a: 1}
+    - _Color: {r: 0.46226412, g: 0.32688245, b: 0.26820043, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &1010971563322553133

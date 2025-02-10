@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Demo;
 
 /// <summary>
 /// A basic floor square which is always passable.

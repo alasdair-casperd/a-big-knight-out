@@ -25,6 +25,9 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private bool autoStart = true;
 
+    [SerializeField]
+    private UI.Slider restartPrompt;
+
     LevelBuilder levelBuilder;
     SquareManager squareManager;
     EnemyManager enemyManager;
@@ -94,7 +97,14 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Manage the action queue
         ActionQueue.Update();
+
+        // Listen for reset button
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Restart();
+        }
     }
 
     /// <summary>
@@ -102,8 +112,11 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void Restart()
     {
-        Clear();
-        Initialise();
+        ActionQueue.QueueAction(() => {
+          Clear();
+          Initialise();
+          SetRestartPrompt(false);
+        });
     }
 
     /// <summary>
@@ -175,5 +188,28 @@ public class GameManager : MonoBehaviour
     {
         enemyManager.OnPlayerTurnStart();
         squareManager.OnPlayerTurnStart();
+    }
+
+    /// <summary>
+    /// Kill the player and show a prompt to restart the level.
+    /// Should this be on the player controller?
+    /// </summary>
+    public void KillPlayer()
+    {
+        // TODO: Show a death animation
+        Debug.Log("Player has died");
+        SetRestartPrompt(true);
+    }
+
+    /// <summary>
+    /// Show or hide the restart prompt
+    /// </summary>
+    public void SetRestartPrompt(bool visible)
+    {
+        if (restartPrompt != null)
+        {
+            if (visible) restartPrompt.Show();
+            else restartPrompt.Dismiss();
+        }
     }
 }

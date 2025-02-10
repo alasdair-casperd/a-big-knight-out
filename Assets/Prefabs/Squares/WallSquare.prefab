@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9076987725282839998}
-  - component: {fileID: 3398556893516635564}
+  - component: {fileID: 6473578737885266886}
   m_Layer: 0
   m_Name: WallSquare
   m_TagString: Untagged
@@ -33,7 +33,7 @@ Transform:
   - {fileID: 4491491473029988137}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3398556893516635564
+--- !u!114 &6473578737885266886
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42,7 +42,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5962543618662339616}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: efafaef97289f354080b42106fbfa66c, type: 3}
+  m_Script: {fileID: 11500000, guid: 58e4d06017836459ca010da7cedf3ee9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   validMoveIndicator: {fileID: 0}
@@ -61,7 +61,7 @@ PrefabInstance:
     - target: {fileID: 5919291521467393160, guid: e51613cac843246799622ca4631a7e79, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 061f6db0bfc88b941960b39bba84d500, type: 2}
+      objectReference: {fileID: 2100000, guid: facb8d3755f8b48c481ea49c0bae122e, type: 2}
     - target: {fileID: 8458151629559711320, guid: e51613cac843246799622ca4631a7e79, type: 3}
       propertyPath: m_LocalScale.y
       value: 6.0222

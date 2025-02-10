@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.IO;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -9,6 +8,9 @@ using UnityEngine;
 public class TrackSquare : Square
 {
     public override TileType Type =>  TileType.Track;
+
+    [SerializeField]
+    private DynamicSquareGraphics dynamicSquareGraphics;
 
     [SerializeField]
     public GameObject stoppingPointIndicator;
@@ -108,6 +110,10 @@ public class TrackSquare : Square
 
     public override void UpdateGraphics()
     {
+        // Show the stopping point indicator if this square is a stopping point
         stoppingPointIndicator.SetActive(State == 0);
+
+        // Update the graphics based on the adjacent tracks
+        dynamicSquareGraphics.UpdateGraphics(AdjacentTracks);
     }
 }

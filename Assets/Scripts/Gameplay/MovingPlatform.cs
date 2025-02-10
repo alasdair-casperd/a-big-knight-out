@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+[RequireComponent(typeof(AnimationController))]
 public class MovingPlatform : MonoBehaviour
 {
     Vector2Int[] directions = { Vector2Int.up, Vector2Int.right, Vector2Int.down, Vector2Int.left };
@@ -20,7 +21,7 @@ public class MovingPlatform : MonoBehaviour
     {
         if(squares[Position].GetType() != typeof(TrackSquare))
         {
-            Debug.LogError("Moving Platform has ended up on a non-track tile at position "+ Position);
+            Debug.LogError("Moving Platform has ended up on a non-track tile at position " + Position);
             return;
         }
         TrackSquare trackSquare = (TrackSquare)squares[Position];
@@ -30,15 +31,17 @@ public class MovingPlatform : MonoBehaviour
         {
             totalDisplacement += step;
         }
-        //Temporary for testing!!! Alasdair do a nice animation here pls
+        
+        // Animate the movement of the platform)
+        GetComponent<AnimationController>().MoveAlongPath(PathUtilities.AbsolutePathFromRelativePath(path, Position).ToArray(), -1);
         transform.Translate(totalDisplacement.x,0,totalDisplacement.y);
         
+        // If the player is on the platform, move them along the path and animate
         if(player.position == Position)
         {
-            player.MoveTo(Position+totalDisplacement,AnimationController.MovementType.Slide);
+            player.MoveAlongPath(PathUtilities.AbsolutePathFromRelativePath(path, Position).ToArray());
         }
         
-
         Position += totalDisplacement;
         Direction = path.Last();
         // Gets the path from the square at its current position
