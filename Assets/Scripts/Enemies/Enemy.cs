@@ -23,7 +23,14 @@ public abstract class Enemy : MonoBehaviour
     /// </summary>
     public abstract EntityType Type { get; }
 
+    /// <summary>
+    /// The possible move of the enemy.
+    /// </summary>
+    public abstract Vector2Int[] EnemyMove { get; }
+
     public Vector2Int Position { get; set; }
+
+    public int Direction { get; set; }
 
     /// <summary>
     /// The graphics variant to use for this enemy.

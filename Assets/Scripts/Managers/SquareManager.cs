@@ -127,8 +127,6 @@ public class SquareManager : MonoBehaviour
     {
         foreach (Enemy enemy in enemyManager.enemies.ToList())
         {
-            Debug.Log(enemy.Position);
-            Debug.Log(squares[enemy.Position]);
             squares[enemy.Position].OnEnemyLand();
             squares[enemy.Position].OnEnemyLand(enemy);
         }

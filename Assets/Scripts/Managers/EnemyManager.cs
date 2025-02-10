@@ -60,7 +60,6 @@ public class EnemyManager : MonoBehaviour
     /// </summary>
     public void OnPlayerLand()
     {
-        Debug.Log(player.position);
         // Does all of the enemies's turns.
         foreach (Enemy enemy in enemies.ToList())
         {
@@ -78,9 +77,11 @@ public class EnemyManager : MonoBehaviour
         foreach (Enemy enemy in enemies)
         {
             enemy.OnEnemyTurn();
-            if (enemy.Position + PawnMove != player.position && squareManager.squares.ContainsKey(enemy.Position + PawnMove) && squareManager.squares[enemy.Position + PawnMove].IsPassable)
+            if (enemy.Position + enemy.EnemyMove[enemy.Direction] != player.position
+            && squareManager.squares.ContainsKey(enemy.Position + enemy.EnemyMove[enemy.Direction])
+            && squareManager.squares[enemy.Position + enemy.EnemyMove[enemy.Direction]].IsPassable)
             {
-                enemy.MoveTo(enemy.Position + PawnMove, AnimationController.MovementType.Slide);
+                enemy.MoveTo(enemy.Position + enemy.EnemyMove[enemy.Direction], AnimationController.MovementType.Slide);
             }
         }
     }
@@ -102,11 +103,6 @@ public class EnemyManager : MonoBehaviour
             enemy.OnPlayerTurnStart();
         }
     }
-
-    /// <summary>
-    /// The valid moves a pawn can make
-    /// </summary>
-    Vector2Int PawnMove = new Vector2Int(0, -1);
 
 
 }

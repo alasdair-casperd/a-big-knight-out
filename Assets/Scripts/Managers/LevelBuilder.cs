@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UI;
 using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -214,6 +215,9 @@ public class LevelBuilder : MonoBehaviour
 
             // Sets properties of the enemy
             currentEnemy.Position = position;
+
+            // Sets the rotation properties of the enemy
+            currentEnemy.Direction = entity.Direction;
 
             // Sets up the enemies's initial state
             if (currentEnemy.Type.IsMultiState)
