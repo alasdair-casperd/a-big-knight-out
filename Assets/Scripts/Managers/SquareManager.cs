@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using System.Xml.Serialization;
 using UnityEngine.UIElements;
+using Demo;
 
 /// <summary>
 /// A manager to handle the top level interaction with all of the levels squares.
@@ -46,7 +47,6 @@ public class SquareManager : MonoBehaviour
         // new Vector2Int(-1, 0),
     };
 
-
     public void Initialise(Dictionary<Vector2Int, Square> inputSquares, PlayerController player, EnemyManager enemyManager)
     {
         squares = inputSquares;
@@ -70,7 +70,7 @@ public class SquareManager : MonoBehaviour
     void Update()
     {
         // Handles player movement
-        if (Input.GetMouseButtonDown(0) && isPlayerTurn)
+        if (Input.GetMouseButtonDown(0) && isPlayerTurn && player.Alive)
         {
             Vector2Int mousePos = GridUtilities.GetMouseGridPos();
             if (GetValidMoves().Contains(mousePos))
@@ -159,17 +159,26 @@ public class SquareManager : MonoBehaviour
 
         // Add square highlights to valid moves
         HighlightSquares(GetValidMoves());
+
+        // Show the restart prompt if there are no valid moves
+        if (GetValidMoves().Count == 0)
+        {
+            gameManager.SetRestartPrompt(true);
+        }
     }
 
     public List<Vector2Int> GetValidMoves()
     {
         List<Vector2Int> moves = new List<Vector2Int>();
 
-        foreach (Vector2Int position in squares.Keys)
+        if (player.Alive)
         {
-            if (KnightMoves.Contains(position - player.position) && squares[position].IsPassable)
+            foreach (Vector2Int position in squares.Keys)
             {
-                moves.Add(position);
+                if (KnightMoves.Contains(position - player.position) && squares[position].IsPassable)
+                {
+                    moves.Add(position);
+                }
             }
         }
 

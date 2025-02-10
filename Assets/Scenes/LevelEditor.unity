@@ -3632,7 +3632,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39ffcb11c693d4761b4b80560de23b27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingLevelJSON: {fileID: 4900000, guid: 8d77eb31894cd4768b870a6e14bdedc0, type: 3}
+  startingLevelJSON: {fileID: 4900000, guid: ffa2384d6a3524e019c2ebf0570f8a89, type: 3}
   prefabs: {fileID: 11400000, guid: 27cc6ead7fb8f47748eb1582f6ec1a96, type: 2}
   SidebarTool: {fileID: 0}
   toolsSidebar: {fileID: 424798022}

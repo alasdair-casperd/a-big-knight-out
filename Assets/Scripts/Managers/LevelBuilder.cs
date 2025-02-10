@@ -33,6 +33,10 @@ public class LevelBuilder : MonoBehaviour
         // Instantiate the player
         PlayerController player = Instantiate(prefabs.Player, parent);
 
+        // Set properties
+        player.GameManager = GetComponent<GameManager>();
+        player.Alive = true;
+
         // Position the player
         player.SetInitialPosition(level.StartPosition);
 

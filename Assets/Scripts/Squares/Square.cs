@@ -19,7 +19,6 @@ public abstract class Square : MonoBehaviour
     /// </summary>
     public Vector2Int Position { get; set; }
 
-
     /// <summary>
     /// The list of all of the squares that this square is linked to
     /// </summary>

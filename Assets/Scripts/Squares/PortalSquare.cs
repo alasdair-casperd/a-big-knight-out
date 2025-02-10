@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Demo;
 
 /// <summary>
 /// A portal square which will link you to a another tile.

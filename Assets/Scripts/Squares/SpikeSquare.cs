@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Linq;
 using Unity.VisualScripting;
+using Demo;
 
 /// <summary>
 /// A Spike square that is deadly to the player when active, controlled by an retraction
@@ -99,14 +100,9 @@ public class SpikeSquare : Square
         // Play a sound effect
         AudioManager.Play(AudioManager.SoundEffects.thud);
 
-        // Check for death
-        if (spikesRetracted)
+        if (!spikesRetracted)
         {
-            Debug.Log("You have survived... for now");
-        }
-        else
-        {
-            Debug.Log("Player Dies");
+            PlayerController.Die();
             AudioManager.Play(AudioManager.SoundEffects.ouch);
         }
 
