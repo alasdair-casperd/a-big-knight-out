@@ -1,4 +1,5 @@
 using System.Linq;
+using NUnit.Framework;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -28,6 +29,11 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public bool Alive;
 
+    /// <summary>
+    /// Has the player moved since starting the level?
+    /// </summary>
+    public bool HasMoved;
+
     private void Start()
     {
         AnimationController = GetComponent<AnimationController>();
@@ -47,6 +53,9 @@ public class PlayerController : MonoBehaviour
     {
         // Update the player controller position
         position = to;
+
+        // Record that the player has moved
+        HasMoved = true;
 
         // Convert grid position to world position
         Vector3 endPosition = GridUtilities.GridToWorldPos(to);
@@ -86,6 +95,6 @@ public class PlayerController : MonoBehaviour
         Debug.Log("Player dies");
 
         // Show the restart prompt
-        GameManager.SetRestartPrompt(true);
+        if (GameManager.gameplayUIManager != null) GameManager.gameplayUIManager.SetRestartPrompt(true);
     }
 }

@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using Demo;
 
 [RequireComponent(typeof(SquareManager))]
 [RequireComponent(typeof(LevelBuilder))]
@@ -25,8 +26,15 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private bool autoStart = true;
 
-    [SerializeField]
-    private UI.Slider restartPrompt;
+    /// <summary>
+    /// The gameplay UI manager, if one is present (this will be null in the level editor, for example)
+    /// </summary>
+    public GameplayUIManager gameplayUIManager;
+
+    /// <summary>
+    /// Is all player input locked?
+    /// </summary>
+    public bool InputLocked = false;
 
     LevelBuilder levelBuilder;
     SquareManager squareManager;
@@ -88,7 +96,10 @@ public class GameManager : MonoBehaviour
         // Initialise electricity
         squareManager.InitialiseElectricity();
 
+        // Initialise enemies
         enemyManager.InitialiseEnemies(enemies);
+
+        InputLocked = false;
 
         // Start the player's turn
         squareManager.OnPlayerTurnStart();
@@ -111,12 +122,23 @@ public class GameManager : MonoBehaviour
     /// Restart the current level
     /// </summary>
     public void Restart()
-    {
-        ActionQueue.QueueAction(() => {
-          Clear();
-          Initialise();
-          SetRestartPrompt(false);
-        });
+    {   
+        if (player.HasMoved && !InputLocked)
+        {
+            InputLocked = true;
+            ActionQueue.QueueAction(() => {
+
+                void action()
+                {
+                    Clear();
+                    Initialise();
+                    gameplayUIManager.SetRestartPrompt(false);
+                }
+
+                if (gameplayUIManager != null) gameplayUIManager.FadeThroughAction(action);
+                else action();
+            });
+        }
     }
 
     /// <summary>
@@ -188,28 +210,5 @@ public class GameManager : MonoBehaviour
     {
         enemyManager.OnPlayerTurnStart();
         squareManager.OnPlayerTurnStart();
-    }
-
-    /// <summary>
-    /// Kill the player and show a prompt to restart the level.
-    /// Should this be on the player controller?
-    /// </summary>
-    public void KillPlayer()
-    {
-        // TODO: Show a death animation
-        Debug.Log("Player has died");
-        SetRestartPrompt(true);
-    }
-
-    /// <summary>
-    /// Show or hide the restart prompt
-    /// </summary>
-    public void SetRestartPrompt(bool visible)
-    {
-        if (restartPrompt != null)
-        {
-            if (visible) restartPrompt.Show();
-            else restartPrompt.Dismiss();
-        }
     }
 }

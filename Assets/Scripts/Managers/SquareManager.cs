@@ -70,7 +70,7 @@ public class SquareManager : MonoBehaviour
     void Update()
     {
         // Handles player movement
-        if (Input.GetMouseButtonDown(0) && isPlayerTurn && player.Alive)
+        if (Input.GetMouseButtonDown(0) && isPlayerTurn && player.Alive && !gameManager.InputLocked)
         {
             Vector2Int mousePos = GridUtilities.GetMouseGridPos();
             if (GetValidMoves().Contains(mousePos))
@@ -159,9 +159,9 @@ public class SquareManager : MonoBehaviour
         HighlightSquares(GetValidMoves());
 
         // Show the restart prompt if there are no valid moves
-        if (GetValidMoves().Count == 0)
+        if (GetValidMoves().Count == 0 && gameManager.gameplayUIManager != null)
         {
-            gameManager.SetRestartPrompt(true);
+            gameManager.gameplayUIManager.SetRestartPrompt(true);
         }
     }
 
