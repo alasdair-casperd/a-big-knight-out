@@ -17,7 +17,7 @@ public class MovingPlatform : MonoBehaviour
         Direction = directions[direction];
     }
 
-    public void MovePlatform(Dictionary<Vector2Int,Square> squares, PlayerController player)
+    public void MovePlatform(Dictionary<Vector2Int,Square> squares, PlayerController player, List<Enemy> enemies)
     {
         if(squares[Position].GetType() != typeof(TrackSquare))
         {
@@ -42,12 +42,16 @@ public class MovingPlatform : MonoBehaviour
             player.MoveAlongPath(PathUtilities.AbsolutePathFromRelativePath(path, Position).ToArray());
         }
         
+        foreach(Enemy enemy in enemies)
+        {
+            if(enemy.Position == Position)
+            {
+                enemy.MoveAlongPath(PathUtilities.AbsolutePathFromRelativePath(path,Position).ToArray());
+            }
+        }
+        
         Position += totalDisplacement;
         Direction = path.Last();
-        // Gets the path from the square at its current position
-        // Moves it along this path
-        // updates its direction
-        // Do some validation to make sure two platforms haven't crashed???
     }
 
 }

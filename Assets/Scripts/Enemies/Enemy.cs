@@ -1,4 +1,6 @@
 using UnityEngine;
+using System.Linq;
+using NUnit.Framework;
 
 [RequireComponent(typeof(AnimationController))]
 public abstract class Enemy : MonoBehaviour
@@ -90,6 +92,15 @@ public abstract class Enemy : MonoBehaviour
                 AnimationController.TeleportTo(endPosition, duration);
                 break;
         }
+    }
+
+    public void MoveAlongPath(Vector2Int[] path, float duration = -1)
+    {
+        // Update the player controller position
+        if (path.Length > 0) Position = path.Last();
+
+        // Animate
+        AnimationController.MoveAlongPath(path, duration);
     }
 
     /// <summary>

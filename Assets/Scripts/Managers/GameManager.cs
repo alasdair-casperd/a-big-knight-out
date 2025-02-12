@@ -194,7 +194,7 @@ public class GameManager : MonoBehaviour
 
         foreach (var platform in movingPlatforms)
         {
-            platform.MovePlatform(squareManager.squares, player);
+            platform.MovePlatform(squareManager.squares, player,enemyManager.enemies);
         }
 
 
