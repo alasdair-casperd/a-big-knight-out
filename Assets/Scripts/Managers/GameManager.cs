@@ -133,7 +133,7 @@ public class GameManager : MonoBehaviour
                 {
                     Clear();
                     Initialise();
-                    gameplayUIManager.SetRestartPrompt(false);
+                    if (gameplayUIManager != null) gameplayUIManager.SetRestartPrompt(false);
                 }
 
                 if (gameplayUIManager != null) gameplayUIManager.FadeThroughAction(action);
