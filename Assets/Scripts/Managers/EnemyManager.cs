@@ -82,7 +82,6 @@ public class EnemyManager : MonoBehaviour
         // Does all of the enemies's turns.
         foreach (Enemy enemy in enemies)
         {
-            Debug.Log("here");
             enemy.OnEnemyTurn();
             if (enemy.Position != enemy.NextSquare)
             {
