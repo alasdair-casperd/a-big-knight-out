@@ -16,6 +16,7 @@ public class FallingFloorSquareGraphics : MonoBehaviour
 
     private void Start()
     {
+        transform.eulerAngles += new Vector3(0, Random.Range(0, 4) * 90, 0);
         RotateFragments(initialAngle, 0);
     }
 
