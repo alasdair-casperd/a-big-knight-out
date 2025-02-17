@@ -122,11 +122,12 @@ public class GameManager : MonoBehaviour
     /// Restart the current level
     /// </summary>
     public void Restart()
-    {   
+    {
         if (player.HasMoved && !InputLocked)
         {
             InputLocked = true;
-            ActionQueue.QueueAction(() => {
+            ActionQueue.QueueAction(() =>
+            {
 
                 void action()
                 {
@@ -194,7 +195,7 @@ public class GameManager : MonoBehaviour
 
         foreach (var platform in movingPlatforms)
         {
-            platform.MovePlatform(squareManager.squares, player,enemyManager.enemies);
+            platform.MovePlatform(squareManager.squares, player, enemyManager.enemies);
         }
 
 

@@ -232,6 +232,7 @@ public class LevelBuilder : MonoBehaviour
             // Sets up the enemies's graphics variant
             currentEnemy.GraphicsVariant = graphicsVariant;
 
+
             // Store the enemy in the list of created enemies
             enemies.Add(currentEnemy);
         }

@@ -11,8 +11,13 @@ public class Bishop : Enemy
     {
         get
         {
-            return new Vector2Int[] { new Vector2Int(0, 1), new Vector2Int(1, 0), new Vector2Int(0, -1), new Vector2Int(-1, 0), };
+            return new Vector2Int[] { new Vector2Int(1, 1), new Vector2Int(1, -1), new Vector2Int(-1, -1), new Vector2Int(-1, 1), };
         }
     }
     public override int GraphicsVariant { get; set; }
+
+    public override void OnEnemyTurn()
+    {
+
+    }
 }

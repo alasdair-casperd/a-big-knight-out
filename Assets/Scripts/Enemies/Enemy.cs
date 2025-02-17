@@ -32,6 +32,11 @@ public abstract class Enemy : MonoBehaviour
 
     public Vector2Int Position { get; set; }
 
+    /// <summary>
+    /// The next square the enemy will move to.
+    /// </summary>
+    public Vector2Int NextSquare { get; set; }
+
     public int Direction { get; set; }
 
     /// <summary>

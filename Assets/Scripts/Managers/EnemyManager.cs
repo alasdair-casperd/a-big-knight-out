@@ -32,6 +32,7 @@ public class EnemyManager : MonoBehaviour
         foreach (Enemy enemy in enemies)
         {
             enemy.PlayerController = player;
+            enemy.SquareManager = squareManager;
             enemy.OnLevelStart();
         }
     }
@@ -41,6 +42,11 @@ public class EnemyManager : MonoBehaviour
         gameManager = GetComponent<GameManager>();
         this.player = player;
         squareManager = GetComponent<SquareManager>();
+
+        foreach (Enemy enemy in enemies)
+        {
+            enemy.PlayerController = player;
+        }
     }
 
     /// <summary>
@@ -76,12 +82,11 @@ public class EnemyManager : MonoBehaviour
         // Does all of the enemies's turns.
         foreach (Enemy enemy in enemies)
         {
+            Debug.Log("here");
             enemy.OnEnemyTurn();
-            if (enemy.Position + enemy.EnemyMove[enemy.Direction] != player.position
-            && squareManager.squares.ContainsKey(enemy.Position + enemy.EnemyMove[enemy.Direction])
-            && squareManager.squares[enemy.Position + enemy.EnemyMove[enemy.Direction]].IsPassable)
+            if (enemy.Position != enemy.NextSquare)
             {
-                enemy.MoveTo(enemy.Position + enemy.EnemyMove[enemy.Direction], AnimationController.MovementType.Slide);
+                enemy.MoveTo(enemy.NextSquare, AnimationController.MovementType.Slide);
             }
         }
     }

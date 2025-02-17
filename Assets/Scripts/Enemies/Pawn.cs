@@ -1,4 +1,5 @@
 using System;
+using Demo;
 using UnityEngine;
 
 public class Pawn : Enemy
@@ -37,14 +38,7 @@ public class Pawn : Enemy
 
     public override void OnEnemyTurn()
     {
-        if (PlayerController.position == Position + CapturePairs[Direction, 0] || PlayerController.position == Position + CapturePairs[Direction, 1])
-        {
-            Debug.Log("Player has been captured by a naughty pawn");
-        }
-        else if (PlayerController.position == Position + EnemyMove[Direction])
-        {
-            Debug.Log("Pawn blocked by the player");
-        }
+        CalculateNextSquare();
     }
 
     public override void OnLevelTurn()
@@ -55,5 +49,25 @@ public class Pawn : Enemy
     public override void OnPlayerLand()
     {
 
+    }
+
+    public void CalculateNextSquare()
+    {
+        if (PlayerController.position == Position + CapturePairs[Direction, 0] || PlayerController.position == Position + CapturePairs[Direction, 1])
+        {
+            NextSquare = PlayerController.position;
+            PlayerController.Die();
+
+        }
+        else if (Position + EnemyMove[Direction] != PlayerController.position
+            && SquareManager.squares.ContainsKey(Position + EnemyMove[Direction])
+            && SquareManager.squares[Position + EnemyMove[Direction]].IsPassable)
+        {
+            NextSquare = Position + EnemyMove[Direction];
+        }
+        else
+        {
+            NextSquare = Position;
+        }
     }
 }
