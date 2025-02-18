@@ -25,6 +25,7 @@ public class Bishop : Enemy
     public void CalculateNextSquare()
     {
         int oppositeDirection;
+        bool shouldCapture = false;
 
         if (Direction + 2 < 4)
         {
@@ -35,18 +36,29 @@ public class Bishop : Enemy
             oppositeDirection = Direction - 2;
         }
 
-        if (CheckNextSquareCapture(Position, Direction) || CheckNextSquareCapture(Position, oppositeDirection))
+        for (int i = 0; i < 4; i++)
+        {
+            shouldCapture = CheckNextSquareCapture(Position, i);
+            if (shouldCapture)
+            {
+                break;
+            }
+        }
+
+        if (shouldCapture)
         {
             NextSquare = PlayerController.position;
             PlayerController.Die();
         }
         else if (SquareManager.squares.ContainsKey(Position + EnemyMove[Direction])
-            && SquareManager.squares[Position + EnemyMove[Direction]].IsPassable)
+            && SquareManager.squares[Position + EnemyMove[Direction]].IsPassable
+            && !CheckSquareForEnemy(Position + EnemyMove[Direction]))
         {
             NextSquare = Position + EnemyMove[Direction];
         }
         else if (SquareManager.squares.ContainsKey(Position + EnemyMove[oppositeDirection])
-            && SquareManager.squares[Position + EnemyMove[oppositeDirection]].IsPassable)
+            && SquareManager.squares[Position + EnemyMove[oppositeDirection]].IsPassable
+            && !CheckSquareForEnemy(Position + EnemyMove[Direction]))
         {
             Direction = oppositeDirection;
             NextSquare = Position + EnemyMove[Direction];
@@ -61,7 +73,8 @@ public class Bishop : Enemy
     public bool CheckNextSquareCapture(Vector2Int startSquare, int captureDirection)
     {
         if (SquareManager.squares.ContainsKey(startSquare + EnemyMove[captureDirection])
-            && SquareManager.squares[startSquare + EnemyMove[captureDirection]].IsPassable)
+            && SquareManager.squares[startSquare + EnemyMove[captureDirection]].IsPassable
+            && !CheckSquareForEnemy(startSquare + EnemyMove[captureDirection]))
         {
             if (startSquare + EnemyMove[captureDirection] == PlayerController.position)
             {

@@ -11,6 +11,11 @@ public abstract class Enemy : MonoBehaviour
     public SquareManager SquareManager;
 
     /// <summary>
+    /// The current enemy manager.
+    /// </summary>
+    public EnemyManager EnemyManager;
+
+    /// <summary>
     /// The attached animation controller
     /// </summary> 
     private AnimationController AnimationController;
@@ -137,4 +142,22 @@ public abstract class Enemy : MonoBehaviour
     /// The actions to be performed at the start of the Level's turn
     /// </summary>
     public virtual void OnLevelTurn() { }
+
+    /// <summary>
+    /// Checks if there is an enemy on a given square.
+    /// </summary>
+    /// <param name="square">The square you are checking.</param>
+    /// <returns></returns>
+    public bool CheckSquareForEnemy(Vector2Int square)
+    {
+        foreach (Enemy enemy in EnemyManager.enemies)
+        {
+            if (enemy.Position == square)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

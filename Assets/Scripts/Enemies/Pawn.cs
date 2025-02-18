@@ -61,7 +61,8 @@ public class Pawn : Enemy
         }
         else if (Position + EnemyMove[Direction] != PlayerController.position
             && SquareManager.squares.ContainsKey(Position + EnemyMove[Direction])
-            && SquareManager.squares[Position + EnemyMove[Direction]].IsPassable)
+            && SquareManager.squares[Position + EnemyMove[Direction]].IsPassable
+            && !CheckSquareForEnemy(Position + EnemyMove[Direction]))
         {
             NextSquare = Position + EnemyMove[Direction];
         }

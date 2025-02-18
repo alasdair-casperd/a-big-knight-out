@@ -33,6 +33,7 @@ public class EnemyManager : MonoBehaviour
         {
             enemy.PlayerController = player;
             enemy.SquareManager = squareManager;
+            enemy.EnemyManager = this;
             enemy.OnLevelStart();
         }
     }
