@@ -61,7 +61,7 @@ public class SpikeSquare : Square
     /// <summary>
     /// Have the spike graphics retracted (or at least started the animation)?
     /// </summary>
-    private bool graphicsRetracted;
+    private bool? graphicsRetracted;
 
     // Is always passable but spikes will kill you.
     public override bool IsPassable

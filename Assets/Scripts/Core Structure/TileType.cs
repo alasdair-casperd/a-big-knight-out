@@ -174,6 +174,15 @@ public struct TileType
         isConductor: false
     );
 
+    public static TileType Barricade = new
+    (
+        id: 7,
+        displayName: "Barricade",
+        validStates: new() {0,1},
+        validLinkTargetIDs: new(),
+        isConductor: true
+    );
+
     public static TileType Finish = new
     (
         id: 8,
@@ -188,7 +197,7 @@ public struct TileType
         id: 9,
         displayName: "Colour Flip Tile",
         validStates: new() { 0, 1},
-        validLinkTargetIDs: new() { 5, 11, 12, 13, 14},
+        validLinkTargetIDs: new() { 5, 7, 11, 12, 13, 14},
         isValidStartPosition: true,
         isConductor: true
     );
@@ -198,7 +207,7 @@ public struct TileType
         id: 10,
         displayName: "Button",
         validStates: new(),
-        validLinkTargetIDs: new() { 5, 11, 12, 13, 14 },
+        validLinkTargetIDs: new() { 5, 7, 11, 12, 13, 14 },
         isConductor: true
     );
 
@@ -207,7 +216,7 @@ public struct TileType
         id: 11,
         displayName: "Switch",
         validStates: new() { 0, 1 },
-        validLinkTargetIDs: new() { 5, 11, 12, 13, 14 },
+        validLinkTargetIDs: new() { 5, 7, 11, 12, 13, 14 },
         isConductor: true
     );
 
@@ -216,7 +225,7 @@ public struct TileType
         id: 12,
         displayName: "AND Gate",
         validStates: new(),
-        validLinkTargetIDs: new() { 5, 11, 12, 13, 14 },
+        validLinkTargetIDs: new() { 5, 7, 11, 12, 13, 14 },
         isConductor: true
     );
 
@@ -225,7 +234,7 @@ public struct TileType
         id: 13,
         displayName: "OR Gate",
         validStates: new(),
-        validLinkTargetIDs: new() { 5, 11, 12, 13, 14 },
+        validLinkTargetIDs: new() { 5, 7, 11, 12, 13, 14 },
         isConductor: true
     );
 
@@ -238,8 +247,6 @@ public struct TileType
         isConductor: true
     );
 
-    // ^^ Please add IDs 6 and 7 (formerly spike up and spike down) before using 15, 16 etc. tysm
-
     // A list of all the tile types
     public static readonly TileType[] All =
     {
@@ -248,6 +255,8 @@ public struct TileType
         FallingFloor,
         Portal,
         Spikes,
+        Track,
+        Barricade,
         ColourFlip,
         Finish,
         Button,
@@ -255,7 +264,6 @@ public struct TileType
         AndGate,
         OrGate,
         NotGate,
-        Track
     };
 
     /*
