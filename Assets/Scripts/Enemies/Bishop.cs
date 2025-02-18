@@ -58,7 +58,7 @@ public class Bishop : Enemy
         }
         else if (SquareManager.squares.ContainsKey(Position + EnemyMove[oppositeDirection])
             && SquareManager.squares[Position + EnemyMove[oppositeDirection]].IsPassable
-            && !CheckSquareForEnemy(Position + EnemyMove[Direction]))
+            && !CheckSquareForEnemy(Position + EnemyMove[oppositeDirection]))
         {
             Direction = oppositeDirection;
             NextSquare = Position + EnemyMove[Direction];
