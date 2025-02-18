@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 /// <summary>
 /// A square that after you land on, will disappear.
@@ -28,7 +29,7 @@ public class FallingFloorSquare : Square
     private bool hasFallen;
 
     [Header("Graphics")]
-    public GameObject Graphics;
+    public FallingFloorSquareGraphics Graphics;
 
     public float FallHeight = 3;
 
@@ -38,9 +39,12 @@ public class FallingFloorSquare : Square
     /// When the platform lands
     /// </summary>
     public override void OnPlayerLand()
-    {
+    {   
         // Play a sound effect
         AudioManager.Play(AudioManager.SoundEffects.thud);
+
+        // Show a subtle crack animation
+        Graphics.Crack();
     }
 
 
@@ -49,22 +53,7 @@ public class FallingFloorSquare : Square
     /// </summary>
     public override void OnPlayerLeave()
     {
-        // Sets the state ready to fall when the player leaves.
-        hasFallen = true;
-
-        // Fall away
-        Vector3 initialPosition = transform.position;
-        Vector3 initialScale = transform.localScale;
-        LeanTween.value(Graphics, 0, 1, FallDuration)
-            .setOnUpdate(t =>
-            {
-                transform.position = initialPosition - Vector3.up * FallHeight * t;
-                transform.localScale = initialScale * (1 - t);
-            })
-            .setOnComplete(() => Destroy(Graphics));
-
-        // Play a sound effect
-        AudioManager.Play(AudioManager.SoundEffects.fallingPlatform);
+        Fall();
     }
 
     /// <summary>
@@ -72,19 +61,19 @@ public class FallingFloorSquare : Square
     /// </summary>
     public override void OnEnemyLeave()
     {
+        Fall();
+    }
+
+    /// <summary>
+    /// Fall away and become impassable.
+    /// </summary>
+    private void Fall()
+    {
         // Sets the state ready to fall when the player leaves.
         hasFallen = true;
 
         // Fall away
-        Vector3 initialPosition = transform.position;
-        Vector3 initialScale = transform.localScale;
-        LeanTween.value(Graphics, 0, 1, FallDuration)
-            .setOnUpdate(t =>
-            {
-                transform.position = initialPosition - Vector3.up * FallHeight * t;
-                transform.localScale = initialScale * (1 - t);
-            })
-            .setOnComplete(() => Destroy(Graphics));
+        Graphics.Fall();
 
         // Play a sound effect
         AudioManager.Play(AudioManager.SoundEffects.fallingPlatform);
