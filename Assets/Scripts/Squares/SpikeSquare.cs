@@ -150,6 +150,9 @@ public class SpikeSquare : Square
 
     public void UpdateSpikes()
     {
+        // Store the previous state of the spikes
+        bool previousSpikesRetracted = spikesRetracted;
+
         // Read the current state of the spikes from the retraction pattern
         spikesRetracted = !retractionPattern[turnCounter % retractionPattern.Length];
 
@@ -157,6 +160,14 @@ public class SpikeSquare : Square
         if (IsReceivingCharge)
         {
             spikesRetracted = !spikesRetracted;
+        }
+
+        // If the player is on the square and the spikes activate, kill it
+        // TODO: Implement this for enemies
+        if (!spikesRetracted && PlayerController.position == Position && previousSpikesRetracted != spikesRetracted)
+        {
+            AudioManager.Play(AudioManager.SoundEffects.ouch);
+            PlayerController.Die();
         }
 
         UpdateGraphics();
