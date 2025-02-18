@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Rook : Enemy
@@ -16,6 +17,16 @@ public class Rook : Enemy
     }
     public override int GraphicsVariant { get; set; }
 
+    public override void OnLevelStart()
+    {
+        SetCaptureSquares();
+    }
+
+    public override void OnPlayerTurnStart()
+    {
+        SetCaptureSquares();
+    }
+
     public override void OnEnemyTurn()
     {
         CalculateNextSquare();
@@ -24,7 +35,6 @@ public class Rook : Enemy
     public void CalculateNextSquare()
     {
         int oppositeDirection;
-        bool shouldCapture = false;
 
         if (Direction + 2 < 4)
         {
@@ -35,16 +45,7 @@ public class Rook : Enemy
             oppositeDirection = Direction - 2;
         }
 
-        for (int i = 0; i < 4; i++)
-        {
-            shouldCapture = CheckNextSquareCapture(Position, i);
-            if (shouldCapture)
-            {
-                break;
-            }
-        }
-
-        if (shouldCapture)
+        if (CaptureSquares.Contains(PlayerController.position))
         {
             NextSquare = PlayerController.position;
             PlayerController.Die();
@@ -69,21 +70,23 @@ public class Rook : Enemy
 
     }
 
-    public bool CheckNextSquareCapture(Vector2Int startSquare, int captureDirection)
+    public void CheckNextSquareCapture(Vector2Int startSquare, int captureDirection)
     {
         if (SquareManager.squares.ContainsKey(startSquare + EnemyMove[captureDirection])
             && SquareManager.squares[startSquare + EnemyMove[captureDirection]].IsPassable
             && !CheckSquareForEnemy(startSquare + EnemyMove[captureDirection]))
         {
-            if (startSquare + EnemyMove[captureDirection] == PlayerController.position)
-            {
-                return true;
-            }
-            else
-            {
-                return CheckNextSquareCapture(startSquare + EnemyMove[captureDirection], captureDirection);
-            }
+            CaptureSquares.Add(startSquare + EnemyMove[captureDirection]);
+            CheckNextSquareCapture(startSquare + EnemyMove[captureDirection], captureDirection);
         }
-        return false;
+    }
+
+    public override void SetCaptureSquares()
+    {
+        CaptureSquares = new List<Vector2Int>();
+        for (int i = 0; i < 4; i++)
+        {
+            CheckNextSquareCapture(Position, i);
+        }
     }
 }

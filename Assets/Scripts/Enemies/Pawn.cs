@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using Demo;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Pawn : Enemy
@@ -8,6 +10,8 @@ public class Pawn : Enemy
     /// The type of entity.
     /// </summary>
     public override EntityType Type => EntityType.Pawn;
+
+
 
     /// <summary>
     /// The move of the pawn.
@@ -36,6 +40,16 @@ public class Pawn : Enemy
     /// </summary>
     public override int GraphicsVariant { get; set; }
 
+    public override void OnPlayerTurnStart()
+    {
+        SetCaptureSquares();
+    }
+
+    public override void OnLevelStart()
+    {
+        SetCaptureSquares();
+    }
+
     public override void OnEnemyTurn()
     {
         CalculateNextSquare();
@@ -53,7 +67,7 @@ public class Pawn : Enemy
 
     public void CalculateNextSquare()
     {
-        if (PlayerController.position == Position + CapturePairs[Direction, 0] || PlayerController.position == Position + CapturePairs[Direction, 1])
+        if (CaptureSquares.Contains(PlayerController.position))
         {
             NextSquare = PlayerController.position;
             PlayerController.Die();
@@ -70,5 +84,14 @@ public class Pawn : Enemy
         {
             NextSquare = Position;
         }
+    }
+
+    public override void SetCaptureSquares()
+    {
+        CaptureSquares = new List<Vector2Int>
+        {
+            Position + CapturePairs[Direction, 0],
+            Position + CapturePairs[Direction, 1]
+        };
     }
 }

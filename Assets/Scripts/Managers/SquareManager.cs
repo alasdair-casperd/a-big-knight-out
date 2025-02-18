@@ -158,6 +158,16 @@ public class SquareManager : MonoBehaviour
         // Add square highlights to valid moves
         HighlightSquares(GetValidMoves());
 
+        // Add enemy capture hightlights to danger squares
+        List<Vector2Int> totalCaptureList = new List<Vector2Int>();
+
+        foreach (Enemy enemy in enemyManager.enemies)
+        {
+            totalCaptureList.AddRange(enemy.CaptureSquares);
+        }
+
+        HighlightEnemyCaptureSquares(totalCaptureList);
+
         // Show the restart prompt if there are no valid moves
         if (GetValidMoves().Count == 0 && gameManager.gameplayUIManager != null)
         {
@@ -208,6 +218,19 @@ public class SquareManager : MonoBehaviour
                 square.OnChargeChanged();
                 square.UpdateOutgoingCharge();
             }
+        }
+    }
+
+    /// <summary>
+    /// Highlight squares at a given set of Vector2Int coordinates
+    /// </summary>
+    /// <param name="coordinatesToHighlight">The set of coordinates to highlight</param>
+    public void HighlightEnemyCaptureSquares(List<Vector2Int> coordinatesToHighlight)
+    {
+
+        foreach (var (coordinate, square) in squares)
+        {
+            square.IndicateEnemyCapture(coordinatesToHighlight.Contains(coordinate));
         }
     }
 }

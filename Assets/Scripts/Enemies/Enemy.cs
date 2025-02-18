@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Linq;
 using NUnit.Framework;
+using System.Collections.Generic;
 
 [RequireComponent(typeof(AnimationController))]
 public abstract class Enemy : MonoBehaviour
@@ -34,6 +35,12 @@ public abstract class Enemy : MonoBehaviour
     /// The possible move of the enemy.
     /// </summary>
     public abstract Vector2Int[] EnemyMove { get; }
+
+
+    /// <summary>
+    /// Squares on which captures are possible
+    /// </summary>
+    public List<Vector2Int> CaptureSquares { get; set; }
 
     public Vector2Int Position { get; set; }
 
@@ -142,6 +149,11 @@ public abstract class Enemy : MonoBehaviour
     /// The actions to be performed at the start of the Level's turn
     /// </summary>
     public virtual void OnLevelTurn() { }
+
+    /// <summary>
+    /// Sets the list of squares where a capture can take place.
+    /// </summary>
+    public virtual void SetCaptureSquares() { }
 
     /// <summary>
     /// Checks if there is an enemy on a given square.

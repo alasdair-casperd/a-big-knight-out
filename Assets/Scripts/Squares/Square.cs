@@ -74,10 +74,16 @@ public abstract class Square : MonoBehaviour
     public EnemyManager enemyManager { get; set; }
 
     /// <summary>
-    /// Am attached indicator used to show where the player can move
+    /// An attached indicator used to show where the player can move
     /// </summary>
     [HideInInspector]
     public UI.ValidMoveIndicator validMoveIndicator;
+
+    /// <summary>
+    /// An attached indicator used to show where the player can move
+    /// </summary>
+    [HideInInspector]
+    public UI.EnemyCaptureIndicator enemyCaptureIndicator;
 
     /// <summary>
     /// Show whether or not this square constitutes a valid move for the player
@@ -87,6 +93,19 @@ public abstract class Square : MonoBehaviour
     {
         if (isValid) validMoveIndicator.Show();
         else validMoveIndicator.Hide();
+    }
+
+    /// <summary>
+    /// Show whether or not this square constitutes a valid move for the player
+    /// </summary>
+    /// <param name="isValid">Can the player move to this square?</param>
+    public virtual void IndicateEnemyCapture(bool isValid)
+    {
+        // if (isValid) enemyCaptureIndicator.Show();
+        // else enemyCaptureIndicator.Hide();
+
+        if (isValid) enemyCaptureIndicator.Show();
+        else enemyCaptureIndicator.Hide();
     }
 
     /// <summary>

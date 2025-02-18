@@ -102,7 +102,9 @@ public class GameManager : MonoBehaviour
         InputLocked = false;
 
         // Start the player's turn
+        enemyManager.OnPlayerTurnStart();
         squareManager.OnPlayerTurnStart();
+
     }
 
     // Update is called once per frame

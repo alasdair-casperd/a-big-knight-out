@@ -90,6 +90,8 @@ public class LevelBuilder : MonoBehaviour
             currentSquare.Position = position;
             currentSquare.validMoveIndicator = Instantiate(prefabs.validMoveIndicator, currentSquareObject.transform);
             currentSquare.validMoveIndicator.gameObject.SetActive(false);
+            currentSquare.enemyCaptureIndicator = Instantiate(prefabs.enemyCaptureIndicator, currentSquareObject.transform);
+            currentSquare.enemyCaptureIndicator.gameObject.SetActive(false);
             currentSquare.IncomingCharges = new Dictionary<Square, bool?>();
 
             // Sets up the square's initial state
