@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using Demo;
 
 /// <summary>
 /// A square containing a switch that can trigger events via links, and is tog
@@ -70,9 +71,14 @@ public class ButtonSquare : Square
             }
         }
 
-        if (currentEnemy && currentEnemy != enemyOnButton)
+        if (currentEnemy)
         {
             IsPressed = true;
+            if (currentEnemy != enemyOnButton)
+            {
+                // Play a click sound effect if new enemy lands
+                AudioManager.Play(AudioManager.SoundEffects.click);
+            }
             foreach (Enemy enemy in enemyManager.enemies)
             {
                 if (enemy.Position == Position)
@@ -82,9 +88,15 @@ public class ButtonSquare : Square
                 }
             }
 
-            // Play a click sound effect
-            AudioManager.Play(AudioManager.SoundEffects.click);
         }
+    }
+
+    public override void OnPlayerLeave()
+    {
+        IsPressed = false;
+
+        // Play a click sound effect
+        AudioManager.Play(AudioManager.SoundEffects.click);
     }
 
     public override void OnLevelTurn()
@@ -101,12 +113,12 @@ public class ButtonSquare : Square
 
 
 
-        if (!hasEnemyOn && enemyOnButton)
+        if (!hasEnemyOn && enemyOnButton && PlayerController.position != Position)
         {
-            IsPressed = false;
 
             // Play a click sound effect
             AudioManager.Play(AudioManager.SoundEffects.click);
+            IsPressed = false;
             enemyOnButton = null;
         }
 
