@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEngine.Rendering;
 
 /// <summary>
 /// A square containing a switch that can be toggled on or off
@@ -13,6 +14,8 @@ public class SwitchSquare : Square
     public GameObject offGraphics;
 
     public override TileType Type => TileType.Switch;
+
+    private Enemy enemyOnSwitch;
 
     // Will always report as passable, if you try to change that you get a warning.
     public override bool IsPassable
@@ -50,6 +53,23 @@ public class SwitchSquare : Square
         return IsOn;
     }
 
+    public override void OnLevelTurn()
+    {
+        bool hasEnemyOn = false;
+        foreach (Enemy enemy in enemyManager.enemies)
+        {
+            if (enemy.Position == Position)
+            {
+                hasEnemyOn = true;
+            }
+        }
+
+        if (!hasEnemyOn)
+        {
+            enemyOnSwitch = null;
+        }
+    }
+
     // Toggle the switch on player land
     public override void OnPlayerLand()
     {
@@ -63,12 +83,36 @@ public class SwitchSquare : Square
     // Toggle the switch on player land
     public override void OnEnemyLand()
     {
-        IsOn = !IsOn;
-        UpdateGraphics();
+        Enemy currentEnemy = null;
+        foreach (Enemy enemy in enemyManager.enemies)
+        {
+            if (enemy.Position == Position)
+            {
+                currentEnemy = enemy;
+                break;
+            }
+        }
 
-        // Play a click sound effect
-        AudioManager.Play(AudioManager.SoundEffects.click);
+
+        if (currentEnemy && currentEnemy != enemyOnSwitch)
+        {
+
+            IsOn = !IsOn;
+            UpdateGraphics();
+            foreach (Enemy enemy in enemyManager.enemies)
+            {
+                if (enemy.Position == Position)
+                {
+                    enemyOnSwitch = enemy;
+                    break;
+                }
+            }
+
+            // Play a click sound effect
+            AudioManager.Play(AudioManager.SoundEffects.click);
+        }
     }
+
 
     // Update visuals according to the state of the switch
     public override void UpdateGraphics()
