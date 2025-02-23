@@ -9,6 +9,8 @@ public class ButtonSquare : Square
 {
     public override TileType Type => TileType.Button;
 
+    private Enemy enemyOnButton;
+
     // Will always report as passable, if you try to change that you get a warning.
     public override bool IsPassable
     {
@@ -58,27 +60,56 @@ public class ButtonSquare : Square
     // TODO: Add support for enemies landing
     public override void OnEnemyLand()
     {
-        IsPressed = true;
+        Enemy currentEnemy = null;
+        foreach (Enemy enemy in enemyManager.enemies)
+        {
+            if (enemy.Position == Position)
+            {
+                currentEnemy = enemy;
+                break;
+            }
+        }
 
-        // Play a click sound effect
-        AudioManager.Play(AudioManager.SoundEffects.click);
+        if (currentEnemy && currentEnemy != enemyOnButton)
+        {
+            IsPressed = true;
+            foreach (Enemy enemy in enemyManager.enemies)
+            {
+                if (enemy.Position == Position)
+                {
+                    enemyOnButton = enemy;
+                    break;
+                }
+            }
+
+            // Play a click sound effect
+            AudioManager.Play(AudioManager.SoundEffects.click);
+        }
     }
 
-    // TODO: Add support for enemies leaving
-    public override void OnPlayerLeave()
+    public override void OnLevelTurn()
     {
-        IsPressed = false;
 
-        // Play a click sound effect
-        AudioManager.Play(AudioManager.SoundEffects.click);
-    }
+        bool hasEnemyOn = false;
+        foreach (Enemy enemy in enemyManager.enemies)
+        {
+            if (enemy.Position == Position)
+            {
+                hasEnemyOn = true;
+            }
+        }
 
-    // TODO: Add support for enemies leaving
-    public override void OnEnemyLeave()
-    {
-        IsPressed = false;
 
-        // Play a click sound effect
-        AudioManager.Play(AudioManager.SoundEffects.click);
+
+        if (!hasEnemyOn && enemyOnButton)
+        {
+            IsPressed = false;
+
+            // Play a click sound effect
+            AudioManager.Play(AudioManager.SoundEffects.click);
+            enemyOnButton = null;
+        }
+
+
     }
 }
