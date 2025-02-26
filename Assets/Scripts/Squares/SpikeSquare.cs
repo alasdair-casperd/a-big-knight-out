@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Linq;
 using Unity.VisualScripting;
 using Demo;
+using System;
 
 /// <summary>
 /// A Spike square that is deadly to the player when active, controlled by an retraction
@@ -88,7 +89,6 @@ public class SpikeSquare : Square
     public override void OnPlayerMove()
     {
         turnCounter++;
-        UpdateSpikes();
     }
 
     /// <summary>
@@ -100,12 +100,6 @@ public class SpikeSquare : Square
         // Play a sound effect
         AudioManager.Play(AudioManager.SoundEffects.thud);
 
-        if (!spikesRetracted)
-        {
-            PlayerController.Die();
-            AudioManager.Play(AudioManager.SoundEffects.ouch);
-        }
-
     }
 
     /// <summary>
@@ -114,19 +108,8 @@ public class SpikeSquare : Square
     /// </summary>
     public override void OnEnemyLand(Enemy enemy)
     {
-
-        // Check for death
-        if (spikesRetracted)
-        {
-            Debug.Log("Enemy lives");
-        }
-        else
-        {
-            Debug.Log("Enemy dies");
-            AudioManager.Play(AudioManager.SoundEffects.ouch);
-            enemyManager.enemies.Remove(enemy);
-            Destroy(enemy.gameObject);
-        }
+        EnemyOnTile = enemy;
+        Debug.Log(EnemyOnTile.Position);
     }
 
     public override void OnLevelTurn()
@@ -145,7 +128,7 @@ public class SpikeSquare : Square
 
     public override void OnChargeChanged()
     {
-        UpdateSpikes();
+
     }
 
     public void UpdateSpikes()
@@ -162,15 +145,24 @@ public class SpikeSquare : Square
             spikesRetracted = !spikesRetracted;
         }
 
+        UpdateGraphics();
+
         // If the player is on the square and the spikes activate, kill it
         // TODO: Implement this for enemies
-        if (!spikesRetracted && PlayerController.position == Position && previousSpikesRetracted != spikesRetracted)
+        if (!spikesRetracted && PlayerController.position == Position)
         {
             AudioManager.Play(AudioManager.SoundEffects.ouch);
             PlayerController.Die();
         }
 
-        UpdateGraphics();
+        if (EnemyOnTile && !spikesRetracted && EnemyOnTile.Position == Position)
+        {
+            enemyManager.enemies.Remove(EnemyOnTile);
+            Destroy(EnemyOnTile.gameObject);
+        }
+
+        EnemyOnTile = null;
+
     }
 
     public override void UpdateGraphics()

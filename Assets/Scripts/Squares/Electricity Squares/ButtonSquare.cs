@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using Demo;
 
 /// <summary>
 /// A square containing a switch that can trigger events via links, and is tog
@@ -8,6 +9,8 @@ using Unity.VisualScripting;
 public class ButtonSquare : Square
 {
     public override TileType Type => TileType.Button;
+
+    private Enemy enemyOnButton;
 
     // Will always report as passable, if you try to change that you get a warning.
     public override bool IsPassable
@@ -58,13 +61,36 @@ public class ButtonSquare : Square
     // TODO: Add support for enemies landing
     public override void OnEnemyLand()
     {
-        IsPressed = true;
+        Enemy currentEnemy = null;
+        foreach (Enemy enemy in enemyManager.enemies)
+        {
+            if (enemy.Position == Position)
+            {
+                currentEnemy = enemy;
+                break;
+            }
+        }
 
-        // Play a click sound effect
-        AudioManager.Play(AudioManager.SoundEffects.click);
+        if (currentEnemy)
+        {
+            IsPressed = true;
+            if (currentEnemy != enemyOnButton)
+            {
+                // Play a click sound effect if new enemy lands
+                AudioManager.Play(AudioManager.SoundEffects.click);
+            }
+            foreach (Enemy enemy in enemyManager.enemies)
+            {
+                if (enemy.Position == Position)
+                {
+                    enemyOnButton = enemy;
+                    break;
+                }
+            }
+
+        }
     }
 
-    // TODO: Add support for enemies leaving
     public override void OnPlayerLeave()
     {
         IsPressed = false;
@@ -73,12 +99,29 @@ public class ButtonSquare : Square
         AudioManager.Play(AudioManager.SoundEffects.click);
     }
 
-    // TODO: Add support for enemies leaving
-    public override void OnEnemyLeave()
+    public override void OnLevelTurn()
     {
-        IsPressed = false;
 
-        // Play a click sound effect
-        AudioManager.Play(AudioManager.SoundEffects.click);
+        bool hasEnemyOn = false;
+        foreach (Enemy enemy in enemyManager.enemies)
+        {
+            if (enemy.Position == Position)
+            {
+                hasEnemyOn = true;
+            }
+        }
+
+
+
+        if (!hasEnemyOn && enemyOnButton && PlayerController.position != Position)
+        {
+
+            // Play a click sound effect
+            AudioManager.Play(AudioManager.SoundEffects.click);
+            IsPressed = false;
+            enemyOnButton = null;
+        }
+
+
     }
 }

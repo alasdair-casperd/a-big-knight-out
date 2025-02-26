@@ -86,6 +86,11 @@ public abstract class Square : MonoBehaviour
     public UI.EnemyCaptureIndicator enemyCaptureIndicator;
 
     /// <summary>
+    /// The enemy currently on the tile. Set to null if there is no enemy on the tile.
+    /// </summary>
+    public Enemy EnemyOnTile;
+
+    /// <summary>
     /// Show whether or not this square constitutes a valid move for the player
     /// </summary>
     /// <param name="isValid">Can the player move to this square?</param>
