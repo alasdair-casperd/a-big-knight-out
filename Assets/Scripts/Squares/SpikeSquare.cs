@@ -109,7 +109,6 @@ public class SpikeSquare : Square
     public override void OnEnemyLand(Enemy enemy)
     {
         EnemyOnTile = enemy;
-        Debug.Log(EnemyOnTile.Position);
     }
 
     public override void OnLevelTurn()
@@ -123,7 +122,6 @@ public class SpikeSquare : Square
     public override void OnLevelStart()
     {
         turnCounter = 0;
-        UpdateSpikes();
     }
 
     public override void OnChargeChanged()
@@ -162,7 +160,6 @@ public class SpikeSquare : Square
         }
 
         EnemyOnTile = null;
-
     }
 
     public override void UpdateGraphics()

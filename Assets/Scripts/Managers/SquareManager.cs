@@ -120,9 +120,13 @@ public class SquareManager : MonoBehaviour
     /// </summary>
     public void OnEnemyLeave()
     {
-        foreach (Enemy enemy in enemyManager.enemies)
+        foreach (Square square in squares.Values)
         {
-            squares[enemy.Position].OnEnemyLeave();
+            if (square.EnemyOnTile && square.EnemyOnTile.Position != square.Position)
+            {
+                square.OnEnemyLeave();
+                square.EnemyOnTile = null;
+            }
         }
     }
 

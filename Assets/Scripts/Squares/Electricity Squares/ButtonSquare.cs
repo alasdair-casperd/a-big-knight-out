@@ -10,8 +10,6 @@ public class ButtonSquare : Square
 {
     public override TileType Type => TileType.Button;
 
-    private Enemy enemyOnButton;
-
     // Will always report as passable, if you try to change that you get a warning.
     public override bool IsPassable
     {
@@ -58,38 +56,17 @@ public class ButtonSquare : Square
         AudioManager.Play(AudioManager.SoundEffects.click);
     }
 
-    // TODO: Add support for enemies landing
-    public override void OnEnemyLand()
+    public override void OnEnemyLand(Enemy enemy)
     {
-        Enemy currentEnemy = null;
-        foreach (Enemy enemy in enemyManager.enemies)
-        {
-            if (enemy.Position == Position)
-            {
-                currentEnemy = enemy;
-                break;
-            }
-        }
-
-        if (currentEnemy)
-        {
-            IsPressed = true;
-            if (currentEnemy != enemyOnButton)
-            {
-                // Play a click sound effect if new enemy lands
-                AudioManager.Play(AudioManager.SoundEffects.click);
-            }
-            foreach (Enemy enemy in enemyManager.enemies)
-            {
-                if (enemy.Position == Position)
-                {
-                    enemyOnButton = enemy;
-                    break;
-                }
-            }
-
-        }
+        EnemyOnTile = enemy;
+        IsPressed = true;
     }
+
+    public override void OnEnemyLeave()
+    {
+        IsPressed = false;
+    }
+
 
     public override void OnPlayerLeave()
     {
@@ -102,26 +79,11 @@ public class ButtonSquare : Square
     public override void OnLevelTurn()
     {
 
-        bool hasEnemyOn = false;
-        foreach (Enemy enemy in enemyManager.enemies)
-        {
-            if (enemy.Position == Position)
-            {
-                hasEnemyOn = true;
-            }
-        }
+    }
 
-
-
-        if (!hasEnemyOn && enemyOnButton && PlayerController.position != Position)
-        {
-
-            // Play a click sound effect
-            AudioManager.Play(AudioManager.SoundEffects.click);
-            IsPressed = false;
-            enemyOnButton = null;
-        }
-
+    public override void OnPlayerTurnStart()
+    {
 
     }
+
 }
