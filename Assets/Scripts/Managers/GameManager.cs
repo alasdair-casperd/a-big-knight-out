@@ -2,6 +2,8 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using Demo;
+using System.Linq;
+using System;
 
 [RequireComponent(typeof(SquareManager))]
 [RequireComponent(typeof(LevelBuilder))]
@@ -39,6 +41,11 @@ public class GameManager : MonoBehaviour
     LevelBuilder levelBuilder;
     SquareManager squareManager;
     EnemyManager enemyManager;
+    
+    /// <summary>
+    /// The environment prefab manager.
+    /// </summary>
+    public EnvironmentPrefabManager environmentPrefabManager;
 
     /// <summary>
     /// The level object to build and manage.
@@ -98,6 +105,10 @@ public class GameManager : MonoBehaviour
 
         // Initialise enemies
         enemyManager.InitialiseEnemies(enemies);
+
+        // Create the environment
+        var environment = environmentPrefabManager.Environments.FirstOrDefault(x => x.LevelName == level.Name);
+        if (environment != null) Instantiate(environment.prefab);
 
         InputLocked = false;
 

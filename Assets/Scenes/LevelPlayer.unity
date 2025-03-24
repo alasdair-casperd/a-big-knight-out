@@ -509,7 +509,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1470063650
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -615,7 +615,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
+  m_BackGroundColor: {r: 0.120817, g: 0.12284001, b: 0.14150941, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -664,13 +664,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1486785045}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.4580629, y: -0, z: -0, w: 0.8889198}
-  m_LocalPosition: {x: 1.78, y: 12.83, z: -4.4}
+  m_LocalRotation: {x: 0.36335793, y: -0, z: -0, w: 0.9316496}
+  m_LocalPosition: {x: 1.78, y: 12.83, z: -8.11}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 54.524, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 42.613, y: 0, z: 0}
 --- !u!114 &1486785049
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1119,11 +1119,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a57e7ab99327c1544aa3487fc8da1465, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelFile: {fileID: 4900000, guid: c7650e4ec645b7345a7956154cbf2c9e, type: 3}
+  levelFile: {fileID: 4900000, guid: 8d77eb31894cd4768b870a6e14bdedc0, type: 3}
   player: {fileID: 0}
   autoStart: 1
   gameplayUIManager: {fileID: 2071151752}
   InputLocked: 0
+  environmentPrefabManager: {fileID: 11400000, guid: 45da046b4080a421292c195f1813a848, type: 2}
   levelContainer: {fileID: 169189629}
 --- !u!114 &2071151751
 MonoBehaviour:
@@ -1170,7 +1171,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!64 &2078476963
 MeshCollider:
   m_ObjectHideFlags: 0
