@@ -3632,7 +3632,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39ffcb11c693d4761b4b80560de23b27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingLevelJSON: {fileID: 4900000, guid: 16a517fea12e3e84c84c2b181595a37f, type: 3}
+  startingLevelJSON: {fileID: 4900000, guid: 20f4ffaba648a4179be4c418b2862db7, type: 3}
   prefabs: {fileID: 11400000, guid: 27cc6ead7fb8f47748eb1582f6ec1a96, type: 2}
   SidebarTool: {fileID: 0}
   toolsSidebar: {fileID: 424798022}
@@ -3689,6 +3689,7 @@ MonoBehaviour:
   autoStart: 0
   gameplayUIManager: {fileID: 0}
   InputLocked: 0
+  environmentPrefabManager: {fileID: 11400000, guid: 45da046b4080a421292c195f1813a848, type: 2}
   levelContainer: {fileID: 794142455}
 --- !u!114 &1408143806
 MonoBehaviour:
