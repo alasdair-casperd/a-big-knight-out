@@ -3,6 +3,8 @@ using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(AnimationController))]
+[RequireComponent(typeof(Collider))]
+[RequireComponent(typeof(Rigidbody))]
 public class MovingPlatform : MonoBehaviour
 {
     Vector2Int[] directions = { Vector2Int.up, Vector2Int.right, Vector2Int.down, Vector2Int.left };
@@ -54,4 +56,17 @@ public class MovingPlatform : MonoBehaviour
         Direction = path.Last();
     }
 
+    void OnTriggerEnter(Collider collider)
+    {
+        if(collider.gameObject.GetComponent<MovingPlatform>()!= null)
+        {
+            Explode();
+        }
+    }
+    
+    void Explode()
+    {
+        Debug.Log("Kaboom?");
+        Destroy(gameObject);
+    }
 }
