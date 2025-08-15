@@ -205,15 +205,53 @@ public class GameManager : MonoBehaviour
     {
         enemyManager.OnLevelTurn();
         squareManager.OnLevelTurn();
-
-        foreach (var platform in movingPlatforms)
-        {
-            platform.MovePlatform(squareManager.squares, player, enemyManager.enemies);
-        }
-
+        UpdatePlatforms();
 
         // Triggers the start of the players turn once all game-blocking animations have finished
         ActionQueue.QueueAction(OnPlayerTurnStart);
+    }
+
+    void UpdatePlatforms()
+    {
+        foreach (var platform in movingPlatforms)
+        {
+            platform.MovePlatform(squareManager.squares, player, enemyManager.enemies);
+        }        
+    }
+
+    void DestroyPlatforms()
+    {
+        List<MovingPlatform> toDestroy = new();
+        foreach (var platform in movingPlatforms)
+        {
+            if (platform.Exploded)
+            {
+                // First should check if player or any enemies are on it...
+                toDestroy.Add(platform);
+                if (platform.Position == player.position)
+                {
+                    player.Die();
+                }
+                List<Enemy> toKill = new();
+                foreach (Enemy enemy in enemyManager.enemies)
+                {
+                    if (platform.Position == enemy.Position)
+                    {
+                        toKill.Add(enemy);
+                    }
+                }
+                foreach (Enemy deadman in toKill)
+                {
+                    enemyManager.enemies.Remove(deadman);
+                    Destroy(deadman.gameObject);
+                }
+            }
+        }
+        foreach (var platform in toDestroy)
+        {
+            movingPlatforms.Remove(platform);
+            Destroy(platform.gameObject);
+        }
     }
 
 
@@ -222,6 +260,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void OnPlayerTurnStart()
     {
+        DestroyPlatforms();
         enemyManager.OnPlayerTurnStart();
         squareManager.OnPlayerTurnStart();
     }

@@ -25,7 +25,7 @@ public class TrackSquare : Square
         {
             foreach(var platform in Platforms)
             {
-                if(Position == platform.Position)
+                if(Position == platform.Position && !platform.Exploded)
                 {
                     return true;
                 }
