@@ -7,7 +7,14 @@ public class LockSquare : Square
 {
     public override TileType Type => TileType.Lock;
 
-    public override bool BlocksJump => true;
+    public override bool BlocksJump
+    {
+        get
+        {
+            return ProgressStore.TotalLevelsCompleted() < State;
+        }
+        protected set { }
+    }
 
     public GameObject lockedGraphics;
     public GameObject openGraphics;
