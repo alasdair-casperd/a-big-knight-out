@@ -19,6 +19,6 @@ MonoBehaviour:
     looping: 1
   music:
     audioClip: {fileID: 8300000, guid: 242599fcc347a488d9bdb8c15a4669fc, type: 3}
-    volume: 1
+    volume: 0.612
     pitch: 1
     looping: 1
