@@ -35,6 +35,9 @@ public class FinishSquare : Square
         // Play a success sound
         AudioManager.Play(AudioManager.SoundEffects.success);
 
+        // Store the completion of the level
+        ProgressStore.SetLevelCompletion(GameManager.CurrentLevelID, true);
+
         // Transition to the menu
         void transition()
         {

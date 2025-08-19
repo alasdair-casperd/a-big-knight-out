@@ -67,6 +67,8 @@ public class GameManager : MonoBehaviour
     // An empty gameObject on which to store the instantiated level objects (including the player)
     public Transform levelContainer;
 
+    public static string CurrentLevelID;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -91,6 +93,9 @@ public class GameManager : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
+
+        // Store the current level ID
+        CurrentLevelID = level.Name;
 
         if (providedLevel != null) level = providedLevel;
 

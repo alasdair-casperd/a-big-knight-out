@@ -29,8 +29,7 @@ public class LevelSquare : Square
 
     private void Start()
     {
-        var gameManager = FindObjectsByType<GameManager>(FindObjectsSortMode.None)[0];
-        if (gameManager == null) return;
+        GetGameManager();
     }
 
     private void GetGameManager()
@@ -39,7 +38,7 @@ public class LevelSquare : Square
         gameManager = FindObjectsByType<GameManager>(FindObjectsSortMode.None)[0];
     }
 
-    // Passable only if the level is unlocked
+    // Always passable
     public override bool IsPassable
     {
         get

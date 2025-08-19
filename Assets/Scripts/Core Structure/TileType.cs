@@ -259,9 +259,18 @@ public struct TileType
     (
         id: 16,
         displayName: "Level Launcher",
-        validStates: Enumerable.Range(1, 100).ToList(), // TODO: Remove this arbitrary limit on the number of levels
+        validStates: Enumerable.Range(1, 100).ToList(), // TODO: Remove this arbitrary limit
         validLinkTargetIDs: new(),
-        isValidStartPosition: true
+        isValidStartPosition: false
+    );
+
+    public static TileType Lock = new
+    (
+        id: 17,
+        displayName: "Menu Level Lock",
+        validStates: Enumerable.Range(0, 100).ToList(), // TODO: Remove this arbitrary limit
+        validLinkTargetIDs: new(),
+        isValidStartPosition: false
     );
 
     // A list of all the tile types
@@ -283,6 +292,7 @@ public struct TileType
         NotGate,
         Pit,
         Level,
+        Lock,
     };
 
     /*
