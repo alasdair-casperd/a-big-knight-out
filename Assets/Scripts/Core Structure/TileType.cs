@@ -247,6 +247,14 @@ public struct TileType
         isConductor: true
     );
 
+    public static TileType Pit = new
+    (
+        id: 15,
+        displayName: "Pit",
+        validStates: new(),
+        validLinkTargetIDs: new()
+    );
+
     // A list of all the tile types
     public static readonly TileType[] All =
     {
@@ -264,6 +272,7 @@ public struct TileType
         AndGate,
         OrGate,
         NotGate,
+        Pit,
     };
 
     /*
