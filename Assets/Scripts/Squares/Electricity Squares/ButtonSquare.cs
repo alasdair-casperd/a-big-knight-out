@@ -1,89 +1,86 @@
 using UnityEngine;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using Demo;
 
 /// <summary>
 /// A square containing a switch that can trigger events via links, and is tog
 /// </summary>
 public class ButtonSquare : Square
 {
-    public override TileType Type => TileType.Button;
+  public override TileType Type => TileType.Button;
 
-    // Will always report as passable, if you try to change that you get a warning.
-    public override bool IsPassable
+  // Will always report as passable, if you try to change that you get a warning.
+  public override bool IsPassable
+  {
+    get
     {
-        get
-        {
-            return true;
-        }
-        protected set
-        {
-            Debug.LogWarning("Trying to change if button is passable!");
-        }
+      return true;
     }
-
-    // Sets up the property for graphics variant
-    public override int GraphicsVariant { get; set; }
-
-    // Is the button currently pressed? This will be true when the player or an enemy is on the button
-    private bool _isPressed;
-    public bool IsPressed
+    protected set
     {
-        get
-        {
-            return _isPressed;
-        }
-        set
-        {
-            _isPressed = value;
-            UpdateOutgoingCharge();
-        }
+      Debug.LogWarning("Trying to change if button is passable!");
     }
+  }
 
-    // To calculate this buttons charge, we just need to know if it is pressed
-    public override bool CalculateCharge()
+  // Sets up the property for graphics variant
+  public override int GraphicsVariant { get; set; }
+
+  // Is the button currently pressed? This will be true when the player or an enemy is on the button
+  private bool _isPressed;
+  public bool IsPressed
+  {
+    get
     {
-        return IsPressed;
+      return _isPressed;
     }
-
-    // TODO: Add support for enemies landing
-    public override void OnPlayerLand()
+    set
     {
-        IsPressed = true;
-
-        // Play a click sound effect
-        AudioManager.Play(AudioManager.SoundEffects.click);
+      _isPressed = value;
+      UpdateOutgoingCharge();
     }
+  }
 
-    public override void OnEnemyLand(Enemy enemy)
-    {
-        EnemyOnTile = enemy;
-        IsPressed = true;
-    }
+  // To calculate this buttons charge, we just need to know if it is pressed
+  public override bool CalculateCharge()
+  {
+    return IsPressed;
+  }
 
-    public override void OnEnemyLeave()
-    {
-        IsPressed = false;
-    }
+  // TODO: Add support for enemies landing
+  public override void OnPlayerLand()
+  {
+    IsPressed = true;
+
+    // Play a click sound effect
+    AudioManager.Play(AudioManager.SoundEffects.click);
+  }
+
+  public override void OnEnemyLand(Enemy enemy)
+  {
+    EnemyOnTile = enemy;
+    IsPressed = true;
+  }
+
+  public override void OnEnemyLeave()
+  {
+    IsPressed = false;
+  }
 
 
-    public override void OnPlayerLeave()
-    {
-        IsPressed = false;
+  public override void OnPlayerLeave()
+  {
+    IsPressed = false;
 
-        // Play a click sound effect
-        AudioManager.Play(AudioManager.SoundEffects.click);
-    }
+    // Play a click sound effect
+    AudioManager.Play(AudioManager.SoundEffects.click);
+  }
 
-    public override void OnLevelTurn()
-    {
+  public override void OnLevelTurn()
+  {
 
-    }
+  }
 
-    public override void OnPlayerTurnStart()
-    {
+  public override void OnPlayerTurnStart()
+  {
 
-    }
+  }
 
 }

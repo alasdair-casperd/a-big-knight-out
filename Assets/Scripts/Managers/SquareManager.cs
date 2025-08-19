@@ -1,10 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
 using Unity.Collections;
-using UnityEngine.UIElements;
 
 /// <summary>
 /// A manager to handle the top level interaction with all of the levels squares.

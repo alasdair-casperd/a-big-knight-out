@@ -1,16 +1,15 @@
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace UI
 {
-    public class Tooltip: MonoBehaviour
+    public class Tooltip : MonoBehaviour
     {
         public enum Position
         {
             top, bottom, left, right
         }
-        
+
         public Text text;
 
         public float VerticalOffset;
@@ -24,7 +23,7 @@ namespace UI
 
             Vector2 targetPivot = new();
             Vector3 targetPosition = new();
-            
+
             switch (position)
             {
                 case Position.top:
@@ -48,7 +47,7 @@ namespace UI
             rt.anchorMax = targetPivot;
             rt.anchorMin = targetPivot;
             rt.pivot = targetPivot;
-            
+
             rt.anchoredPosition = targetPosition;
         }
     }

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 /// <summary>
@@ -53,8 +52,13 @@ public class TrackSquare : Square
         List<Vector2Int> path = new List<Vector2Int>();
 
         // Finds the two perpendicular directions
-        Vector2Int perp1 = Vector2Int.RoundToInt(new Vector2(direction.x, direction.y).Perpendicular1());
-        Vector2Int perp2 = Vector2Int.RoundToInt(new Vector2(direction.x, direction.y).Perpendicular2());
+        Vector2 dir = new Vector2(direction.x, direction.y);
+
+        Vector2 perp1temp = new Vector2(-dir.y, dir.x);  // 90° CCW
+        Vector2 perp2temp = new Vector2(dir.y, -dir.x);  // 90° CW
+
+        Vector2Int perp1 = Vector2Int.RoundToInt(perp1temp);
+        Vector2Int perp2 = Vector2Int.RoundToInt(perp2temp);
 
         // Runs through the different options for where to go next
         if (AdjacentTracks.ContainsKey(direction))
