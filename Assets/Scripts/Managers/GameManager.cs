@@ -2,6 +2,8 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using Demo;
+using System.Linq;
+using System;
 
 [RequireComponent(typeof(SquareManager))]
 [RequireComponent(typeof(LevelBuilder))]
@@ -9,10 +11,10 @@ using Demo;
 public class GameManager : MonoBehaviour
 {
     /// <summary>
-    /// The text file storing the level data
+    /// An optional text file with which to override the starting level. For use in development only.
     /// </summary>
     [SerializeField]
-    private TextAsset levelFile;
+    private TextAsset levelFileOverride;
 
     /// <summary>
     /// The player object's player controller
@@ -41,6 +43,16 @@ public class GameManager : MonoBehaviour
     EnemyManager enemyManager;
 
     /// <summary>
+    /// The environment prefab manager.
+    /// </summary>
+    public EnvironmentPrefabManager environmentPrefabManager;
+
+    /// <summary>
+    /// The level manager on which the game's levels are stored.
+    /// </summary>
+    public LevelManager LevelManager;
+
+    /// <summary>
     /// The level object to build and manage.
     /// </summary>
     private Level level;
@@ -55,8 +67,12 @@ public class GameManager : MonoBehaviour
     {
         if (autoStart)
         {
+            // Load in the menu level, or an overriding level file if one is provided
+            var levelFile = levelFileOverride != null ? levelFileOverride : LevelManager.MenuLevel.LevelFile;
             level = LevelFileManager.ParseLevelFromJSON(levelFile.text);
-            Initialise();
+
+            // Start the game
+            Initialise(level);
         }
     }
 
@@ -65,6 +81,12 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void Initialise(Level providedLevel = null)
     {
+        // Destroy any children of the level container
+        foreach (Transform child in levelContainer.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
         if (providedLevel != null) level = providedLevel;
 
         levelBuilder = GetComponent<LevelBuilder>();
@@ -98,6 +120,10 @@ public class GameManager : MonoBehaviour
 
         // Initialise enemies
         enemyManager.InitialiseEnemies(enemies);
+
+        // Create the environment
+        var environment = environmentPrefabManager.Environments.FirstOrDefault(x => x.LevelName == level.Name);
+        if (environment != null) Instantiate(environment.prefab);
 
         InputLocked = false;
 
@@ -194,24 +220,91 @@ public class GameManager : MonoBehaviour
     {
         enemyManager.OnLevelTurn();
         squareManager.OnLevelTurn();
-
-        foreach (var platform in movingPlatforms)
-        {
-            platform.MovePlatform(squareManager.squares, player, enemyManager.enemies);
-        }
-
+        UpdatePlatforms();
 
         // Triggers the start of the players turn once all game-blocking animations have finished
         ActionQueue.QueueAction(OnPlayerTurnStart);
     }
 
+    void UpdatePlatforms()
+    {
+        foreach (var platform in movingPlatforms)
+        {
+            platform.MovePlatform(squareManager.squares, player, enemyManager.enemies);
+        }
+    }
+
+    void DestroyPlatforms()
+    {
+        List<MovingPlatform> toDestroy = new();
+        foreach (var platform in movingPlatforms)
+        {
+            if (platform.Exploded)
+            {
+                // First should check if player or any enemies are on it...
+                toDestroy.Add(platform);
+                if (platform.Position == player.position)
+                {
+                    player.Die();
+                }
+                List<Enemy> toKill = new();
+                foreach (Enemy enemy in enemyManager.enemies)
+                {
+                    if (platform.Position == enemy.Position)
+                    {
+                        toKill.Add(enemy);
+                    }
+                }
+                foreach (Enemy deadman in toKill)
+                {
+                    enemyManager.enemies.Remove(deadman);
+                    Destroy(deadman.gameObject);
+                }
+            }
+        }
+        foreach (var platform in toDestroy)
+        {
+            movingPlatforms.Remove(platform);
+            Destroy(platform.gameObject);
+        }
+    }
 
     /// <summary>
     /// The actions to be performed at the start of the player's turn.
     /// </summary>
     public void OnPlayerTurnStart()
     {
+        DestroyPlatforms();
         enemyManager.OnPlayerTurnStart();
         squareManager.OnPlayerTurnStart();
+    }
+
+    /// <summary>
+    /// Smoothly transition to a provided level.
+    /// </summary>
+    /// <param name="targetLevel"></param>
+    public void TransitionToLevel(LevelManager.LevelEntry targetLevel)
+    {
+        // TODO: Add a fade transition here
+
+        var level = LevelFileManager.ParseLevelFromJSON(targetLevel.LevelFile.text);
+        Initialise(level);
+    }
+
+    /// <summary>
+    /// Smoothly transition between levels using an index.
+    /// </summary>
+    /// <param name="levelIndex"></param>
+    public void TransitionToLevel(int levelIndex)
+    {
+        var targetLevel = LevelManager.Levels[levelIndex];
+
+        if (targetLevel == null)
+        {
+            Debug.LogError("Invalid level index provided.");
+            return;
+        }
+
+        TransitionToLevel(targetLevel);
     }
 }

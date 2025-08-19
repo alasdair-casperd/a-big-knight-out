@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// The player's current grid position
     /// </summary>
-    public Vector2Int position {get; private set;}
+    public Vector2Int position { get; private set; }
 
     /// <summary>
     /// Is the player still alive?
@@ -34,9 +34,22 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public bool HasMoved;
 
+    /// <summary>
+    /// The knight graphics for the player.
+    /// </summary>
+    [SerializeField] private GameObject graphics;
+
+    /// <summary>
+    /// Rubble to show after the player has died.
+    /// </summary>
+    [SerializeField] private GameObject rubble;
+
     private void Start()
     {
         AnimationController = GetComponent<AnimationController>();
+
+        // Hide the rubble shown on death
+        rubble.SetActive(false);
     }
 
     public void SetInitialPosition(Vector2Int startPos)
@@ -90,9 +103,12 @@ public class PlayerController : MonoBehaviour
     public void Die()
     {
         Alive = false;
-        
-        // TODO: Add death animation
-        Debug.Log("Player dies");
+
+        // Hide the player's usual graphics
+        graphics.SetActive(false);
+
+        // Show the death animation (rubble)
+        rubble.SetActive(true);
 
         // Show the restart prompt
         if (GameManager.gameplayUIManager != null) GameManager.gameplayUIManager.SetRestartPrompt(true);

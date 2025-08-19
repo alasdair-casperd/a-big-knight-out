@@ -1,5 +1,5 @@
 {
-  "Name": "New Level",
+  "Name": "Chess Board",
   "StartPosition": { "x": -5, "y": -1 },
   "Tiles": [
     {
