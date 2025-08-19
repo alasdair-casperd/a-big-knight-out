@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System;
 using TMPro;
+using UnityEngine.Experimental.GlobalIllumination;
 
 /// <summary>
 /// A square used to launch a specified level
@@ -10,8 +11,12 @@ public class LevelSquare : Square
 {
     public override TileType Type => TileType.Level;
 
-    [SerializeField]
-    private TextMeshPro levelText;
+    [SerializeField] private TextMeshPro levelText;
+
+    [SerializeField] private GameObject lockedGraphics;
+    [SerializeField] private GameObject activeGraphics;
+    [SerializeField] private GameObject pressedGraphics;
+    [SerializeField] private Light pointLight;
 
     private GameManager gameManager;
 
@@ -19,6 +24,8 @@ public class LevelSquare : Square
     /// The length of time to pause before transitioning to the level.
     /// </summary>
     public static float pauseTime = 0.5f;
+
+    private static float maxLightBrightness = 0.5f;
 
     private void Start()
     {
@@ -28,6 +35,7 @@ public class LevelSquare : Square
 
     private void GetGameManager()
     {
+        if (gameManager != null) return;
         gameManager = FindObjectsByType<GameManager>(FindObjectsSortMode.None)[0];
     }
 
@@ -50,12 +58,17 @@ public class LevelSquare : Square
     public override void OnPlayerLand()
     {
         // Play a success sound
-        AudioManager.Play(AudioManager.SoundEffects.success);
+        AudioManager.Play(AudioManager.SoundEffects.click);
+
+        GetGameManager();
+        if (gameManager == null) return;
+
+        // Disable player input
+        gameManager.InputLocked = true;
 
         // Transition to the target level
         void transition()
         {
-            GetGameManager();
 
             var targetIndex = State;
 
@@ -66,7 +79,6 @@ public class LevelSquare : Square
                 return;
             }
 
-            if (gameManager == null) return;
             gameManager.TransitionToLevel(targetLevel);
         }
 
@@ -76,8 +88,37 @@ public class LevelSquare : Square
 
     public override void UpdateGraphics()
     {
+        // Update text
         var text = State.ToString();
         if (text.Length == 1) text = '0' + text;
         levelText.text = text;
+
+        //  Update state (locked, inactive, active, pressed)
+        GetGameManager();
+        if (gameManager == null) return;
+
+        lockedGraphics.SetActive(false);
+        activeGraphics.SetActive(false);
+        pressedGraphics.SetActive(false);
+
+        var playerDistance = (gameManager.player.position - Position).magnitude;
+
+        if (!IsPassable) lockedGraphics.SetActive(true);
+        else if (playerDistance < 0.1) pressedGraphics.SetActive(true);
+        else activeGraphics.SetActive(true);
+    }
+
+    public override void OnLevelTurn()
+    {
+        UpdateGraphics();
+    }
+
+    public void Update()
+    {
+        GetGameManager();
+        if (gameManager == null) return;
+
+        var playerDistance = (gameManager.player.gameObject.transform.position - GridUtilities.GridToWorldPos(Position)).magnitude;
+        pointLight.intensity = Math.Clamp(maxLightBrightness * 1 / (1 + 0.5f * playerDistance), 0, 1 / 1.75f);
     }
 }
