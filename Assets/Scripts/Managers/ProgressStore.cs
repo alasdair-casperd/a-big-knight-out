@@ -7,6 +7,17 @@ using UnityEngine;
 /// </summary>
 public static class ProgressStore
 {
+    private static string totalLevelsKey = "total-levels-completed";
+
+    /// <summary>
+    /// The total number of levels completed.
+    /// </summary>
+    /// <returns></returns>
+    public static int TotalLevelsCompleted()
+    {
+        return PlayerPrefs.GetInt(totalLevelsKey);
+    }
+
     /// <summary>
     /// Checks whether a level has been marked as completed.
     /// </summary>
@@ -24,6 +35,11 @@ public static class ProgressStore
     /// <param name="value"></param>
     public static void SetLevelCompletion(string id, bool value)
     {
+        if (value && PlayerPrefs.GetInt(id) == 0)
+        {
+            var totalLevelsCompleted = TotalLevelsCompleted();
+            PlayerPrefs.SetInt(totalLevelsKey, totalLevelsCompleted + 1);
+        }
         PlayerPrefs.SetInt(id, value ? 1 : 0);
     }
 
