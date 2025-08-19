@@ -3,9 +3,8 @@ using System.Linq;
 using System;
 using Unity.VisualScripting;
 using UnityEngine;
-using System.Xml.Serialization;
+using Unity.Collections;
 using UnityEngine.UIElements;
-using Demo;
 
 /// <summary>
 /// A manager to handle the top level interaction with all of the levels squares.
@@ -185,9 +184,10 @@ public class SquareManager : MonoBehaviour
 
         if (player.Alive)
         {
-            foreach (Vector2Int position in squares.Keys)
+            foreach (var move in KnightMoves)
             {
-                if (KnightMoves.Contains(position - player.position) && squares[position].IsPassable)
+                var position = player.position + move;
+                if (squares.Keys.Contains(position) && squares[position].IsPassable && CheckIntermediateTiles(player.position, position))
                 {
                     moves.Add(position);
                 }
@@ -195,6 +195,51 @@ public class SquareManager : MonoBehaviour
         }
 
         return moves;
+    }
+
+    /// <summary>
+    /// Check intermediate tiles of a move to determine whether the knight is blocked from jumping over tiles in the way.
+    /// </summary>
+    /// <param name="start"></param>
+    /// <param name="end"></param>
+    /// <returns></returns>
+    private bool CheckIntermediateTiles(Vector2Int start, Vector2Int end)
+    {
+        int f(int x, int y)
+        {
+            if (y == 0) return 0;
+            return Math.Abs(x) == y ? x / Math.Abs(x) : 0;
+        }
+
+        var move = end - start;
+        var shortDirection = new Vector2Int(f(move.x, 1), f(move.y, 1));
+        var longDirection = new Vector2Int(f(move.x, 2), f(move.y, 2));
+
+        // Paths to consider ignoring start and end squares
+        Vector2Int[][] pathsToConsider =
+        {
+            new Vector2Int[2] { start + longDirection, start + 2 * longDirection },
+            new Vector2Int[2] { start + longDirection, start + longDirection + shortDirection },
+            new Vector2Int[2] { start + shortDirection, start + shortDirection + longDirection },
+        };
+
+        var pathAvailable = false;
+
+        foreach (var path in pathsToConsider)
+        {
+            var validPath = true;
+            foreach (var coordinate in path)
+            {
+                if (squares.Keys.Contains(coordinate) && squares[coordinate].BlocksJump)
+                {
+                    validPath = false;
+                }
+            }
+
+            if (validPath) pathAvailable = true;
+        }
+
+        return pathAvailable;
     }
 
     /// <summary>

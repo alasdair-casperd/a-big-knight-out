@@ -46,6 +46,16 @@ public class BarricadeSquare : Square
         protected set { }
     }
 
+    // Blocks jumping when not open
+    public override bool BlocksJump
+    {
+        get
+        {
+            return closed;
+        }
+        protected set { }
+    }
+
     // Sets up the property for graphics variant
     public override int GraphicsVariant { get; set; }
 

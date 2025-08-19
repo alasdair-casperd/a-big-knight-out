@@ -6,7 +6,9 @@ using System.Collections.Generic;
 /// </summary>
 public class WallSquare : Square
 {
-    public override TileType Type =>  TileType.Floor;
+    public override TileType Type => TileType.Wall;
+
+    public override bool BlocksJump => true;
 
     // Will always report as passable, if you try to change that you get a warning.
     public override bool IsPassable
