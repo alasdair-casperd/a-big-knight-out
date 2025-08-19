@@ -183,6 +183,7 @@ public class GameManager : MonoBehaviour
     {
         Paused = paused;
         InputLocked = paused;
+        if (gameplayUIManager == null) return;
         gameplayUIManager.SetPauseMenu(paused, level);
     }
 
