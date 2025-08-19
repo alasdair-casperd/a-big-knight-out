@@ -2096,7 +2096,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a57e7ab99327c1544aa3487fc8da1465, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelFileOverride: {fileID: 4900000, guid: 1e75265689019f84284abf2738cc2afe, type: 3}
+  levelFileOverride: {fileID: 0}
   player: {fileID: 0}
   autoStart: 1
   gameplayUIManager: {fileID: 2071151752}

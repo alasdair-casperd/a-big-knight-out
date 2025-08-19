@@ -62,7 +62,6 @@ namespace UI
             {
                 while ((player.transform.position - transform.position).magnitude > 6 && i < 1000)
                 {
-                    Debug.Log("Shifting to the player");
                     i++;
                     var toPlayer = player.transform.position - transform.position;
                     toPlayer.y = 0;
