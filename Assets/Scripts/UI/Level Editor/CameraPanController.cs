@@ -6,7 +6,7 @@ namespace UI
     /// <summary>
     /// A component which, when present in a scene, lets the player pan in the x-z plane with the mouse
     /// </summary>
-    public class CameraPanController: MonoBehaviour
+    public class CameraPanController : MonoBehaviour
     {
         /// <summary>
         /// The last known position of the mouse during a scroll action
@@ -25,6 +25,8 @@ namespace UI
 
         private void Update()
         {
+            if (GameManager.Paused) return;
+
             // Start scroll
             if ((useRightClick && Input.GetMouseButtonDown(1)) || (useMiddleClick && Input.GetMouseButtonDown(2)))
             {

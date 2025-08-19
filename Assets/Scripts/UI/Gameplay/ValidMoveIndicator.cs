@@ -42,12 +42,12 @@ namespace UI
 
         private void OnMouseEnter()
         {
-            SetHoverState(true);
+            if (!GameManager.Paused) SetHoverState(true);
         }
 
         private void OnMouseExit()
         {
-            SetHoverState(false);
+            if (!GameManager.Paused) SetHoverState(false);
         }
 
         private void SetHoverState(bool hovered)
