@@ -493,7 +493,7 @@
       "Links": []
     },
     {
-      "TileTypeID": 15,
+      "TileTypeID": 16,
       "InitialState": 1,
       "GraphicsVariant": 0,
       "Position": { "x": 6, "y": 0 },
@@ -1053,7 +1053,7 @@
       "Links": []
     },
     {
-      "TileTypeID": 15,
+      "TileTypeID": 16,
       "InitialState": 2,
       "GraphicsVariant": 0,
       "Position": { "x": 6, "y": -6 },
@@ -1879,7 +1879,7 @@
       "Links": []
     },
     {
-      "TileTypeID": 15,
+      "TileTypeID": 16,
       "InitialState": 3,
       "GraphicsVariant": 0,
       "Position": { "x": 0, "y": -12 },
