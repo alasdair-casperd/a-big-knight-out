@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 using Demo;
 using System.Linq;
 using System;
+using UI;
 
 [RequireComponent(typeof(SquareManager))]
 [RequireComponent(typeof(LevelBuilder))]
@@ -47,6 +48,8 @@ public class GameManager : MonoBehaviour
     SquareManager squareManager;
     EnemyManager enemyManager;
 
+    public CameraController CameraController;
+
     /// <summary>
     /// The environment prefab manager.
     /// </summary>
@@ -88,6 +91,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void Initialise(Level providedLevel = null)
     {
+
         // Destroy any children of the level container
         foreach (Transform child in levelContainer.transform)
         {
@@ -142,6 +146,12 @@ public class GameManager : MonoBehaviour
 
         // Ensure the game isn't paused
         Resume();
+
+        // Center the camera
+        if (CameraController != null)
+        {
+            CameraController.InitialiseCameraPosition(player, squares);
+        }
     }
 
     // Update is called once per frame
