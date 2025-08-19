@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: Background Sounds
   m_EditorClassIdentifier: 
   engineNoise:
-    audioClip: {fileID: 0}
+    audioClip: {fileID: 8300000, guid: 242599fcc347a488d9bdb8c15a4669fc, type: 3}
     volume: 1
     pitch: 1
     looping: 1
-  demoBacking:
-    audioClip: {fileID: 8300000, guid: 69de484a61a4c40889670766ce60bef1, type: 3}
+  music:
+    audioClip: {fileID: 8300000, guid: 242599fcc347a488d9bdb8c15a4669fc, type: 3}
     volume: 1
     pitch: 1
     looping: 1

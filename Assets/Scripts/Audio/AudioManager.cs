@@ -14,7 +14,8 @@ public class AudioManager : MonoBehaviour
     /// </summary>
     public static SoundEffects SoundEffects
     {
-        get {
+        get
+        {
             CheckInitialisation();
             return current.soundEffects;
         }
@@ -85,6 +86,11 @@ public class AudioManager : MonoBehaviour
         current.Perform(soundEffect);
     }
 
+    private void Start()
+    {
+        Play(BackgroundSounds.music);
+    }
+
     /// <summary>
     /// Play a background sound. Background sounds should be used for longer sounds or sounds which loop indefinitely.
     /// </summary>
@@ -120,7 +126,7 @@ public class AudioManager : MonoBehaviour
         for (int i = 0; i < maximumConcurrentSoundEffects; i++)
         {
             soundEffectSources.Add(gameObject.AddComponent<AudioSource>());
-        }                
+        }
     }
 
     // Create the audio sources to be used for playing background sounds
@@ -130,18 +136,18 @@ public class AudioManager : MonoBehaviour
         for (int i = 0; i < maximumConcurrentBackgroundSounds; i++)
         {
             backgroundSoundSources.Add(gameObject.AddComponent<AudioSource>());
-        }                
+        }
     }
 
     // Play a sound effect
     private void Perform(SoundEffect soundEffect)
-    {         
+    {
         // Select an AudioSource to use
         AudioSource audioSource = soundEffectSources[currentSoundEffectSource];
-        currentSoundEffectSource = (currentSoundEffectSource + 1) % maximumConcurrentSoundEffects;         
+        currentSoundEffectSource = (currentSoundEffectSource + 1) % maximumConcurrentSoundEffects;
 
         // Set the properties of the AudioSource from SoundEffect data
-        audioSource.clip = soundEffect.audioClip;         
+        audioSource.clip = soundEffect.audioClip;
         float randomVolumeMultiplier = 1 + Random.Range(-soundEffect.volumeVariance / 2, soundEffect.volumeVariance / 2);
         float randomPitchMultiplier = 1 + Random.Range(-soundEffect.pitchVariance / 2, soundEffect.pitchVariance / 2);
         audioSource.volume = soundEffect.volume * randomVolumeMultiplier;
@@ -153,13 +159,13 @@ public class AudioManager : MonoBehaviour
 
     // Play a background sound
     private void Perform(BackgroundSound backgroundSound)
-    {         
+    {
         // Select an AudioSource to use
         AudioSource audioSource = backgroundSoundSources[currentBackgroundSoundSource];
-        currentBackgroundSoundSource = (currentBackgroundSoundSource + 1) % maximumConcurrentBackgroundSounds;         
+        currentBackgroundSoundSource = (currentBackgroundSoundSource + 1) % maximumConcurrentBackgroundSounds;
 
         // Set the properties of the AudioSource from Background data
-        audioSource.clip = backgroundSound.audioClip;         
+        audioSource.clip = backgroundSound.audioClip;
         audioSource.volume = backgroundSound.volume;
         audioSource.pitch = backgroundSound.pitch;
         audioSource.loop = backgroundSound.looping;
