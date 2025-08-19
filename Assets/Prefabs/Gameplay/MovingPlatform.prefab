@@ -63,7 +63,7 @@ MonoBehaviour:
   JumpDuration: 0.2
   TeleportDuration: 0.2
   SlideDuration: 0.2
-  MoveAlongPathDuration: 0.3
+  MoveAlongPathDuration: 0.15
   JumpHeight: 2
 --- !u!65 &185301102660535709
 BoxCollider:

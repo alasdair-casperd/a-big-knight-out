@@ -25,7 +25,7 @@ public class AnimationController : MonoBehaviour
     /// <summary>
     /// The duration of the move along path animation
     /// </summary>
-    public float MoveAlongPathDuration = 0.3f;
+    public float MoveAlongPathDuration = 0.15f;
 
     /// <summary>
     /// The height of the  jump animation
@@ -59,7 +59,7 @@ public class AnimationController : MonoBehaviour
 
         // Animates the jump
         LeanTween.value(tweenTarget, 0, 1, duration)
-        .setOnUpdate(t => 
+        .setOnUpdate(t =>
         {
             // Translates
             Vector3 outputPosition = t * endPosition + (1 - t) * startPosition;
@@ -93,7 +93,7 @@ public class AnimationController : MonoBehaviour
 
         // Animates the teleportation
         LeanTween.value(tweenTarget, 0, 1, duration)
-        .setOnUpdate(t => 
+        .setOnUpdate(t =>
         {
             // Disappearance
             if (t < 0.5)
@@ -127,7 +127,7 @@ public class AnimationController : MonoBehaviour
 
         // Animates the slide
         LeanTween.value(tweenTarget, 0, 1, duration)
-        .setOnUpdate(t => 
+        .setOnUpdate(t =>
         {
             Vector3 outputPosition = t * endPosition + (1 - t) * startPosition;
             transform.position = outputPosition;
@@ -157,7 +157,7 @@ public class AnimationController : MonoBehaviour
 
         Vector2Int startPosition = GridUtilities.WorldToGridPos(transform.position);
         Vector2Int previousPosition = startPosition;
-        
+
         // Calculate step lengths and total path length
         float totalPathLength = 0;
         float[] stepLengths = new float[path.Length];
@@ -182,7 +182,7 @@ public class AnimationController : MonoBehaviour
 
         // Animates the path following
         LeanTween.value(tweenTarget, 0, 1, duration)
-        .setOnUpdate(t => 
+        .setOnUpdate(t =>
         {
             (int i, float x) = currentState(t);
             Vector2Int previousPosition = i > 0 ? path[i - 1] : startPosition;
