@@ -11,10 +11,10 @@ using System;
 public class GameManager : MonoBehaviour
 {
     /// <summary>
-    /// The text file storing the level data
+    /// An optional text file with which to override the starting level. For use in development only.
     /// </summary>
     [SerializeField]
-    private TextAsset levelFile;
+    private TextAsset levelFileOverride;
 
     /// <summary>
     /// The player object's player controller
@@ -41,11 +41,16 @@ public class GameManager : MonoBehaviour
     LevelBuilder levelBuilder;
     SquareManager squareManager;
     EnemyManager enemyManager;
-    
+
     /// <summary>
     /// The environment prefab manager.
     /// </summary>
     public EnvironmentPrefabManager environmentPrefabManager;
+
+    /// <summary>
+    /// The level manager on which the game's levels are stored.
+    /// </summary>
+    public LevelManager LevelManager;
 
     /// <summary>
     /// The level object to build and manage.
@@ -62,8 +67,12 @@ public class GameManager : MonoBehaviour
     {
         if (autoStart)
         {
+            // Load in the menu level, or an overriding level file if one is provided
+            var levelFile = levelFileOverride != null ? levelFileOverride : LevelManager.MenuLevel.LevelFile;
             level = LevelFileManager.ParseLevelFromJSON(levelFile.text);
-            Initialise();
+
+            // Start the game
+            Initialise(level);
         }
     }
 
@@ -72,6 +81,12 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void Initialise(Level providedLevel = null)
     {
+        // Destroy any children of the level container
+        foreach (Transform child in levelContainer.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
         if (providedLevel != null) level = providedLevel;
 
         levelBuilder = GetComponent<LevelBuilder>();
@@ -216,7 +231,7 @@ public class GameManager : MonoBehaviour
         foreach (var platform in movingPlatforms)
         {
             platform.MovePlatform(squareManager.squares, player, enemyManager.enemies);
-        }        
+        }
     }
 
     void DestroyPlatforms()
@@ -254,7 +269,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
     /// <summary>
     /// The actions to be performed at the start of the player's turn.
     /// </summary>
@@ -263,5 +277,34 @@ public class GameManager : MonoBehaviour
         DestroyPlatforms();
         enemyManager.OnPlayerTurnStart();
         squareManager.OnPlayerTurnStart();
+    }
+
+    /// <summary>
+    /// Smoothly transition to a provided level.
+    /// </summary>
+    /// <param name="targetLevel"></param>
+    public void TransitionToLevel(LevelManager.LevelEntry targetLevel)
+    {
+        // TODO: Add a fade transition here
+
+        var level = LevelFileManager.ParseLevelFromJSON(targetLevel.LevelFile.text);
+        Initialise(level);
+    }
+
+    /// <summary>
+    /// Smoothly transition between levels using an index.
+    /// </summary>
+    /// <param name="levelIndex"></param>
+    public void TransitionToLevel(int levelIndex)
+    {
+        var targetLevel = LevelManager.Levels[levelIndex];
+
+        if (targetLevel == null)
+        {
+            Debug.LogError("Invalid level index provided.");
+            return;
+        }
+
+        TransitionToLevel(targetLevel);
     }
 }
