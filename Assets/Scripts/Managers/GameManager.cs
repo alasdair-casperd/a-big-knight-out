@@ -1,9 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
-using UnityEngine.SceneManagement;
-using Demo;
 using System.Linq;
-using System;
 using UI;
 
 [RequireComponent(typeof(SquareManager))]
@@ -89,9 +86,8 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Start the game
     /// </summary>
-    public void Initialise(Level providedLevel = null)
+    public void Initialise(Level providedLevel = null, Vector2Int? startingPosition = null)
     {
-
         // Destroy any children of the level container
         foreach (Transform child in levelContainer.transform)
         {
@@ -107,7 +103,7 @@ public class GameManager : MonoBehaviour
         squareManager = GetComponent<SquareManager>();
         enemyManager = GetComponent<EnemyManager>();
 
-        player = levelBuilder.BuildPlayer(levelContainer, level);
+        player = levelBuilder.BuildPlayer(levelContainer, level, startingPosition);
         Dictionary<Vector2Int, Square> squares = levelBuilder.BuildLevelSquares(levelContainer, level);
         List<Enemy> enemies = levelBuilder.BuildLevelEnemies(levelContainer, level);
         movingPlatforms = levelBuilder.BuildLevelMovingPlatforms(levelContainer, level);
@@ -318,16 +314,15 @@ public class GameManager : MonoBehaviour
     /// Smoothly transition to a provided level.
     /// </summary>
     /// <param name="targetLevel"></param>
-    public void TransitionToLevel(LevelManager.LevelEntry targetLevel)
+    public void TransitionToLevel(LevelManager.LevelEntry targetLevel, Vector2Int? startOverride = null)
     {
         void transition()
         {
             var level = LevelFileManager.ParseLevelFromJSON(targetLevel.LevelFile.text);
-            Initialise(level);
+            Initialise(level, startOverride);
         }
 
         gameplayUIManager.FadeThroughAction(transition);
-
     }
 
     /// <summary>
@@ -349,7 +344,7 @@ public class GameManager : MonoBehaviour
 
     public void QuitToMenu()
     {
-        TransitionToLevel(LevelManager.MenuLevel);
+        TransitionToLevel(LevelManager.MenuLevel, LevelSquare.LastUsedLevelSquare);
     }
 
     public void QuitToDesktop()

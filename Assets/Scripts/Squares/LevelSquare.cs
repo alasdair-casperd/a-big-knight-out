@@ -1,14 +1,14 @@
 using UnityEngine;
-using System.Collections.Generic;
 using System;
 using TMPro;
-using UnityEngine.Experimental.GlobalIllumination;
 
 /// <summary>
 /// A square used to launch a specified level
 /// </summary>
 public class LevelSquare : Square
 {
+    public static Vector2Int LastUsedLevelSquare;
+
     public override TileType Type => TileType.Level;
 
     [SerializeField] private TextMeshPro levelText;
@@ -58,6 +58,8 @@ public class LevelSquare : Square
     {
         // Play a success sound
         AudioManager.Play(AudioManager.SoundEffects.click);
+
+        LastUsedLevelSquare = Position;
 
         GetGameManager();
         if (gameManager == null) return;

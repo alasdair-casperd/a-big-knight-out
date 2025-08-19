@@ -24,7 +24,7 @@ public class LevelBuilder : MonoBehaviour
     /// </summary>
     public Prefabs prefabs;
 
-    public PlayerController BuildPlayer(Transform parent, Level level)
+    public PlayerController BuildPlayer(Transform parent, Level level, Vector2Int? startingPositionOverride = null)
     {
         if (!level.IsValidLevel)
         {
@@ -39,7 +39,8 @@ public class LevelBuilder : MonoBehaviour
         player.Alive = true;
 
         // Position the player
-        player.SetInitialPosition(level.StartPosition);
+        if (startingPositionOverride != null) player.SetInitialPosition((Vector2Int)startingPositionOverride);
+        else player.SetInitialPosition(level.StartPosition);
 
         return player;
     }
