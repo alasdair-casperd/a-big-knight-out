@@ -3684,12 +3684,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a57e7ab99327c1544aa3487fc8da1465, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelFile: {fileID: 0}
+  levelFileOverride: {fileID: 0}
   player: {fileID: 0}
   autoStart: 0
   gameplayUIManager: {fileID: 0}
   InputLocked: 0
   environmentPrefabManager: {fileID: 11400000, guid: 45da046b4080a421292c195f1813a848, type: 2}
+  LevelManager: {fileID: 0}
   levelContainer: {fileID: 794142455}
 --- !u!114 &1408143806
 MonoBehaviour:

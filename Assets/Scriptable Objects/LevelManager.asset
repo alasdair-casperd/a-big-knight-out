@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MenuLevel:
     Name: Menu
-    LevelFile: {fileID: 4900000, guid: 20f4ffaba648a4179be4c418b2862db7, type: 3}
+    LevelFile: {fileID: 4900000, guid: 8419298cc4def4a33bb6bedc4d0e1091, type: 3}
   Levels:
   - Name: Three Spikes
     LevelFile: {fileID: 4900000, guid: d96b6c8b66d34c24eb0c6e4815a64188, type: 3}
-  - Name: The Journey
-    LevelFile: {fileID: 4900000, guid: d96b6c8b66d34c24eb0c6e4815a64188, type: 3}
   - Name: So Near, So Far
     LevelFile: {fileID: 4900000, guid: 62709ba98f1c4b1418ce5a653799056f, type: 3}
+  - Name: Chess
+    LevelFile: {fileID: 4900000, guid: 8d77eb31894cd4768b870a6e14bdedc0, type: 3}

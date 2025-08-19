@@ -70,7 +70,7 @@ public class LevelSquare : Square
         void transition()
         {
 
-            var targetIndex = State;
+            var targetIndex = State - 1;
 
             var targetLevel = gameManager.LevelManager.Levels[targetIndex];
             if (targetLevel == null)
@@ -101,8 +101,13 @@ public class LevelSquare : Square
         activeGraphics.SetActive(false);
         pressedGraphics.SetActive(false);
 
-        var playerDistance = (gameManager.player.position - Position).magnitude;
+        if (gameManager.player == null)
+        {
+            activeGraphics.SetActive(true);
+            return;
+        }
 
+        var playerDistance = (gameManager.player.position - Position).magnitude;
         if (!IsPassable) lockedGraphics.SetActive(true);
         else if (playerDistance < 0.1) pressedGraphics.SetActive(true);
         else activeGraphics.SetActive(true);
@@ -117,7 +122,7 @@ public class LevelSquare : Square
     {
         GetGameManager();
         if (gameManager == null) return;
-
+        if (gameManager.player == null) return;
         var playerDistance = (gameManager.player.gameObject.transform.position - GridUtilities.GridToWorldPos(Position)).magnitude;
         pointLight.intensity = Math.Clamp(maxLightBrightness * 1 / (1 + 0.5f * playerDistance), 0, 1 / 1.75f);
     }
