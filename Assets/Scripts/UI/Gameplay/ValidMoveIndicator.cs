@@ -23,6 +23,7 @@ namespace UI
         /// </summary>
         public void Hide()
         {
+            if (!gameObject.activeSelf) { return; }
             LeanTween.value(gameObject, 1, 0, transitionDuration)
             .setOnUpdate(t => transform.localScale = new Vector3(t, 1, t))
             .setOnComplete(() => gameObject.SetActive(false));
