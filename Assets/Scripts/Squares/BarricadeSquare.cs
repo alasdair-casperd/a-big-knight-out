@@ -54,7 +54,7 @@ public class BarricadeSquare : Square
     /// </summary>
     public override void OnLevelStart()
     {
-
+        UpdateBarricade();
     }
 
     public override void OnChargeChanged()

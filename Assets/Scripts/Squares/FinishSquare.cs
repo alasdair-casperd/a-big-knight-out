@@ -1,12 +1,18 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System;
 
 /// <summary>
 /// An end square which is always passable.
 /// </summary>
 public class FinishSquare : Square
 {
-    public override TileType Type =>  TileType.Finish;
+    public override TileType Type => TileType.Finish;
+
+    /// <summary>
+    /// The length of time to pause before transitioning away from the level.
+    /// </summary>
+    public static float gloatingTime = 1.5f;
 
     // Will always report as passable, if you try to change that you get a warning.
     public override bool IsPassable
@@ -26,6 +32,18 @@ public class FinishSquare : Square
 
     public override void OnPlayerLand()
     {
+        // Play a success sound
         AudioManager.Play(AudioManager.SoundEffects.success);
+
+        // Transition to the menu
+        void transition()
+        {
+            var gameManager = FindObjectsByType<GameManager>(FindObjectsSortMode.None)[0];
+            if (gameManager == null) return;
+            gameManager.TransitionToLevel(gameManager.LevelManager.MenuLevel);
+        }
+
+        // After a delay, transition back to the menu level
+        LeanTween.delayedCall(gloatingTime, transition);
     }
 }

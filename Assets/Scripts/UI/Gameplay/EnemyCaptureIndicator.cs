@@ -18,9 +18,11 @@ namespace UI
         /// </summary>
         public void Hide()
         {
-            LeanTween.value(gameObject, 1, 0, transitionDuration)
-            .setOnUpdate(t => transform.localScale = new Vector3(t, 1, t))
-            .setOnComplete(() => gameObject.SetActive(false));
+            // LeanTween.value(gameObject, 1, 0, transitionDuration)
+            // .setOnUpdate(t => transform.localScale = new Vector3(t, 1, t))
+            // .setOnComplete(() => gameObject.SetActive(false));
+
+            gameObject.SetActive(false);
         }
 
         /// <summary>
@@ -29,8 +31,8 @@ namespace UI
         public void Show()
         {
             gameObject.SetActive(true);
-            LeanTween.value(gameObject, 0, 1, transitionDuration)
-            .setOnUpdate(t => transform.localScale = new Vector3(t, 1, t));
+            // LeanTween.value(gameObject, 0, 1, transitionDuration)
+            // .setOnUpdate(t => transform.localScale = new Vector3(t, 1, t));
         }
     }
 }

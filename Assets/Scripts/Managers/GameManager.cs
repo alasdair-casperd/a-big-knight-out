@@ -11,10 +11,10 @@ using System;
 public class GameManager : MonoBehaviour
 {
     /// <summary>
-    /// The text file storing the level data
+    /// An optional text file with which to override the starting level. For use in development only.
     /// </summary>
     [SerializeField]
-    private TextAsset levelFile;
+    private TextAsset levelFileOverride;
 
     /// <summary>
     /// The player object's player controller
@@ -29,6 +29,11 @@ public class GameManager : MonoBehaviour
     private bool autoStart = true;
 
     /// <summary>
+    /// Is the game paused?
+    /// </summary>
+    public static bool Paused = false;
+
+    /// <summary>
     /// The gameplay UI manager, if one is present (this will be null in the level editor, for example)
     /// </summary>
     public GameplayUIManager gameplayUIManager;
@@ -41,11 +46,16 @@ public class GameManager : MonoBehaviour
     LevelBuilder levelBuilder;
     SquareManager squareManager;
     EnemyManager enemyManager;
-    
+
     /// <summary>
     /// The environment prefab manager.
     /// </summary>
     public EnvironmentPrefabManager environmentPrefabManager;
+
+    /// <summary>
+    /// The level manager on which the game's levels are stored.
+    /// </summary>
+    public LevelManager LevelManager;
 
     /// <summary>
     /// The level object to build and manage.
@@ -62,8 +72,12 @@ public class GameManager : MonoBehaviour
     {
         if (autoStart)
         {
+            // Load in the menu level, or an overriding level file if one is provided
+            var levelFile = levelFileOverride != null ? levelFileOverride : LevelManager.MenuLevel.LevelFile;
             level = LevelFileManager.ParseLevelFromJSON(levelFile.text);
-            Initialise();
+
+            // Start the game
+            Initialise(level);
         }
     }
 
@@ -72,6 +86,12 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void Initialise(Level providedLevel = null)
     {
+        // Destroy any children of the level container
+        foreach (Transform child in levelContainer.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
         if (providedLevel != null) level = providedLevel;
 
         levelBuilder = GetComponent<LevelBuilder>();
@@ -110,12 +130,13 @@ public class GameManager : MonoBehaviour
         var environment = environmentPrefabManager.Environments.FirstOrDefault(x => x.LevelName == level.Name);
         if (environment != null) Instantiate(environment.prefab);
 
-        InputLocked = false;
 
         // Start the player's turn
         enemyManager.OnPlayerTurnStart();
         squareManager.OnPlayerTurnStart();
 
+        // Ensure the game isn't paused
+        Resume();
     }
 
     // Update is called once per frame
@@ -124,8 +145,14 @@ public class GameManager : MonoBehaviour
         // Manage the action queue
         ActionQueue.Update();
 
-        // Listen for reset button
+        // Listen for pause button
         if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            SetPause(!Paused);
+        }
+
+        // Listen for reset button
+        else if (Input.GetKeyDown(KeyCode.Space) && !Paused && player.HasMoved && !InputLocked)
         {
             Restart();
         }
@@ -136,24 +163,31 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void Restart()
     {
-        if (player.HasMoved && !InputLocked)
+        InputLocked = true;
+        ActionQueue.QueueAction(() =>
         {
-            InputLocked = true;
-            ActionQueue.QueueAction(() =>
+
+            void action()
             {
+                Clear();
+                Initialise();
+                if (gameplayUIManager != null) gameplayUIManager.SetRestartPrompt(false);
+            }
 
-                void action()
-                {
-                    Clear();
-                    Initialise();
-                    if (gameplayUIManager != null) gameplayUIManager.SetRestartPrompt(false);
-                }
-
-                if (gameplayUIManager != null) gameplayUIManager.FadeThroughAction(action);
-                else action();
-            });
-        }
+            if (gameplayUIManager != null) gameplayUIManager.FadeThroughAction(action);
+            else action();
+        });
     }
+
+    public void SetPause(bool paused)
+    {
+        Paused = paused;
+        InputLocked = paused;
+        gameplayUIManager.SetPauseMenu(paused, level);
+    }
+
+    public void Pause() => SetPause(true);
+    public void Resume() => SetPause(false);
 
     /// <summary>
     /// Destroy all gameObjects associated with the level (including the player)
@@ -216,7 +250,7 @@ public class GameManager : MonoBehaviour
         foreach (var platform in movingPlatforms)
         {
             platform.MovePlatform(squareManager.squares, player, enemyManager.enemies);
-        }        
+        }
     }
 
     void DestroyPlatforms()
@@ -254,7 +288,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
     /// <summary>
     /// The actions to be performed at the start of the player's turn.
     /// </summary>
@@ -263,5 +296,48 @@ public class GameManager : MonoBehaviour
         DestroyPlatforms();
         enemyManager.OnPlayerTurnStart();
         squareManager.OnPlayerTurnStart();
+    }
+
+    /// <summary>
+    /// Smoothly transition to a provided level.
+    /// </summary>
+    /// <param name="targetLevel"></param>
+    public void TransitionToLevel(LevelManager.LevelEntry targetLevel)
+    {
+        void transition()
+        {
+            var level = LevelFileManager.ParseLevelFromJSON(targetLevel.LevelFile.text);
+            Initialise(level);
+        }
+
+        gameplayUIManager.FadeThroughAction(transition);
+
+    }
+
+    /// <summary>
+    /// Smoothly transition between levels using an index.
+    /// </summary>
+    /// <param name="levelIndex"></param>
+    public void TransitionToLevel(int levelIndex)
+    {
+        var targetLevel = LevelManager.Levels[levelIndex];
+
+        if (targetLevel == null)
+        {
+            Debug.LogError("Invalid level index provided.");
+            return;
+        }
+
+        TransitionToLevel(targetLevel);
+    }
+
+    public void QuitToMenu()
+    {
+        TransitionToLevel(LevelManager.MenuLevel);
+    }
+
+    public void QuitToDesktop()
+    {
+        Application.Quit();
     }
 }

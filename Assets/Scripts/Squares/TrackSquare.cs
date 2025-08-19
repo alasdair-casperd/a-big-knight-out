@@ -7,7 +7,7 @@ using UnityEngine;
 /// </summary>
 public class TrackSquare : Square
 {
-    public override TileType Type =>  TileType.Track;
+    public override TileType Type => TileType.Track;
 
     [SerializeField]
     private DynamicSquareGraphics dynamicSquareGraphics;
@@ -23,9 +23,9 @@ public class TrackSquare : Square
     {
         get
         {
-            foreach(var platform in Platforms)
+            foreach (var platform in Platforms)
             {
-                if(Position == platform.Position && !platform.Exploded)
+                if (Position == platform.Position && !platform.Exploded)
                 {
                     return true;
                 }
@@ -40,9 +40,9 @@ public class TrackSquare : Square
     }
 
     // The track squares adjacent to this one, stores the relative position and the square
-    public Dictionary<Vector2Int,TrackSquare> AdjacentTracks {get; set;}
+    public Dictionary<Vector2Int, TrackSquare> AdjacentTracks { get; set; }
 
-    public List<MovingPlatform> Platforms {get; set;}
+    public List<MovingPlatform> Platforms { get; set; }
 
     public List<Vector2Int> GetPath(Vector2Int direction)
     {
@@ -53,22 +53,22 @@ public class TrackSquare : Square
         List<Vector2Int> path = new List<Vector2Int>();
 
         // Finds the two perpendicular directions
-        Vector2Int perp1 = Vector2Int.RoundToInt(new Vector2(direction.x,direction.y).Perpendicular1());
-        Vector2Int perp2 = Vector2Int.RoundToInt(new Vector2(direction.x,direction.y).Perpendicular2()); 
+        Vector2Int perp1 = Vector2Int.RoundToInt(new Vector2(direction.x, direction.y).Perpendicular1());
+        Vector2Int perp2 = Vector2Int.RoundToInt(new Vector2(direction.x, direction.y).Perpendicular2());
 
         // Runs through the different options for where to go next
-        if(AdjacentTracks.ContainsKey(direction))
+        if (AdjacentTracks.ContainsKey(direction))
         {
             nextTrack = AdjacentTracks[direction];
             nextDirection = direction;
         }
         // If it can turn one way but not the other, turn that way
-        else if(AdjacentTracks.ContainsKey(perp1) && !AdjacentTracks.ContainsKey(perp2))
+        else if (AdjacentTracks.ContainsKey(perp1) && !AdjacentTracks.ContainsKey(perp2))
         {
             nextTrack = AdjacentTracks[perp1];
             nextDirection = perp1;
         }
-        else if(AdjacentTracks.ContainsKey(perp2) && !AdjacentTracks.ContainsKey(perp1))
+        else if (AdjacentTracks.ContainsKey(perp2) && !AdjacentTracks.ContainsKey(perp1))
         {
             nextTrack = AdjacentTracks[perp2];
             nextDirection = perp2;
@@ -82,11 +82,11 @@ public class TrackSquare : Square
         // At this point if you haven't found a path you must be isolated!
         else
         {
-            Debug.LogWarning("Track found with no adjacent tracks at "+ Position.ToString());
+            Debug.LogWarning("Track found with no adjacent tracks at " + Position.ToString());
         }
 
         // Checks if the next track found is a stopping point
-        if(nextTrack.State == 0)
+        if (nextTrack.State == 0)
         {
             // If the next one is the stop then you've found the path
             path.Add(nextDirection);
@@ -96,11 +96,11 @@ public class TrackSquare : Square
             // Otherwise recursively get the path from that next tile
             path = nextTrack.GetPath(nextDirection);
             // Inserts the new direction at the start (to make sure the path is in the right order)
-            path.Insert(0,nextDirection);
+            path.Insert(0, nextDirection);
         }
 
         // Safety feature to make sure we don't get stuck in an infinite recursive loop
-        if(path.Count > 1000)
+        if (path.Count > 1000)
         {
             Debug.LogError("Path is running away!");
         }
@@ -115,5 +115,10 @@ public class TrackSquare : Square
 
         // Update the graphics based on the adjacent tracks
         dynamicSquareGraphics.UpdateGraphics(AdjacentTracks);
+    }
+
+    public override void OnPlayerLand()
+    {
+        AudioManager.Play(AudioManager.SoundEffects.thud);
     }
 }

@@ -63,7 +63,7 @@ MonoBehaviour:
   JumpDuration: 0.2
   TeleportDuration: 0.2
   SlideDuration: 0.2
-  MoveAlongPathDuration: 0.3
+  MoveAlongPathDuration: 0.15
   JumpHeight: 2
 --- !u!65 &185301102660535709
 BoxCollider:
@@ -131,7 +131,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: faa897d1a9fa54efd81b81aa54e9234d, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.4
+      value: 0.245036
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: faa897d1a9fa54efd81b81aa54e9234d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -139,7 +139,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: faa897d1a9fa54efd81b81aa54e9234d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.29
+      value: 0.164
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: faa897d1a9fa54efd81b81aa54e9234d, type: 3}
       propertyPath: m_LocalPosition.z

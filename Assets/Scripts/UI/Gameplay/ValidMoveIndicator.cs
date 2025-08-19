@@ -13,6 +13,11 @@ namespace UI
         /// </summary>
         public float transitionDuration = 0.05f;
 
+        public float hoverOpacity = 0.5f;
+        public float defaultOpacity = 0.1f;
+
+        [SerializeField] private SpriteRenderer sprite;
+
         /// <summary>
         /// Hides the move indicator with an animation
         /// </summary>
@@ -28,9 +33,28 @@ namespace UI
         /// </summary>
         public void Show()
         {
+            SetHoverState(false);
             gameObject.SetActive(true);
+            transform.localScale = new Vector3(1, 1, 1);
             LeanTween.value(gameObject, 0, 1, transitionDuration)
             .setOnUpdate(t => transform.localScale = new Vector3(t, 1, t));
+        }
+
+        private void OnMouseEnter()
+        {
+            if (!GameManager.Paused) SetHoverState(true);
+        }
+
+        private void OnMouseExit()
+        {
+            if (!GameManager.Paused) SetHoverState(false);
+        }
+
+        private void SetHoverState(bool hovered)
+        {
+            var color = sprite.color;
+            color.a = hovered ? hoverOpacity : defaultOpacity;
+            sprite.color = color;
         }
     }
 }

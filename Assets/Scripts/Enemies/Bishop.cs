@@ -80,6 +80,13 @@ public class Bishop : Enemy
             CaptureSquares.Add(startSquare + EnemyMove[captureDirection]);
             CheckNextSquareCapture(startSquare + EnemyMove[captureDirection], captureDirection);
         }
+
+        if (SquareManager.squares.ContainsKey(startSquare + EnemyMove[captureDirection])
+            && SquareManager.squares[startSquare + EnemyMove[captureDirection]].IsPassable
+            && CheckSquareForEnemy(startSquare + EnemyMove[captureDirection]))
+        {
+            CaptureSquares.Add(startSquare + EnemyMove[captureDirection]);
+        }
     }
 
     public override void SetCaptureSquares()
