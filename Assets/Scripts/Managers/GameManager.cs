@@ -99,7 +99,7 @@ public class GameManager : MonoBehaviour
         }
 
         // Store the current level ID
-        CurrentLevelID = level.Name;
+        if (level != null) CurrentLevelID = level.Name;
 
         if (providedLevel != null) level = providedLevel;
 
