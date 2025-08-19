@@ -35,7 +35,7 @@ public class FinishSquare : Square
         // Play a success sound
         AudioManager.Play(AudioManager.SoundEffects.success);
 
-        // Transition to the menu level
+        // Transition to the menu
         void transition()
         {
             var gameManager = FindObjectsByType<GameManager>(FindObjectsSortMode.None)[0];

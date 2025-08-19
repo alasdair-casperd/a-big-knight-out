@@ -285,10 +285,14 @@ public class GameManager : MonoBehaviour
     /// <param name="targetLevel"></param>
     public void TransitionToLevel(LevelManager.LevelEntry targetLevel)
     {
-        // TODO: Add a fade transition here
+        void transition()
+        {
+            var level = LevelFileManager.ParseLevelFromJSON(targetLevel.LevelFile.text);
+            Initialise(level);
+        }
 
-        var level = LevelFileManager.ParseLevelFromJSON(targetLevel.LevelFile.text);
-        Initialise(level);
+        gameplayUIManager.FadeThroughAction(transition);
+
     }
 
     /// <summary>

@@ -91,10 +91,10 @@ public struct TileType
     // This is horrible, and will be removed as soon as enough custom tools have been created in the level editor
     private static List<int> _validSpikeStates;
     private static List<int> ValidSpikeStates
-    {   
+    {
         get
         {
-            if (_validSpikeStates != null) return _validSpikeStates;            
+            if (_validSpikeStates != null) return _validSpikeStates;
             List<int> numbers = new List<int>();
             Queue<int> queue = new Queue<int>();
             queue.Enqueue(1);
@@ -111,7 +111,7 @@ public struct TileType
                 queue.Enqueue(current * 10 + 1);
                 queue.Enqueue(current * 10 + 2);
             }
-            
+
             _validSpikeStates = numbers;
             return _validSpikeStates;
         }
@@ -169,7 +169,7 @@ public struct TileType
     (
         id: 6,
         displayName: "Track",
-        validStates: new() {0,1},
+        validStates: new() { 0, 1 },
         validLinkTargetIDs: new(),
         isConductor: false
     );
@@ -178,7 +178,7 @@ public struct TileType
     (
         id: 7,
         displayName: "Barricade",
-        validStates: new() {0,1},
+        validStates: new() { 0, 1 },
         validLinkTargetIDs: new(),
         isConductor: true
     );
@@ -196,8 +196,8 @@ public struct TileType
     (
         id: 9,
         displayName: "Colour Flip Tile",
-        validStates: new() { 0, 1},
-        validLinkTargetIDs: new() { 5, 7, 11, 12, 13, 14},
+        validStates: new() { 0, 1 },
+        validLinkTargetIDs: new() { 5, 7, 11, 12, 13, 14 },
         isValidStartPosition: true,
         isConductor: true
     );
@@ -247,6 +247,15 @@ public struct TileType
         isConductor: true
     );
 
+    public static TileType Level = new
+    (
+        id: 15,
+        displayName: "Level Launcher",
+        validStates: new() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 },
+        validLinkTargetIDs: Enumerable.Range(1, 100).ToList(), // TODO: Remove this arbitrary limit on the number of levels
+        isValidStartPosition: true
+    );
+
     // A list of all the tile types
     public static readonly TileType[] All =
     {
@@ -264,6 +273,7 @@ public struct TileType
         AndGate,
         OrGate,
         NotGate,
+        Level,
     };
 
     /*
