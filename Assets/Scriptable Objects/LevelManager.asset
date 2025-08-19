@@ -14,11 +14,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MenuLevel:
     Name: Menu
-    LevelFile: {fileID: 4900000, guid: 3d4362aff7d0b46fba93e5e1c749e3b9, type: 3}
+    LevelFile: {fileID: 4900000, guid: bfc02a9ae54371847a509ec470e70ace, type: 3}
   Levels:
+  - Name: Spikes Idiot
+    LevelFile: {fileID: 4900000, guid: 7b17fdca504fc554280a307814093eb9, type: 3}
   - Name: Three Spikes
-    LevelFile: {fileID: 4900000, guid: d96b6c8b66d34c24eb0c6e4815a64188, type: 3}
-  - Name: So Near, So Far
-    LevelFile: {fileID: 4900000, guid: 62709ba98f1c4b1418ce5a653799056f, type: 3}
+    LevelFile: {fileID: 4900000, guid: 1e75265689019f84284abf2738cc2afe, type: 3}
+  - Name: MP example
+    LevelFile: {fileID: 4900000, guid: 844b270c8a8a9b849b691f2ae28ac973, type: 3}
   - Name: Chess
     LevelFile: {fileID: 4900000, guid: 8d77eb31894cd4768b870a6e14bdedc0, type: 3}
+  - Name: So Near, So Far
+    LevelFile: {fileID: 4900000, guid: 62709ba98f1c4b1418ce5a653799056f, type: 3}
+  - Name: 'Idiot enemy '
+    LevelFile: {fileID: 4900000, guid: e5a22e8f0e2777b44a479f3442446829, type: 3}
+  - Name: A Knight's tour
+    LevelFile: {fileID: 4900000, guid: 9582bef8eeea9e5438eb03e88a1d2a9b, type: 3}
+  - Name: Intro Enemies
+    LevelFile: {fileID: 4900000, guid: 9189bba3305f44f1482a495da5c4c959, type: 3}
+  - Name: Bishop Bonanza
+    LevelFile: {fileID: 4900000, guid: 2934d07e3f21bca4aa195da07563de2c, type: 3}
+  - Name: Portal Panic
+    LevelFile: {fileID: 4900000, guid: f516c083ec40fda46ba383183c8860a7, type: 3}
+  - Name: Rookie mistake
+    LevelFile: {fileID: 4900000, guid: 7fcff4a740e4dd443b5c2fdc90376fb9, type: 3}
+  - Name: Escort VIP
+    LevelFile: {fileID: 4900000, guid: c7650e4ec645b7345a7956154cbf2c9e, type: 3}
+  - Name: Pac-horse
+    LevelFile: {fileID: 4900000, guid: 6d8bb48e91f45a847b62497a85fe4999, type: 3}
+  - Name: Waves
+    LevelFile: {fileID: 4900000, guid: 033674ec88a784cd3893f557e0b7e63c, type: 3}
+  - Name: The Journey
+    LevelFile: {fileID: 4900000, guid: 676cd925b8e774b348b285e416bfbfe9, type: 3}
+  - Name: Diagonal Danger
+    LevelFile: {fileID: 4900000, guid: 0f2bd5308b531564b89dd35e812a70c2, type: 3}
