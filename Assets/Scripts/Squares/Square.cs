@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -62,6 +63,11 @@ public abstract class Square : MonoBehaviour
     /// Whether the tile is currently passable.
     /// </summary>
     public abstract bool IsPassable { get; protected set; }
+
+    /// <summary>
+    /// Whether the tile currently prevents the player from jumping over it.
+    /// </summary>
+    public virtual bool BlocksJump { get; protected set; }
 
     /// <summary>
     /// Allows access to the player controller script.
