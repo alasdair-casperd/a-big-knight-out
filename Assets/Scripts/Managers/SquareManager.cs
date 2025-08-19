@@ -205,8 +205,6 @@ public class SquareManager : MonoBehaviour
     /// <returns></returns>
     private bool CheckIntermediateTiles(Vector2Int start, Vector2Int end)
     {
-        Debug.Log(start);
-
         int f(int x, int y)
         {
             if (y == 0) return 0;
@@ -214,14 +212,8 @@ public class SquareManager : MonoBehaviour
         }
 
         var move = end - start;
-        Debug.Log("Move");
-        Debug.Log(move);
         var shortDirection = new Vector2Int(f(move.x, 1), f(move.y, 1));
-        Debug.Log("Short");
-        Debug.Log(shortDirection);
         var longDirection = new Vector2Int(f(move.x, 2), f(move.y, 2));
-        Debug.Log("Long");
-        Debug.Log(longDirection);
 
         // Paths to consider ignoring start and end squares
         Vector2Int[][] pathsToConsider =
@@ -235,15 +227,11 @@ public class SquareManager : MonoBehaviour
 
         foreach (var path in pathsToConsider)
         {
-            Debug.Log(path);
             var validPath = true;
             foreach (var coordinate in path)
             {
-                Debug.Log(coordinate);
-                Debug.Log(squares.Keys.Contains(coordinate) ? squares[coordinate].Type.DisplayName : "Empty");
                 if (squares.Keys.Contains(coordinate) && squares[coordinate].BlocksJump)
                 {
-                    Debug.Log("OOoooooooooOOOoooOooo" + squares[coordinate].Type.DisplayName);
                     validPath = false;
                 }
             }
