@@ -31,7 +31,7 @@ public static class LevelFileManager
         Tile Tile(Serializing_Tile t)
         {
             TileType tileType = TileType.All.Where(type => type.ID == t.TileTypeID).First();
-            
+
             return new Tile
             (
                 type: tileType,
@@ -47,7 +47,7 @@ public static class LevelFileManager
             EntityType entityType = EntityType.All.Where(type => type.ID == e.EntityTypeID).First();
             return new Entity(entityType, e.InitialState, e.GraphicsVariant, e.Direction);
         }
-        
+
         // Deserialize json into a Serializing_Level object
         var l = JsonUtility.FromJson<Serializing_Level>(json);
 
@@ -108,7 +108,7 @@ public static class LevelFileManager
     {
         var serializing_Level = new Serializing_Level(level);
         return JsonUtility.ToJson(serializing_Level);
-    } 
+    }
 
     /*
         Serializing Classes
@@ -143,7 +143,7 @@ public static class LevelFileManager
                 tiles_list.Add(new Serializing_Tile(tile, position));
             }
             Tiles = tiles_list.ToArray();
-            
+
             // Add entities
             var entities_list = new List<Serializing_Entity>();
             foreach (var (position, entity) in level.Entities)
@@ -212,7 +212,7 @@ public static class LevelFileManager
             Direction = direction;
         }
     }
-    
+
     [Serializable]
     private struct Serializing_Vector2Int
     {

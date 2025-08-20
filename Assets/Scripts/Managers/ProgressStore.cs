@@ -40,6 +40,7 @@ public static class ProgressStore
             var totalLevelsCompleted = TotalLevelsCompleted();
             PlayerPrefs.SetInt(totalLevelsKey, totalLevelsCompleted + 1);
         }
+
         PlayerPrefs.SetInt(id, value ? 1 : 0);
     }
 

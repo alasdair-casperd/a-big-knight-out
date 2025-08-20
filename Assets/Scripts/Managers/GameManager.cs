@@ -88,6 +88,18 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void Initialise(Level providedLevel = null, Vector2Int? startingPosition = null)
     {
+        // Update the current level
+        if (providedLevel != null) level = providedLevel;
+
+        // Set the starting position to the last used starting position, if on the hub level and one is stored
+        if (level.Name == "menu")
+        {
+            if (LevelSquare.LastUsedSquarePosition != Vector2Int.zero)
+            {
+                startingPosition = LevelSquare.LastUsedSquarePosition;
+            }
+        }
+
         // Destroy any children of the level container
         foreach (Transform child in levelContainer.transform)
         {
@@ -344,7 +356,7 @@ public class GameManager : MonoBehaviour
 
     public void QuitToMenu()
     {
-        TransitionToLevel(LevelManager.MenuLevel, LevelSquare.LastUsedLevelSquare);
+        TransitionToLevel(LevelManager.MenuLevel);
     }
 
     public void QuitToDesktop()

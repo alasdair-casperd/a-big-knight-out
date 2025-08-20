@@ -28,6 +28,11 @@ namespace UI
         public bool useMiddleClick = true;
 
         /// <summary>
+        /// The maximum starting distance from the player
+        /// </summary>
+        public float maxPlayerDistance = 3f;
+
+        /// <summary>
         /// Move the camera to a sensible starting position.
         /// </summary>
         /// <param name="playerController"></param>
@@ -41,7 +46,8 @@ namespace UI
             int minY = int.MaxValue;
             int maxX = int.MinValue;
 
-            foreach (var square in squares.Values.ToArray())
+            // Compute level bounds
+            foreach (var square in squares.Values)
             {
                 if (square.Position.x < minX) minX = square.Position.x;
                 if (square.Position.x > maxX) maxX = square.Position.x;
@@ -49,25 +55,22 @@ namespace UI
                 if (square.Position.y > maxY) maxY = square.Position.y;
             }
 
-            var center = GridUtilities.GridToWorldPos(new Vector2Int((int)Math.Round(0.5f * (minX + maxX)), (int)Math.Round(0.5f * (minY + maxY))));
+            // Convert level center to world position
+            var levelCenter = GridUtilities.GridToWorldPos(new Vector2Int(
+                (int)Math.Round(0.5f * (minX + maxX)),
+                (int)Math.Round(0.5f * (minY + maxY))));
 
-            transform.position = center;
+            Debug.Log("Level center x: " + levelCenter.x);
+            Debug.Log("Level center y: " + levelCenter.y);
 
-            var player = FindAnyObjectByType<PlayerController>();
+            transform.position = levelCenter;
+            if (playerController == null) return;
 
-            var i = 0;
-
-            if (player == null) return;
-            else
+            // Clamp max distance of camera from player
+            Vector3 toPlayer = playerController.transform.position - levelCenter;
+            if (toPlayer.magnitude > maxPlayerDistance)
             {
-                while ((player.transform.position - transform.position).magnitude > 6 && i < 1000)
-                {
-                    i++;
-                    var toPlayer = player.transform.position - transform.position;
-                    toPlayer.y = 0;
-                    toPlayer = toPlayer.normalized;
-                    transform.position += toPlayer;
-                }
+                transform.position = playerController.transform.position - 3 * toPlayer.normalized;
             }
         }
 
@@ -87,8 +90,7 @@ namespace UI
                 Vector3 currentMousePosition = MouseUtilities.GetMouseWorldPos();
                 Vector3 pan = currentMousePosition - lastMousePosition;
                 pan.y = 0;
-                Camera.main.transform.position -= pan;
-                lastMousePosition = MouseUtilities.GetMouseWorldPos();
+                transform.position -= pan;
             }
         }
     }

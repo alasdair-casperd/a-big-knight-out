@@ -43,7 +43,7 @@ public class FinishSquare : Square
         {
             var gameManager = FindObjectsByType<GameManager>(FindObjectsSortMode.None)[0];
             if (gameManager == null) return;
-            gameManager.TransitionToLevel(gameManager.LevelManager.MenuLevel, LevelSquare.LastUsedLevelSquare);
+            gameManager.TransitionToLevel(gameManager.LevelManager.MenuLevel);
         }
 
         // After a delay, transition back to the menu level

@@ -7,8 +7,6 @@ using TMPro;
 /// </summary>
 public class LevelSquare : Square
 {
-    public static Vector2Int LastUsedLevelSquare;
-
     public override TileType Type => TileType.Level;
 
     [SerializeField] private TextMeshPro levelText;
@@ -51,6 +49,14 @@ public class LevelSquare : Square
     // Sets up the property for graphics variant
     public override int GraphicsVariant { get; set; }
 
+    public static Vector2Int LastUsedSquarePosition
+    {
+        get
+        {
+            return new(PlayerPrefs.GetInt("last-position-x"), PlayerPrefs.GetInt("last-position-y"));
+        }
+    }
+
     /// <summary>
     /// When the player lands on the square, transition to the target level. The target level is specified by the state.
     /// </summary>
@@ -59,7 +65,8 @@ public class LevelSquare : Square
         // Play a success sound
         AudioManager.Play(AudioManager.SoundEffects.click);
 
-        LastUsedLevelSquare = Position;
+        PlayerPrefs.SetInt("last-position-x", Position.x);
+        PlayerPrefs.SetInt("last-position-y", Position.y);
 
         GetGameManager();
         if (gameManager == null) return;
