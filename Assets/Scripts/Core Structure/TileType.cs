@@ -273,6 +273,18 @@ public struct TileType
         isValidStartPosition: false
     );
 
+    /// <summary>
+    /// An aesthetically pleasing grass tile.
+    /// </summary>
+    public static TileType Grass = new
+    (
+        id: 18,
+        displayName: "Grass",
+        validStates: new(),
+        validLinkTargetIDs: new(),
+        isValidStartPosition: true
+    );
+
     // A list of all the tile types
     public static readonly TileType[] All =
     {
@@ -293,6 +305,7 @@ public struct TileType
         Pit,
         Level,
         Lock,
+        Grass
     };
 
     /*
