@@ -3632,7 +3632,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39ffcb11c693d4761b4b80560de23b27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingLevelJSON: {fileID: 4900000, guid: 8419298cc4def4a33bb6bedc4d0e1091, type: 3}
+  startingLevelJSON: {fileID: 4900000, guid: d4ed3f6f48dfeb5498347287b13db6f2, type: 3}
   prefabs: {fileID: 11400000, guid: 27cc6ead7fb8f47748eb1582f6ec1a96, type: 2}
   SidebarTool: {fileID: 0}
   toolsSidebar: {fileID: 424798022}
@@ -3689,6 +3689,7 @@ MonoBehaviour:
   autoStart: 0
   gameplayUIManager: {fileID: 0}
   InputLocked: 0
+  CameraController: {fileID: 0}
   environmentPrefabManager: {fileID: 11400000, guid: 45da046b4080a421292c195f1813a848, type: 2}
   LevelManager: {fileID: 0}
   levelContainer: {fileID: 794142455}
@@ -3900,6 +3901,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   useRightClick: 1
   useMiddleClick: 1
+  maxPlayerDistance: 3
 --- !u!1001 &1447952898
 PrefabInstance:
   m_ObjectHideFlags: 0
