@@ -160,6 +160,26 @@ public class GameManager : MonoBehaviour
         {
             CameraController.InitialiseCameraPosition(player, squares);
         }
+
+        // Update dynamic square graphics
+        foreach (var (position, square) in squares)
+        {
+            var dynamicSquareGraphics = square.transform.GetComponentInChildren<DynamicSquareGraphics>();
+            if (dynamicSquareGraphics != null)
+            {
+                var adjacencies = new Dictionary<Vector2Int, Square>();
+
+                foreach (var direction in new Vector2Int[] { Vector2Int.up, Vector2Int.right, Vector2Int.down, Vector2Int.left })
+                {
+                    if (squares.ContainsKey(position + direction) && squares[position + direction].Type == square.Type)
+                    {
+                        adjacencies[direction] = squares[position + direction];
+                    }
+                }
+
+                dynamicSquareGraphics.UpdateGraphics(adjacencies);
+            }
+        }
     }
 
     // Update is called once per frame

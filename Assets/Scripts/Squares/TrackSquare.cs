@@ -116,9 +116,6 @@ public class TrackSquare : Square
     {
         // Show the stopping point indicator if this square is a stopping point
         stoppingPointIndicator.SetActive(State == 0);
-
-        // Update the graphics based on the adjacent tracks
-        dynamicSquareGraphics.UpdateGraphics(AdjacentTracks);
     }
 
     public override void OnPlayerLand()

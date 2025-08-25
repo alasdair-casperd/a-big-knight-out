@@ -6,6 +6,9 @@ using System.Collections.Generic;
 /// </summary>
 public class WallSquare : Square
 {
+    [SerializeField]
+    private DynamicSquareGraphics dynamicSquareGraphics;
+
     public override TileType Type => TileType.Wall;
 
     public override bool BlocksJump => true;
