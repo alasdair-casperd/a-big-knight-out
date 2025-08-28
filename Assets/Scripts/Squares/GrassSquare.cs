@@ -28,4 +28,8 @@ public class GrassSquare : Square
     {
         AudioManager.Play(AudioManager.SoundEffects.thud);
     }
+    private void Start()
+    {
+        transform.eulerAngles += new Vector3(0, Random.Range(0, 4) * 90, 0);
+    }
 }
