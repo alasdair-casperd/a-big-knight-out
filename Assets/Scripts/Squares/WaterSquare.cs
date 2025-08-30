@@ -20,6 +20,11 @@ public class WaterSquare : Square
         }
     }
 
+    private void Start()
+    {
+        transform.eulerAngles += new Vector3(0, Random.Range(0, 4) * 90, 0);
+    }
+
     // Sets up the property for graphics variant
     public override int GraphicsVariant { get; set; }
 
