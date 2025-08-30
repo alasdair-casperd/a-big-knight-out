@@ -1614,6 +1614,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   useRightClick: 1
   useMiddleClick: 1
+  maxPlayerDistance: 3
 --- !u!1 &1618147288
 GameObject:
   m_ObjectHideFlags: 0

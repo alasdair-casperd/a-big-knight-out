@@ -285,6 +285,18 @@ public struct TileType
         isValidStartPosition: true
     );
 
+    /// <summary>
+    /// A splish splosh water tile.
+    /// </summary>
+    public static TileType Water = new
+    (
+        id: 19,
+        displayName: "Water",
+        validStates: new(),
+        validLinkTargetIDs: new(),
+        isValidStartPosition: false
+    );
+
     // A list of all the tile types
     public static readonly TileType[] All =
     {
@@ -305,7 +317,8 @@ public struct TileType
         Pit,
         Level,
         Lock,
-        Grass
+        Grass,
+        Water
     };
 
     /*

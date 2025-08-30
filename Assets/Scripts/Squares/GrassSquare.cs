@@ -16,7 +16,7 @@ public class GrassSquare : Square
         }
         protected set
         {
-            Debug.LogWarning("Trying to change whether a floor square is passable!");
+            Debug.LogWarning("Trying to change whether a grass square is passable!");
         }
     }
 
