@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -83,11 +85,18 @@ public class TrackSquare : Square
             nextTrack = AdjacentTracks[-direction];
             nextDirection = -direction;
         }
-        // At this point if you haven't found a path you must be isolated!
+        // Edge case where path is undefined, pick the first direction
+        else if (AdjacentTracks.Keys.Count != 0)
+        {
+            nextTrack = AdjacentTracks.First().Value;
+            nextDirection = AdjacentTracks.First().Key;
+        }
+        // At this point you have zero adjacent tracks
         else
         {
             Debug.LogWarning("Track found with no adjacent tracks at " + Position.ToString());
         }
+        
 
         // Checks if the next track found is a stopping point
         if (nextTrack.State == 0)
